@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html class="light" lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Mốc Thời Gian Chi Tiết - Cần Giờ - Xanh Đi</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error": "#ffffff",
+                      "secondary": "#3b6934",
+                      "inverse-on-surface": "#f3f0f0",
+                      "background": "#fbf9f8",
+                      "on-primary": "#ffffff",
+                      "tertiary-fixed-dim": "#c4c7c5",
+                      "on-primary-fixed-variant": "#2b4d44",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed-variant": "#434846",
+                      "error-container": "#ffdad6",
+                      "on-primary-fixed": "#00201a",
+                      "surface-dim": "#dcd9d9",
+                      "surface-container-low": "#f6f3f2",
+                      "surface-container": "#f0eded",
+                      "on-surface": "#1b1c1c",
+                      "tertiary-container": "#333736",
+                      "primary-fixed-dim": "#aacec3",
+                      "on-secondary-container": "#3f6d38",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-container": "#b9eeab",
+                      "surface-bright": "#fbf9f8",
+                      "secondary-fixed": "#bcf0ae",
+                      "inverse-primary": "#aacec3",
+                      "primary": "#01261f",
+                      "primary-container": "#1a3c34",
+                      "on-tertiary-container": "#9ca09e",
+                      "on-secondary": "#ffffff",
+                      "tertiary-fixed": "#e0e3e1",
+                      "outline-variant": "#c1c8c4",
+                      "surface-container-high": "#eae8e7",
+                      "on-primary-container": "#83a69c",
+                      "surface": "#fbf9f8",
+                      "inverse-surface": "#303030",
+                      "surface-tint": "#43655c",
+                      "primary-fixed": "#c5eadf",
+                      "outline": "#717976",
+                      "on-secondary-fixed-variant": "#23501e",
+                      "surface-container-highest": "#e4e2e1",
+                      "secondary-fixed-dim": "#a1d494",
+                      "on-background": "#1b1c1c",
+                      "on-tertiary": "#ffffff",
+                      "on-surface-variant": "#414846",
+                      "tertiary": "#1e2221",
+                      "on-tertiary-fixed": "#181c1b",
+                      "on-error-container": "#93000a",
+                      "surface-variant": "#e4e2e1",
+                      "on-secondary-fixed": "#002201"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px",
+                      "3xl": "1.5rem"
+              },
+              "spacing": {
+                      "section-gap": "120px",
+                      "container-max": "1280px",
+                      "margin-mobile": "20px",
+                      "margin-desktop": "64px",
+                      "unit": "8px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "label-md": [
+                              "Be Vietnam Pro"
+                      ],
+                      "body-lg": [
+                              "Be Vietnam Pro"
+                      ],
+                      "display-lg": [
+                              "Be Vietnam Pro"
+                      ],
+                      "headline-md": [
+                              "Be Vietnam Pro"
+                      ],
+                      "headline-lg": [
+                              "Be Vietnam Pro"
+                      ],
+                      "headline-lg-mobile": [
+                              "Be Vietnam Pro"
+                      ],
+                      "body-md": [
+                              "Be Vietnam Pro"
+                      ],
+                      "label-sm": [
+                              "Be Vietnam Pro"
+                      ]
+              },
+              "fontSize": {
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "56px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "36px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .glass-nav {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: all 0.3s ease;
+        }
+        .scrolled-nav {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 20px rgba(26, 60, 52, 0.05);
+        }
+        .text-golden-yellow {
+            color: #eab308;
+        }
+        .bg-golden-yellow {
+            background-color: #eab308;
+        }
+        .text-forest-green {
+            color: #15803d;
+        }
+        .bg-forest-green {
+            background-color: #15803d;
+        }
+        .border-forest-green {
+            border-color: #15803d;
+        }
+        .soft-shadow {
+            box-shadow: 0px 4px 20px rgba(26, 60, 52, 0.08);
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased selection:bg-primary selection:text-on-primary">
+
+<!-- Top Navigation -->
+<nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-300 ease-in-out border-b border-surface-variant/20" id="navbar">
+    <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 w-full max-w-container-max mx-auto">
+        <a class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2 hover:opacity-80 transition-opacity" th:href="@{/}" href="/">
+            <span class="material-symbols-outlined text-secondary text-3xl">eco</span>
+            Xanh Đi
+        </a>
+        <div class="hidden md:flex items-center space-x-8 font-label-md text-label-md">
+            <a class="text-on-surface-variant hover:text-primary transition-colors" th:href="@{/#kham-pha}" href="/#kham-pha">Khám phá</a>
+            <a class="text-primary font-bold border-b-2 border-primary pb-1" th:href="@{/tours}" href="/tours">Điểm đến</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors" href="/#uy-tin">Uy tín</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors" href="/#lien-he">Liên hệ</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors hidden md:block">
+                Đăng nhập
+            </button>
+            <button id="mobile-menu-btn" class="md:hidden text-primary focus:outline-none hover:text-secondary transition-colors">
+                <span class="material-symbols-outlined text-3xl">menu</span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobile-menu" class="hidden md:hidden bg-surface/95 backdrop-blur-md border-t border-surface-variant/30 px-margin-mobile py-4 space-y-4">
+        <a class="block text-on-surface-variant hover:text-primary transition-colors" th:href="@{/#kham-pha}" href="/#kham-pha">Khám phá</a>
+        <a class="block text-primary font-bold" th:href="@{/tours}" href="/tours">Điểm đến</a>
+        <a class="block text-on-surface-variant hover:text-primary transition-colors" href="/#uy-tin">Uy tín</a>
+        <a class="block text-on-surface-variant hover:text-primary transition-colors" href="/#lien-he">Liên hệ</a>
+        <button class="w-full text-left font-body-md text-label-md text-primary font-bold py-2 border-t border-surface-variant/30">
+            Đăng nhập
+        </button>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="pt-[72px] pb-24">
+    <!-- Header Section -->
+    <div class="bg-primary text-white py-12 md:py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBKfFZpzYJXKPswnv_e5UDAcQHC31VZaFsJrxcvjzSqRT2yViHV3L0dIwFyOZyVTeVs-TTgSy0BjuvGYhoDRf_D9cTIOG1N43UVC3l2WsVane-MyuUxgZmPYkQmRHEeuP0RzWow3ReH_Vh8dL85pMTciS97tWMmAaWaIYHO9qGmrT7_kxsz4OQ6Etn2VYzxihvZXK1IbFdTorDIp72QJif0WHQyT7YIpXhwhknRtYT92VQFU5HQuKrLy7IyrCfcZGnYZPFYUtjLWBw');"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-primary/80 to-primary"></div>
+        
+        <div class="relative max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div>
+                <a th:href="@{/tour-detail}" href="/tour-detail" class="inline-flex items-center gap-1.5 text-secondary-fixed hover:text-white font-label-md text-label-md mb-4 transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                    Quay lại trang thông tin tour
+                </a>
+                <h1 class="font-display-lg text-3xl sm:text-[40px] md:text-[48px] font-bold leading-tight drop-shadow-md">
+                    Chi Tiết Mốc Thời Gian
+                </h1>
+                <p class="font-body-lg text-body-md text-white/80 mt-2 max-w-2xl">
+                    Hành trình 1 ngày khám phá lá phổi xanh Cần Giờ với các hoạt động trải nghiệm thiên nhiên nguyên sơ và di tích lịch sử ý nghĩa.
+                </p>
+            </div>
+            
+            <a th:href="@{/tour-detail}" href="/tour-detail" class="hidden md:inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white font-label-md text-label-md font-bold rounded-2xl transition-all duration-300 hover:scale-[1.02] border border-white/20 shadow-md">
+                <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+                Quay lại thông tin tour
+            </a>
+        </div>
+    </div>
+
+    <!-- Timeline Detail Cards -->
+    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12 md:py-16">
+        <div class="space-y-12 md:space-y-20 relative before:absolute before:left-4 md:before:left-1/2 before:top-2 before:bottom-2 before:w-[2px] before:bg-secondary-container/60">
+            
+            <!-- Timeline Item 1 -->
+            <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center pl-8 md:pl-0">
+                <!-- Timeline bullet point on line -->
+                <div class="absolute left-[1px] md:left-1/2 -translate-x-[15px] top-6 w-8 h-8 rounded-full bg-white border-4 border-secondary flex items-center justify-center shadow-md z-10">
+                    <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                </div>
+                
+                <!-- Left Side: Content -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl border border-surface-variant/40 shadow-sm hover:shadow-md transition-shadow">
+                    <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-sm font-bold">
+                        <span class="material-symbols-outlined text-[16px]">schedule</span>
+                        07:30 - Khởi hành
+                    </span>
+                    <h3 class="font-headline-md text-xl md:text-2xl font-bold text-primary mt-4 mb-3">
+                        Khởi hành từ trung tâm TP.HCM
+                    </h3>
+                    <p class="text-on-surface-variant leading-relaxed font-body-md">
+                        Xe du lịch và hướng dẫn viên Xanh Đi đón quý khách tại điểm hẹn ở trung tâm thành phố. Đoàn khởi hành đi Cần Giờ, băng qua sông Nhà Bè trên phà Bình Khánh. Suốt chặng đường, quý khách sẽ được thưởng thức bữa ăn nhẹ chất lượng cùng làn gió sông mát lành. Hướng dẫn viên sẽ giới thiệu tổng quan về hành trình và chia sẻ những câu chuyện thú vị về sự thay đổi cảnh quan thiên nhiên kỳ thú khi rời xa nội đô nhộn nhịp.
+                    </p>
+                </div>
+                
+                <!-- Right Side: Image container -->
+                <div class="w-full">
+                    <img alt="Khởi hành từ TP.HCM" class="w-full h-48 md:h-64 object-cover rounded-2xl shadow-md border border-surface-variant/20 hover:scale-[1.01] transition-transform duration-300"
+                         src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80"/>
+                </div>
+            </div>
+
+            <!-- Timeline Item 2 -->
+            <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center pl-8 md:pl-0">
+                <!-- Timeline bullet point on line -->
+                <div class="absolute left-[1px] md:left-1/2 -translate-x-[15px] top-6 w-8 h-8 rounded-full bg-white border-4 border-secondary flex items-center justify-center shadow-md z-10">
+                    <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                </div>
+                
+                <!-- Left Side: Content -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl border border-surface-variant/40 shadow-sm hover:shadow-md transition-shadow">
+                    <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-sm font-bold">
+                        <span class="material-symbols-outlined text-[16px]">sailing</span>
+                        09:30 - Cano xuyên rừng
+                    </span>
+                    <h3 class="font-headline-md text-xl md:text-2xl font-bold text-primary mt-4 mb-3">
+                        Lướt cano qua rạch đước xanh mướt
+                    </h3>
+                    <p class="text-on-surface-variant leading-relaxed font-body-md">
+                        Đến rìa khu sinh thái, đoàn chuyển sang di chuyển bằng cano cao tốc lướt nhanh trên những con lạch và dòng kênh chằng chịt của Rừng Sác. Cảm giác phiêu lưu mát lạnh khi gió luồn qua tóc, ngắm nhìn hai bên bờ là những hàng đước cổ thụ đan rễ chằng chịt như những bức tường thành xanh khổng lồ bảo vệ thành phố trước sóng gió.
+                    </p>
+                </div>
+                
+                <!-- Right Side: Image container -->
+                <div class="w-full">
+                    <img alt="Cano xuyên Rừng Sác" class="w-full h-48 md:h-64 object-cover rounded-2xl shadow-md border border-surface-variant/20 hover:scale-[1.01] transition-transform duration-300"
+                         src="https://images.unsplash.com/photo-1588392382834-a8af9f547b67?auto=format&fit=crop&w=800&q=80"/>
+                </div>
+            </div>
+
+            <!-- Timeline Item 3 -->
+            <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center pl-8 md:pl-0">
+                <!-- Timeline bullet point on line -->
+                <div class="absolute left-[1px] md:left-1/2 -translate-x-[15px] top-6 w-8 h-8 rounded-full bg-white border-4 border-secondary flex items-center justify-center shadow-md z-10">
+                    <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                </div>
+                
+                <!-- Left Side: Content -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl border border-surface-variant/40 shadow-sm hover:shadow-md transition-shadow">
+                    <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-sm font-bold">
+                        <span class="material-symbols-outlined text-[16px]">forest</span>
+                        10:45 - Khám phá Đảo Khỉ &amp; Chiến Khu
+                    </span>
+                    <h3 class="font-headline-md text-xl md:text-2xl font-bold text-primary mt-4 mb-3">
+                        Gặp gỡ đàn khỉ tự nhiên &amp; Di tích Rừng Sác
+                    </h3>
+                    <p class="text-on-surface-variant leading-relaxed font-body-md">
+                        Đoàn cập bến tham quan Đảo Khỉ - ngôi nhà hoang dã của hơn 1.000 chú khỉ đuôi dài tự nhiên rất hiếu động và thông minh. Sau đó, tiếp tục di chuyển sâu vào trong rừng thăm Di tích Lịch sử Chiến khu Rừng Sác. Tại đây, quý khách được chiêm ngưỡng những mô hình tái hiện sinh hoạt hào hùng của các chiến sĩ đặc công thủy tinh nhuệ năm xưa, hiểu thêm về tinh thần bất khuất vượt qua muôn vàn hiểm nguy nơi rừng thiêng nước độc.
+                    </p>
+                </div>
+                
+                <!-- Right Side: Image container -->
+                <div class="w-full">
+                    <img alt="Đảo Khỉ &amp; Chiến Khu" class="w-full h-48 md:h-64 object-cover rounded-2xl shadow-md border border-surface-variant/20 hover:scale-[1.01] transition-transform duration-300"
+                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5BjE3Jxi-5dz4Jt9fhuapEi-fyFzCnmx637liVNzYVGjftBTw-U9aCVmzz2e7atCKgZb6KeBYtitYq7y2MjQhxefgS4Wxt4S1skWjURoTQNz9Y090cDNt6YLe-l3WA_UihbI0oaqOjonodHYWVrRrqu7-46ETZHvPI1DZX2Fzf-B521bss5_od6PAAOP8sG0fNuqi_3OUmAEdtX18LdkzVeWwWr8KYdT-Z3J5NLh-V2qavB0b7fRmNBI1IXtv1e0pdL61qvL7ze0"/>
+                </div>
+            </div>
+
+            <!-- Timeline Item 4 -->
+            <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center pl-8 md:pl-0">
+                <!-- Timeline bullet point on line -->
+                <div class="absolute left-[1px] md:left-1/2 -translate-x-[15px] top-6 w-8 h-8 rounded-full bg-white border-4 border-secondary flex items-center justify-center shadow-md z-10">
+                    <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                </div>
+                
+                <!-- Left Side: Content -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl border border-surface-variant/40 shadow-sm hover:shadow-md transition-shadow">
+                    <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-sm font-bold">
+                        <span class="material-symbols-outlined text-[16px]">restaurant</span>
+                        12:00 - Ăn trưa hải sản
+                    </span>
+                    <h3 class="font-headline-md text-xl md:text-2xl font-bold text-primary mt-4 mb-3">
+                        Thưởng thức hải sản tươi ngon ven sông
+                    </h3>
+                    <p class="text-on-surface-variant leading-relaxed font-body-md">
+                        Đoàn dùng bữa trưa thịnh soạn tại một nhà hàng sinh thái lộng gió ven sông biển Cần Giờ. Thực đơn phong phú mang đậm phong vị địa phương với hải sản tươi rói được đánh bắt trong ngày như tôm đất hấp dừa ngọt lịm, nghêu hai cồi hấp sả thơm lừng, cá chẽm hấp Hồng Kông đậm đà và lẩu hải sản Nam Bộ nóng hổi thơm ngon.
+                    </p>
+                </div>
+                
+                <!-- Right Side: Image container -->
+                <div class="w-full">
+                    <img alt="Ăn trưa hải sản" class="w-full h-48 md:h-64 object-cover rounded-2xl shadow-md border border-surface-variant/20 hover:scale-[1.01] transition-transform duration-300"
+                         src="https://images.unsplash.com/photo-1534080391025-09795d197360?auto=format&fit=crop&w=800&q=80"/>
+                </div>
+            </div>
+
+            <!-- Timeline Item 5 -->
+            <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center pl-8 md:pl-0">
+                <!-- Timeline bullet point on line -->
+                <div class="absolute left-[1px] md:left-1/2 -translate-x-[15px] top-6 w-8 h-8 rounded-full bg-white border-4 border-secondary flex items-center justify-center shadow-md z-10">
+                    <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                </div>
+                
+                <!-- Left Side: Content -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl border border-surface-variant/40 shadow-sm hover:shadow-md transition-shadow">
+                    <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-sm font-bold">
+                        <span class="material-symbols-outlined text-[16px]">phishing</span>
+                        14:00 - Trải nghiệm Vàm Sát
+                    </span>
+                    <h3 class="font-headline-md text-xl md:text-2xl font-bold text-primary mt-4 mb-3">
+                        Câu cá sấu &amp; Chiêm ngưỡng tháp Tang Bồng
+                    </h3>
+                    <p class="text-on-surface-variant leading-relaxed font-body-md">
+                        Đoàn di chuyển tới Khu du lịch sinh thái Vàm Sát, tham gia trò chơi đầy thử thách cảm giác mạnh: đi thuyền bọc thép an toàn để thử tài câu cá sấu hoa cà tự nhiên háu ăn. Sau khi trải nghiệm cảm giác kịch tính, quý khách thư thái tản bộ dưới những tán rừng mát mẻ và chinh phục tháp Tang Bồng cao 26 mét. Từ đài quan sát trên cao, bạn sẽ thu trọn vào tầm mắt bức tranh đại ngàn xanh biếc của rừng ngập mặn mênh mông sông nước Cần Giờ.
+                    </p>
+                </div>
+                
+                <!-- Right Side: Image container -->
+                <div class="w-full">
+                    <img alt="Câu cá sấu Vàm Sát" class="w-full h-48 md:h-64 object-cover rounded-2xl shadow-md border border-surface-variant/20 hover:scale-[1.01] transition-transform duration-300"
+                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzTrwWwH6RwCfptdKUVynXQbTqwhcNzu9Jae2-LDuUclhN3lppmMBPI7S5TxdSM3nk2hyf4NUHCd-2wiioC5g1u67S3vWD-loHtadbJFjXoWMPED6kp1hSmJ2sucR70GwRopFjflMGWXwgAJvdMNidggnLc1xxlzCdzX9pZFBABahIx7admEOzt-RDS9xpuuJY8P2C7w-ONFCC4dyIjvNRVCxkAV9ggvPGf_bjFUCF_FHXaHIPc73nm0kAjNOLbWwNhLBXQfJ_ANU"/>
+                </div>
+            </div>
+
+            <!-- Timeline Item 6 -->
+            <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center pl-8 md:pl-0">
+                <!-- Timeline bullet point on line -->
+                <div class="absolute left-[1px] md:left-1/2 -translate-x-[15px] top-6 w-8 h-8 rounded-full bg-white border-4 border-secondary flex items-center justify-center shadow-md z-10">
+                    <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                </div>
+                
+                <!-- Left Side: Content -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl border border-surface-variant/40 shadow-sm hover:shadow-md transition-shadow">
+                    <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-sm font-bold">
+                        <span class="material-symbols-outlined text-[16px]">local_mall</span>
+                        16:30 - Kết thúc hành trình
+                    </span>
+                    <h3 class="font-headline-md text-xl md:text-2xl font-bold text-primary mt-4 mb-3">
+                        Mua quà đặc sản &amp; Trở về TP.HCM
+                    </h3>
+                    <p class="text-on-surface-variant leading-relaxed font-body-md">
+                        Đoàn lên xe khởi hành trở lại thành phố. Trên đường đi, xe dừng chân tại các điểm bán quà quê Cần Giờ để quý khách mua sắm đặc sản làm quà cho người thân như xoài cát Hòa Lộc ngon ngọt, quả dừa nước mộc mạc thanh mát hay các loại hải sản khô đa dạng. Dự kiến khoảng 18:30, xe đưa quý khách về lại điểm hẹn ban đầu tại TP.HCM. Hướng dẫn viên chia tay đoàn, kết thúc một ngày trải nghiệm du lịch sinh thái tràn đầy năng lượng xanh.
+                    </p>
+                </div>
+                
+                <!-- Right Side: Image container -->
+                <div class="w-full">
+                    <img alt="Trở về TP.HCM" class="w-full h-48 md:h-64 object-cover rounded-2xl shadow-md border border-surface-variant/20 hover:scale-[1.01] transition-transform duration-300"
+                         src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80"/>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<!-- Sticky Bottom Back Button -->
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+    <a th:href="@{/tour-detail}" href="/tour-detail" class="inline-flex items-center gap-2 px-6 py-3.5 bg-primary hover:bg-[#1a3c34] text-white font-label-md text-label-md font-bold rounded-full shadow-2xl hover:shadow-[0_12px_40px_rgba(1,38,31,0.3)] transition-all duration-300 hover:scale-[1.05] border border-white/10 whitespace-nowrap">
+        <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+        Quay lại trang thông tin tour
+    </a>
+</div>
+
+<!-- Footer -->
+<footer class="w-full bg-primary text-on-primary font-body-md text-body-md relative z-20">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-16 max-w-container-max mx-auto">
+        <!-- Brand Column -->
+        <div class="col-span-1 md:col-span-2 pr-0 md:pr-12">
+            <div class="font-headline-md text-headline-md text-on-primary font-bold mb-6 flex items-center gap-2">
+                <div class="w-8 h-8 bg-secondary rounded flex items-center justify-center shadow-sm">
+                    <span class="material-symbols-outlined text-white text-[20px]">eco</span>
+                </div>
+                Xanh Đi
+            </div>
+            <p class="text-on-primary/80 mb-8 max-w-md">
+                Đừng bỏ lỡ những chương trình khuyến mãi hấp dẫn. Theo dõi mạng xã hội của chúng tôi để cập nhật thông tin mới nhất.
+            </p>
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center gap-3 text-on-primary/80">
+                    <span class="material-symbols-outlined text-[20px]">mail</span>
+                    <span>contact@xanhdi.vn</span>
+                </div>
+                <div class="flex items-center gap-3 text-on-primary/80">
+                    <span class="material-symbols-outlined text-[20px]">call</span>
+                    <span>+84 1800 888 888</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Links Column -->
+        <div>
+            <h4 class="font-headline-md text-[18px] text-on-primary mb-6 font-bold uppercase tracking-wider">LIÊN KẾT</h4>
+            <ul class="space-y-4 flex flex-col">
+                <li><a class="text-on-primary/70 hover:text-on-primary transition-colors hover:underline decoration-secondary-fixed-dim" th:href="@{/}" href="/">Khám phá</a></li>
+                <li><a class="text-on-primary/70 hover:text-on-primary transition-colors hover:underline decoration-secondary-fixed-dim" th:href="@{/tours}" href="/tours">Điểm đến</a></li>
+                <li><a class="text-on-primary/70 hover:text-on-primary transition-colors hover:underline decoration-secondary-fixed-dim" href="/#uy-tin">Uy tín</a></li>
+                <li><a class="text-on-primary/70 hover:text-on-primary transition-colors hover:underline decoration-secondary-fixed-dim" href="#">Chính sách bảo mật</a></li>
+                <li><a class="text-on-primary/70 hover:text-on-primary transition-colors hover:underline decoration-secondary-fixed-dim" href="#">Điều khoản sử dụng</a></li>
+                <li><a class="text-on-primary/70 hover:text-on-primary transition-colors hover:underline decoration-secondary-fixed-dim" href="/#lien-he">Liên hệ</a></li>
+            </ul>
+        </div>
+        
+        <!-- Social/Language Column -->
+        <div>
+            <h4 class="font-headline-md text-[18px] text-on-primary mb-6 font-bold uppercase tracking-wider">MẠNG XÃ HỘI</h4>
+            <div class="flex gap-4 mb-8">
+                <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-secondary transition-colors text-white hover:scale-105" href="#">
+                    <span class="material-symbols-outlined text-[20px]">public</span>
+                </a>
+                <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-secondary transition-colors text-white hover:scale-105" href="#">
+                    <span class="material-symbols-outlined text-[20px]">camera_alt</span>
+                </a>
+                <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-secondary transition-colors text-white hover:scale-105" href="#">
+                    <span class="material-symbols-outlined text-[20px]">smart_display</span>
+                </a>
+            </div>
+            <h4 class="font-headline-md text-[18px] text-on-primary mb-6 font-bold uppercase tracking-wider">NGÔN NGỮ</h4>
+            <div class="flex flex-col gap-3 text-on-primary/80">
+                <div class="flex items-center gap-2 cursor-pointer hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">language</span> Tiếng Việt (VN)
+                </div>
+                <div class="flex items-center gap-2 cursor-pointer hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">language</span> English (EN)
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="border-t border-white/10 px-margin-mobile md:px-margin-desktop py-6 text-center md:text-left text-on-primary/60 font-label-sm text-[12px] flex flex-col md:flex-row justify-between items-center max-w-container-max mx-auto">
+        <span>© 2024 Xanh Đi. Tất cả quyền được bảo lưu.</span>
+        <div class="flex gap-4 mt-4 md:mt-0">
+            <a class="hover:text-white transition-colors" href="#">Chính sách</a>
+            <a class="hover:text-white transition-colors" href="#">Bảo mật</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Simple scroll effect for navbar
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('navbar');
+        if (window.scrollY > 50) {
+            nav.classList.add('scrolled-nav');
+        } else {
+            nav.classList.remove('scrolled-nav');
+        }
+    });
+
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+</script>
+
+</body>
+</html>
