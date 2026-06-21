@@ -246,19 +246,19 @@
         
         <div class="relative max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div>
-                <a th:href="@{/tour-detail}" href="/tour-detail" class="inline-flex items-center gap-1.5 text-secondary-fixed hover:text-white font-label-md text-label-md mb-4 transition-colors">
+                <a th:href="@{/tour-detail/{id}(id=${tour.id})}" href="/tour-detail" class="inline-flex items-center gap-1.5 text-secondary-fixed hover:text-white font-label-md text-label-md mb-4 transition-colors">
                     <span class="material-symbols-outlined text-[18px]">arrow_back</span>
                     Quay lại trang thông tin tour
                 </a>
-                <h1 class="font-display-lg text-3xl sm:text-[40px] md:text-[48px] font-bold leading-tight drop-shadow-md">
+                <h1 class="font-display-lg text-3xl sm:text-[40px] md:text-[48px] font-bold leading-tight drop-shadow-md" th:text="${tour.title}">
                     Chi Tiết Mốc Thời Gian
                 </h1>
-                <p class="font-body-lg text-body-md text-white/80 mt-2 max-w-2xl">
+                <p class="font-body-lg text-body-md text-white/80 mt-2 max-w-2xl" th:text="${tour.description}">
                     Hành trình 1 ngày khám phá lá phổi xanh Cần Giờ với các hoạt động trải nghiệm thiên nhiên nguyên sơ và di tích lịch sử ý nghĩa.
                 </p>
             </div>
             
-            <a th:href="@{/tour-detail}" href="/tour-detail" class="hidden md:inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white font-label-md text-label-md font-bold rounded-2xl transition-all duration-300 hover:scale-[1.02] border border-white/20 shadow-md">
+            <a th:href="@{/tour-detail/{id}(id=${tour.id})}" href="/tour-detail" class="hidden md:inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white font-label-md text-label-md font-bold rounded-2xl transition-all duration-300 hover:scale-[1.02] border border-white/20 shadow-md">
                 <span class="material-symbols-outlined text-[20px]">arrow_back</span>
                 Quay lại thông tin tour
             </a>
@@ -269,8 +269,8 @@
     <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12 md:py-16">
         <div class="space-y-12 md:space-y-20 relative before:absolute before:left-4 md:before:left-1/2 before:top-2 before:bottom-2 before:w-[2px] before:bg-secondary-container/60">
             
-            <!-- Timeline Item 1 -->
-            <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center pl-8 md:pl-0">
+            <!-- Dynamic Timeline Items -->
+            <div th:each="timeline : ${timelines}" class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center pl-8 md:pl-0">
                 <!-- Timeline bullet point on line -->
                 <div class="absolute left-[1px] md:left-1/2 -translate-x-[15px] top-6 w-8 h-8 rounded-full bg-white border-4 border-secondary flex items-center justify-center shadow-md z-10">
                     <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
@@ -279,161 +279,20 @@
                 <!-- Left Side: Content -->
                 <div class="bg-white p-6 md:p-8 rounded-3xl border border-surface-variant/40 shadow-sm hover:shadow-md transition-shadow">
                     <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-sm font-bold">
-                        <span class="material-symbols-outlined text-[16px]">schedule</span>
-                        07:30 - Khởi hành
+                        <span class="material-symbols-outlined text-[16px]" th:text="${timeline.icon}">schedule</span>
+                        <span th:text="${timeline.timeSlot} + ' - ' + ${timeline.title}">07:30 - Khởi hành</span>
                     </span>
-                    <h3 class="font-headline-md text-xl md:text-2xl font-bold text-primary mt-4 mb-3">
+                    <h3 class="font-headline-md text-xl md:text-2xl font-bold text-primary mt-4 mb-3" th:text="${timeline.locationTitle}">
                         Khởi hành từ trung tâm TP.HCM
                     </h3>
-                    <p class="text-on-surface-variant leading-relaxed font-body-md">
+                    <p class="text-on-surface-variant leading-relaxed font-body-md" th:text="${timeline.description}">
                         Xe du lịch và hướng dẫn viên Xanh Đi đón quý khách tại điểm hẹn ở trung tâm thành phố. Đoàn khởi hành đi Cần Giờ, băng qua sông Nhà Bè trên phà Bình Khánh. Suốt chặng đường, quý khách sẽ được thưởng thức bữa ăn nhẹ chất lượng cùng làn gió sông mát lành. Hướng dẫn viên sẽ giới thiệu tổng quan về hành trình và chia sẻ những câu chuyện thú vị về sự thay đổi cảnh quan thiên nhiên kỳ thú khi rời xa nội đô nhộn nhịp.
                     </p>
                 </div>
                 
                 <!-- Right Side: Image container -->
                 <div class="w-full">
-                    <img alt="Khởi hành từ TP.HCM" class="w-full h-48 md:h-64 object-cover rounded-2xl shadow-md border border-surface-variant/20 hover:scale-[1.01] transition-transform duration-300"
-                         src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80"/>
-                </div>
-            </div>
-
-            <!-- Timeline Item 2 -->
-            <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center pl-8 md:pl-0">
-                <!-- Timeline bullet point on line -->
-                <div class="absolute left-[1px] md:left-1/2 -translate-x-[15px] top-6 w-8 h-8 rounded-full bg-white border-4 border-secondary flex items-center justify-center shadow-md z-10">
-                    <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
-                </div>
-                
-                <!-- Left Side: Content -->
-                <div class="bg-white p-6 md:p-8 rounded-3xl border border-surface-variant/40 shadow-sm hover:shadow-md transition-shadow">
-                    <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-sm font-bold">
-                        <span class="material-symbols-outlined text-[16px]">sailing</span>
-                        09:30 - Cano xuyên rừng
-                    </span>
-                    <h3 class="font-headline-md text-xl md:text-2xl font-bold text-primary mt-4 mb-3">
-                        Lướt cano qua rạch đước xanh mướt
-                    </h3>
-                    <p class="text-on-surface-variant leading-relaxed font-body-md">
-                        Đến rìa khu sinh thái, đoàn chuyển sang di chuyển bằng cano cao tốc lướt nhanh trên những con lạch và dòng kênh chằng chịt của Rừng Sác. Cảm giác phiêu lưu mát lạnh khi gió luồn qua tóc, ngắm nhìn hai bên bờ là những hàng đước cổ thụ đan rễ chằng chịt như những bức tường thành xanh khổng lồ bảo vệ thành phố trước sóng gió.
-                    </p>
-                </div>
-                
-                <!-- Right Side: Image container -->
-                <div class="w-full">
-                    <img alt="Cano xuyên Rừng Sác" class="w-full h-48 md:h-64 object-cover rounded-2xl shadow-md border border-surface-variant/20 hover:scale-[1.01] transition-transform duration-300"
-                         src="https://images.unsplash.com/photo-1588392382834-a8af9f547b67?auto=format&fit=crop&w=800&q=80"/>
-                </div>
-            </div>
-
-            <!-- Timeline Item 3 -->
-            <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center pl-8 md:pl-0">
-                <!-- Timeline bullet point on line -->
-                <div class="absolute left-[1px] md:left-1/2 -translate-x-[15px] top-6 w-8 h-8 rounded-full bg-white border-4 border-secondary flex items-center justify-center shadow-md z-10">
-                    <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
-                </div>
-                
-                <!-- Left Side: Content -->
-                <div class="bg-white p-6 md:p-8 rounded-3xl border border-surface-variant/40 shadow-sm hover:shadow-md transition-shadow">
-                    <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-sm font-bold">
-                        <span class="material-symbols-outlined text-[16px]">forest</span>
-                        10:45 - Khám phá Đảo Khỉ &amp; Chiến Khu
-                    </span>
-                    <h3 class="font-headline-md text-xl md:text-2xl font-bold text-primary mt-4 mb-3">
-                        Gặp gỡ đàn khỉ tự nhiên &amp; Di tích Rừng Sác
-                    </h3>
-                    <p class="text-on-surface-variant leading-relaxed font-body-md">
-                        Đoàn cập bến tham quan Đảo Khỉ - ngôi nhà hoang dã của hơn 1.000 chú khỉ đuôi dài tự nhiên rất hiếu động và thông minh. Sau đó, tiếp tục di chuyển sâu vào trong rừng thăm Di tích Lịch sử Chiến khu Rừng Sác. Tại đây, quý khách được chiêm ngưỡng những mô hình tái hiện sinh hoạt hào hùng của các chiến sĩ đặc công thủy tinh nhuệ năm xưa, hiểu thêm về tinh thần bất khuất vượt qua muôn vàn hiểm nguy nơi rừng thiêng nước độc.
-                    </p>
-                </div>
-                
-                <!-- Right Side: Image container -->
-                <div class="w-full">
-                    <img alt="Đảo Khỉ &amp; Chiến Khu" class="w-full h-48 md:h-64 object-cover rounded-2xl shadow-md border border-surface-variant/20 hover:scale-[1.01] transition-transform duration-300"
-                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5BjE3Jxi-5dz4Jt9fhuapEi-fyFzCnmx637liVNzYVGjftBTw-U9aCVmzz2e7atCKgZb6KeBYtitYq7y2MjQhxefgS4Wxt4S1skWjURoTQNz9Y090cDNt6YLe-l3WA_UihbI0oaqOjonodHYWVrRrqu7-46ETZHvPI1DZX2Fzf-B521bss5_od6PAAOP8sG0fNuqi_3OUmAEdtX18LdkzVeWwWr8KYdT-Z3J5NLh-V2qavB0b7fRmNBI1IXtv1e0pdL61qvL7ze0"/>
-                </div>
-            </div>
-
-            <!-- Timeline Item 4 -->
-            <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center pl-8 md:pl-0">
-                <!-- Timeline bullet point on line -->
-                <div class="absolute left-[1px] md:left-1/2 -translate-x-[15px] top-6 w-8 h-8 rounded-full bg-white border-4 border-secondary flex items-center justify-center shadow-md z-10">
-                    <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
-                </div>
-                
-                <!-- Left Side: Content -->
-                <div class="bg-white p-6 md:p-8 rounded-3xl border border-surface-variant/40 shadow-sm hover:shadow-md transition-shadow">
-                    <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-sm font-bold">
-                        <span class="material-symbols-outlined text-[16px]">restaurant</span>
-                        12:00 - Ăn trưa hải sản
-                    </span>
-                    <h3 class="font-headline-md text-xl md:text-2xl font-bold text-primary mt-4 mb-3">
-                        Thưởng thức hải sản tươi ngon ven sông
-                    </h3>
-                    <p class="text-on-surface-variant leading-relaxed font-body-md">
-                        Đoàn dùng bữa trưa thịnh soạn tại một nhà hàng sinh thái lộng gió ven sông biển Cần Giờ. Thực đơn phong phú mang đậm phong vị địa phương với hải sản tươi rói được đánh bắt trong ngày như tôm đất hấp dừa ngọt lịm, nghêu hai cồi hấp sả thơm lừng, cá chẽm hấp Hồng Kông đậm đà và lẩu hải sản Nam Bộ nóng hổi thơm ngon.
-                    </p>
-                </div>
-                
-                <!-- Right Side: Image container -->
-                <div class="w-full">
-                    <img alt="Ăn trưa hải sản" class="w-full h-48 md:h-64 object-cover rounded-2xl shadow-md border border-surface-variant/20 hover:scale-[1.01] transition-transform duration-300"
-                         src="https://images.unsplash.com/photo-1534080391025-09795d197360?auto=format&fit=crop&w=800&q=80"/>
-                </div>
-            </div>
-
-            <!-- Timeline Item 5 -->
-            <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center pl-8 md:pl-0">
-                <!-- Timeline bullet point on line -->
-                <div class="absolute left-[1px] md:left-1/2 -translate-x-[15px] top-6 w-8 h-8 rounded-full bg-white border-4 border-secondary flex items-center justify-center shadow-md z-10">
-                    <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
-                </div>
-                
-                <!-- Left Side: Content -->
-                <div class="bg-white p-6 md:p-8 rounded-3xl border border-surface-variant/40 shadow-sm hover:shadow-md transition-shadow">
-                    <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-sm font-bold">
-                        <span class="material-symbols-outlined text-[16px]">phishing</span>
-                        14:00 - Trải nghiệm Vàm Sát
-                    </span>
-                    <h3 class="font-headline-md text-xl md:text-2xl font-bold text-primary mt-4 mb-3">
-                        Câu cá sấu &amp; Chiêm ngưỡng tháp Tang Bồng
-                    </h3>
-                    <p class="text-on-surface-variant leading-relaxed font-body-md">
-                        Đoàn di chuyển tới Khu du lịch sinh thái Vàm Sát, tham gia trò chơi đầy thử thách cảm giác mạnh: đi thuyền bọc thép an toàn để thử tài câu cá sấu hoa cà tự nhiên háu ăn. Sau khi trải nghiệm cảm giác kịch tính, quý khách thư thái tản bộ dưới những tán rừng mát mẻ và chinh phục tháp Tang Bồng cao 26 mét. Từ đài quan sát trên cao, bạn sẽ thu trọn vào tầm mắt bức tranh đại ngàn xanh biếc của rừng ngập mặn mênh mông sông nước Cần Giờ.
-                    </p>
-                </div>
-                
-                <!-- Right Side: Image container -->
-                <div class="w-full">
-                    <img alt="Câu cá sấu Vàm Sát" class="w-full h-48 md:h-64 object-cover rounded-2xl shadow-md border border-surface-variant/20 hover:scale-[1.01] transition-transform duration-300"
-                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzTrwWwH6RwCfptdKUVynXQbTqwhcNzu9Jae2-LDuUclhN3lppmMBPI7S5TxdSM3nk2hyf4NUHCd-2wiioC5g1u67S3vWD-loHtadbJFjXoWMPED6kp1hSmJ2sucR70GwRopFjflMGWXwgAJvdMNidggnLc1xxlzCdzX9pZFBABahIx7admEOzt-RDS9xpuuJY8P2C7w-ONFCC4dyIjvNRVCxkAV9ggvPGf_bjFUCF_FHXaHIPc73nm0kAjNOLbWwNhLBXQfJ_ANU"/>
-                </div>
-            </div>
-
-            <!-- Timeline Item 6 -->
-            <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center pl-8 md:pl-0">
-                <!-- Timeline bullet point on line -->
-                <div class="absolute left-[1px] md:left-1/2 -translate-x-[15px] top-6 w-8 h-8 rounded-full bg-white border-4 border-secondary flex items-center justify-center shadow-md z-10">
-                    <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
-                </div>
-                
-                <!-- Left Side: Content -->
-                <div class="bg-white p-6 md:p-8 rounded-3xl border border-surface-variant/40 shadow-sm hover:shadow-md transition-shadow">
-                    <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-sm font-bold">
-                        <span class="material-symbols-outlined text-[16px]">local_mall</span>
-                        16:30 - Kết thúc hành trình
-                    </span>
-                    <h3 class="font-headline-md text-xl md:text-2xl font-bold text-primary mt-4 mb-3">
-                        Mua quà đặc sản &amp; Trở về TP.HCM
-                    </h3>
-                    <p class="text-on-surface-variant leading-relaxed font-body-md">
-                        Đoàn lên xe khởi hành trở lại thành phố. Trên đường đi, xe dừng chân tại các điểm bán quà quê Cần Giờ để quý khách mua sắm đặc sản làm quà cho người thân như xoài cát Hòa Lộc ngon ngọt, quả dừa nước mộc mạc thanh mát hay các loại hải sản khô đa dạng. Dự kiến khoảng 18:30, xe đưa quý khách về lại điểm hẹn ban đầu tại TP.HCM. Hướng dẫn viên chia tay đoàn, kết thúc một ngày trải nghiệm du lịch sinh thái tràn đầy năng lượng xanh.
-                    </p>
-                </div>
-                
-                <!-- Right Side: Image container -->
-                <div class="w-full">
-                    <img alt="Trở về TP.HCM" class="w-full h-48 md:h-64 object-cover rounded-2xl shadow-md border border-surface-variant/20 hover:scale-[1.01] transition-transform duration-300"
-                         src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80"/>
+                    <img th:src="${timeline.imageUrl}" th:alt="${timeline.title}" class="w-full h-48 md:h-64 object-cover rounded-2xl shadow-md border border-surface-variant/20 hover:scale-[1.01] transition-transform duration-300" src=""/>
                 </div>
             </div>
 
@@ -443,7 +302,7 @@
 
 <!-- Sticky Bottom Back Button -->
 <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
-    <a th:href="@{/tour-detail}" href="/tour-detail" class="inline-flex items-center gap-2 px-6 py-3.5 bg-primary hover:bg-[#1a3c34] text-white font-label-md text-label-md font-bold rounded-full shadow-2xl hover:shadow-[0_12px_40px_rgba(1,38,31,0.3)] transition-all duration-300 hover:scale-[1.05] border border-white/10 whitespace-nowrap">
+    <a th:href="@{/tour-detail/{id}(id=${tour.id})}" href="/tour-detail" class="inline-flex items-center gap-2 px-6 py-3.5 bg-primary hover:bg-[#1a3c34] text-white font-label-md text-label-md font-bold rounded-full shadow-2xl hover:shadow-[0_12px_40px_rgba(1,38,31,0.3)] transition-all duration-300 hover:scale-[1.05] border border-white/10 whitespace-nowrap">
         <span class="material-symbols-outlined text-[20px]">arrow_back</span>
         Quay lại trang thông tin tour
     </a>

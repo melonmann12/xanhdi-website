@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${tour.id != null ? 'Cập nhật Tour — Xanh Đi' : 'Thêm Tour Mới — Xanh Đi'}">Tour Form — Xanh Đi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+        .fade-in { animation: fadeIn 0.35s ease-out forwards; }
+    </style>
+</head>
+<body class="bg-emerald-50/40 min-h-screen text-gray-800">
+
+    <!-- ===== TOP BAR ===== -->
+    <header class="sticky top-0 z-50 bg-emerald-900 shadow-lg">
+        <div class="max-w-5xl mx-auto flex items-center justify-between px-6 py-3">
+            <a th:href="@{/staffdashboard}" class="flex items-center gap-3 hover:opacity-90 transition">
+                <div class="w-9 h-9 rounded-lg bg-emerald-600 flex items-center justify-center shadow">
+                    <span class="material-symbols-outlined text-white text-xl">eco</span>
+                </div>
+                <span class="text-white font-bold text-lg tracking-tight">Xanh Đi</span>
+                <span class="text-emerald-300 text-xs font-medium">Staff Panel</span>
+            </a>
+            <a th:href="@{/staffdashboard}"
+               class="inline-flex items-center gap-1.5 text-emerald-200 hover:text-white text-sm font-medium transition">
+                <span class="material-symbols-outlined text-base">arrow_back</span>
+                Quay lại Dashboard
+            </a>
+        </div>
+    </header>
+
+    <!-- ===== FORM CONTAINER ===== -->
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-10 fade-in">
+
+        <!-- Heading -->
+        <div class="mb-8">
+            <h1 class="text-2xl sm:text-3xl font-bold text-emerald-900 flex items-center gap-3">
+                <span class="material-symbols-outlined text-emerald-600 text-3xl"
+                      th:text="${tour.id != null ? 'edit_note' : 'add_circle'}">add_circle</span>
+                <span th:text="${tour.id != null ? 'Cập Nhật Tour Trải Nghiệm' : 'Thêm Tour Trải Nghiệm Mới'}">Thêm Tour Trải Nghiệm Mới</span>
+            </h1>
+            <p class="text-gray-500 text-sm mt-2 ml-[44px]"
+               th:text="${tour.id != null ? 'Chỉnh sửa thông tin tour hiện có và lưu thay đổi.' : 'Điền đầy đủ thông tin bên dưới để tạo tour mới.'}">
+                Điền đầy đủ thông tin bên dưới để tạo tour mới.
+            </p>
+        </div>
+
+        <!-- Card -->
+        <div class="bg-white rounded-2xl shadow-sm border border-emerald-100 overflow-hidden">
+            <form th:action="@{/staff/tours/save}" method="post" class="p-6 sm:p-8 space-y-6">
+
+                <!-- Hidden ID for edit -->
+                <input type="hidden" name="id" th:value="${tour.id}"/>
+
+                <!-- ===== SECTION: Thông tin cơ bản ===== -->
+                <fieldset class="space-y-5">
+                    <legend class="text-base font-bold text-emerald-800 flex items-center gap-2 mb-1">
+                        <span class="material-symbols-outlined text-emerald-500 text-lg">info</span>
+                        Thông tin cơ bản
+                    </legend>
+
+                    <!-- Tên Tour -->
+                    <div class="flex flex-col gap-1.5">
+                        <label for="title" class="text-sm font-semibold text-gray-700">Tên Tour <span class="text-red-500">*</span></label>
+                        <input type="text" id="title" name="title" required
+                               th:value="${tour.title}"
+                               placeholder="VD: Khám Phá Rừng Sác Cần Giờ"
+                               class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition"/>
+                    </div>
+
+                    <!-- 2-col: Thời gian + Giá -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label for="duration" class="text-sm font-semibold text-gray-700">Thời gian</label>
+                            <input type="text" id="duration" name="duration"
+                                   th:value="${tour.duration}"
+                                   placeholder="VD: 1 Ngày, 2N1Đ"
+                                   class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition"/>
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="price" class="text-sm font-semibold text-gray-700">Giá tour (VNĐ) <span class="text-red-500">*</span></label>
+                            <input type="number" id="price" name="price" required min="0" step="1000"
+                                   th:value="${tour.price}"
+                                   placeholder="VD: 1190000"
+                                   class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition"/>
+                        </div>
+                    </div>
+
+                    <!-- 2-col: Activity + Tag -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label for="activity" class="text-sm font-semibold text-gray-700">Hoạt động</label>
+                            <input type="text" id="activity" name="activity"
+                                   th:value="${tour.activity}"
+                                   placeholder="VD: Khám phá thiên nhiên"
+                                   class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition"/>
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="tag" class="text-sm font-semibold text-gray-700">Tag</label>
+                            <input type="text" id="tag" name="tag"
+                                   th:value="${tour.tag}"
+                                   placeholder="VD: Phổ biến, Mới"
+                                   class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition"/>
+                        </div>
+                    </div>
+
+                    <!-- Departure -->
+                    <div class="flex flex-col gap-1.5">
+                        <label for="departure" class="text-sm font-semibold text-gray-700">Điểm khởi hành</label>
+                        <input type="text" id="departure" name="departure"
+                               th:value="${tour.departure}"
+                               placeholder="VD: TP. Hồ Chí Minh"
+                               class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition"/>
+                    </div>
+                </fieldset>
+
+                <hr class="border-emerald-100"/>
+
+                <!-- ===== SECTION: Nội dung chi tiết ===== -->
+                <fieldset class="space-y-5">
+                    <legend class="text-base font-bold text-emerald-800 flex items-center gap-2 mb-1">
+                        <span class="material-symbols-outlined text-emerald-500 text-lg">description</span>
+                        Nội dung chi tiết
+                    </legend>
+
+                    <!-- Description -->
+                    <div class="flex flex-col gap-1.5">
+                        <label for="description" class="text-sm font-semibold text-gray-700">Mô tả tour</label>
+                        <textarea id="description" name="description" rows="3"
+                                  placeholder="Mô tả ngắn gọn về trải nghiệm tour..."
+                                  class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition resize-y"
+                                  th:text="${tour.description}"></textarea>
+                    </div>
+
+                    <!-- Inclusions -->
+                    <div class="flex flex-col gap-1.5">
+                        <label for="inclusions" class="text-sm font-semibold text-gray-700">Dịch vụ bao gồm</label>
+                        <textarea id="inclusions" name="inclusions" rows="3"
+                                  placeholder="VD: Đưa đón tận nơi; Bữa trưa hải sản; Bảo hiểm du lịch"
+                                  class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition resize-y"
+                                  th:text="${tour.inclusions}"></textarea>
+                        <p class="text-xs text-gray-400 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[14px]">info</span>
+                            Nhập các dịch vụ phân cách bằng dấu chấm phẩy <strong>;</strong>
+                        </p>
+                    </div>
+                </fieldset>
+
+                <hr class="border-emerald-100"/>
+
+                <!-- ===== SECTION: Nhật ký HDV ===== -->
+                <fieldset class="space-y-5">
+                    <legend class="text-base font-bold text-emerald-800 flex items-center gap-2 mb-1">
+                        <span class="material-symbols-outlined text-emerald-500 text-lg">menu_book</span>
+                        Nhật ký hướng dẫn viên
+                    </legend>
+
+                    <!-- Guide Name -->
+                    <div class="flex flex-col gap-1.5">
+                        <label for="guideName" class="text-sm font-semibold text-gray-700">Tên hướng dẫn viên</label>
+                        <input type="text" id="guideName" name="guideName"
+                               th:value="${tour.guideName}"
+                               placeholder="VD: Tuấn Anh"
+                               class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition"/>
+                    </div>
+
+                    <!-- Journal Quote -->
+                    <div class="flex flex-col gap-1.5">
+                        <label for="journalQuote" class="text-sm font-semibold text-gray-700">Câu châm ngôn chuyến đi</label>
+                        <input type="text" id="journalQuote" name="journalQuote"
+                               th:value="${tour.journalQuote}"
+                               placeholder="VD: Mỗi chuyến đi là một trải nghiệm xanh mới lạ."
+                               class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition"/>
+                    </div>
+
+                    <!-- Journal Content -->
+                    <div class="flex flex-col gap-1.5">
+                        <label for="journalContent" class="text-sm font-semibold text-gray-700">Nhật ký trải nghiệm từ HDV</label>
+                        <textarea id="journalContent" name="journalContent" rows="5"
+                                  placeholder="Chia sẻ từ hướng dẫn viên về chuyến đi..."
+                                  class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition resize-y"
+                                  th:text="${tour.journalContent}"></textarea>
+                    </div>
+                </fieldset>
+
+                <hr class="border-emerald-100"/>
+
+                <!-- ===== SECTION: Hình ảnh ===== -->
+                <fieldset class="space-y-5">
+                    <legend class="text-base font-bold text-emerald-800 flex items-center gap-2 mb-1">
+                        <span class="material-symbols-outlined text-emerald-500 text-lg">image</span>
+                        Hình ảnh
+                    </legend>
+
+                    <!-- Image URL -->
+                    <div class="flex flex-col gap-1.5">
+                        <label for="imageUrl" class="text-sm font-semibold text-gray-700">Link ảnh đại diện (URL)</label>
+                        <input type="url" id="imageUrl" name="imageUrl"
+                               th:value="${tour.imageUrl}"
+                               placeholder="https://example.com/image.jpg"
+                               class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition"/>
+                    </div>
+
+                    <!-- Thumbnail preview -->
+                    <div th:if="${tour.imageUrl != null and !tour.imageUrl.isEmpty()}" class="flex items-center gap-3">
+                        <img th:src="${tour.imageUrl}" alt="Preview"
+                             class="w-24 h-16 object-cover rounded-lg border border-emerald-200 shadow-sm"/>
+                        <span class="text-xs text-gray-400">Ảnh hiện tại</span>
+                    </div>
+                </fieldset>
+
+                <hr class="border-emerald-100"/>
+
+                <!-- ===== ACTIONS ===== -->
+                <div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+                    <button type="submit"
+                            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-8 py-3 rounded-xl transition-all duration-200 hover:shadow-lg hover:scale-[1.02]">
+                        <span class="material-symbols-outlined text-lg">save</span>
+                        Lưu dữ liệu
+                    </button>
+                    <a th:href="@{/staffdashboard}"
+                       class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold text-sm px-8 py-3 rounded-xl transition-all duration-200">
+                        <span class="material-symbols-outlined text-lg">close</span>
+                        Hủy / Quay lại
+                    </a>
+                </div>
+
+            </form>
+        </div>
+
+    </main>
+
+</body>
+</html>

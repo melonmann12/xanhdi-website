@@ -247,9 +247,7 @@
         <div class="mb-8 md:mb-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-4 h-[300px] sm:h-[400px] md:h-[600px] rounded-3xl overflow-hidden shadow-[0px_4px_20px_rgba(26,60,52,0.06)] border border-surface-variant/20">
                 <div class="md:col-span-3 h-full group relative overflow-hidden">
-                    <img alt="Cần Giờ Main Image" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" 
-                         data-alt="A breathtaking, high-resolution wide shot of the Cần Giờ Mangrove Forest in Vietnam. Lush, vibrant green mangrove trees rise from calm, reflective waters." 
-                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKfFZpzYJXKPswnv_e5UDAcQHC31VZaFsJrxcvjzSqRT2yViHV3L0dIwFyOZyVTeVs-TTgSy0BjuvGYhoDRf_D9cTIOG1N43UVC3l2WsVane-MyuUxgZmPYkQmRHEeuP0RzWow3ReH_Vh8dL85pMTciS97tWMmAaWaIYHO9qGmrT7_kxsz4OQ6Etn2VYzxihvZXK1IbFdTorDIp72QJif0WHQyT7YIpXhwhknRtYT92VQFU5HQuKrLy7IyrCfcZGnYZPFYUtjLWBw"/>
+                    <img th:src="${tour.imageUrl}" th:alt="${tour.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" src=""/>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent md:hidden flex items-end p-4">
                         <span class="text-white font-label-md text-label-md bg-black/40 backdrop-blur-sm px-3 py-1 rounded-full flex items-center">
                             <span class="material-symbols-outlined text-[16px] mr-1">photo_camera</span> 5 Ảnh
@@ -258,14 +256,10 @@
                 </div>
                 <div class="hidden md:flex flex-col gap-4 h-full">
                     <div class="h-[calc(50%-8px)] overflow-hidden rounded-tr-3xl">
-                        <img alt="Monkey at Cần Giờ" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
-                             data-alt="A close-up shot of a mischievous macaque monkey sitting on a thick mangrove root in Cần Giờ." 
-                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5BjE3Jxi-5dz4Jt9fhuapEi-fyFzCnmx637liVNzYVGjftBTw-U9aCVmzz2e7atCKgZb6KeBYtitYq7y2MjQhxefgS4Wxt4S1skWjURoTQNz9Y090cDNt6YLe-l3WA_UihbI0oaqOjonodHYWVrRrqu7-46ETZHvPI1DZX2Fzf-B521bss5_od6PAAOP8sG0fNuqi_3OUmAEdtX18LdkzVeWwWr8KYdT-Z3J5NLh-V2qavB0b7fRmNBI1IXtv1e0pdL61qvL7ze0"/>
+                        <img th:src="${tour.timelines.size() > 0 ? tour.timelines[0].imageUrl : 'https://lh3.googleusercontent.com/aida-public/AB6AXuC5BjE3Jxi-5dz4Jt9fhuapEi-fyFzCnmx637liVNzYVGjftBTw-U9aCVmzz2e7atCKgZb6KeBYtitYq7y2MjQhxefgS4Wxt4S1skWjURoTQNz9Y090cDNt6YLe-l3WA_UihbI0oaqOjonodHYWVrRrqu7-46ETZHvPI1DZX2Fzf-B521bss5_od6PAAOP8sG0fNuqi_3OUmAEdtX18LdkzVeWwWr8KYdT-Z3J5NLh-V2qavB0b7fRmNBI1IXtv1e0pdL61qvL7ze0'}" alt="Timeline image" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"/>
                     </div>
                     <div class="h-[calc(50%-8px)] relative overflow-hidden rounded-br-3xl">
-                        <img alt="Vam Sat Tower" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
-                             data-alt="A serene view of the Vàm Sát Ecological Tourist Center in Cần Giờ from an elevated perspective." 
-                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzTrwWwH6RwCfptdKUVynXQbTqwhcNzu9Jae2-LDuUclhN3lppmMBPI7S5TxdSM3nk2hyf4NUHCd-2wiioC5g1u67S3vWD-loHtadbJFjXoWMPED6kp1hSmJ2sucR70GwRopFjflMGWXwgAJvdMNidggnLc1xxlzCdzX9pZFBABahIx7admEOzt-RDS9xpuuJY8P2C7w-ONFCC4dyIjvNRVCxkAV9ggvPGf_bjFUCF_FHXaHIPc73nm0kAjNOLbWwNhLBXQfJ_ANU"/>
+                        <img th:src="${tour.timelines.size() > 1 ? tour.timelines[1].imageUrl : 'https://lh3.googleusercontent.com/aida-public/AB6AXuDzTrwWwH6RwCfptdKUVynXQbTqwhcNzu9Jae2-LDuUclhN3lppmMBPI7S5TxdSM3nk2hyf4NUHCd-2wiioC5g1u67S3vWD-loHtadbJFjXoWMPED6kp1hSmJ2sucR70GwRopFjflMGWXwgAJvdMNidggnLc1xxlzCdzX9pZFBABahIx7admEOzt-RDS9xpuuJY8P2C7w-ONFCC4dyIjvNRVCxkAV9ggvPGf_bjFUCF_FHXaHIPc73nm0kAjNOLbWwNhLBXQfJ_ANU'}" alt="Timeline image 2" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"/>
                         <div class="absolute inset-0 bg-black/30 flex items-center justify-center cursor-pointer hover:bg-black/25 transition-colors">
                             <span class="text-white font-headline-md text-headline-md font-bold">+3</span>
                         </div>
@@ -280,13 +274,13 @@
             <div class="w-full lg:w-2/3 flex flex-col gap-10 md:gap-12">
                 <!-- Title Section -->
                 <div class="flex flex-col gap-4">
-                    <h1 class="font-display-lg text-2xl sm:text-[32px] md:text-[40px] leading-tight font-bold text-primary">
+                    <h1 th:text="${tour.title}" class="font-display-lg text-2xl sm:text-[32px] md:text-[40px] leading-tight font-bold text-primary">
                         Khám Phá Rừng Sác Cần Giờ - Lá Phổi Xanh Của Thành Phố
                     </h1>
                     <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-on-surface-variant font-label-md text-label-md">
-                        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[20px] text-secondary">schedule</span> 1 Ngày</span>
-                        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[20px] text-secondary">directions_walk</span> Khám phá thiên nhiên</span>
-                        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[20px] text-golden-yellow fill">star</span> 4.8 (124 Đánh giá)</span>
+                        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[20px] text-secondary">schedule</span> <span th:text="${tour.duration}">1 Ngày</span></span>
+                        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[20px] text-secondary">directions_walk</span> <span th:text="${tour.activity}">Khám phá thiên nhiên</span></span>
+                        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[20px] text-golden-yellow fill">star</span> <span th:text="${tour.rating}">4.8</span> <span th:text="'(' + ${tour.reviewCount} + ' Đánh giá)'">(124 Đánh giá)</span></span>
                     </div>
                 </div>
                 
@@ -296,39 +290,18 @@
                 <section>
                     <h2 class="font-headline-lg text-[24px] md:text-headline-lg font-bold text-primary mb-8">Lịch Trình</h2>
                     <div class="relative border-l-2 border-secondary-container ml-4 space-y-8 pb-4">
-                        <!-- Timeline Item 1 -->
-                        <div class="relative pl-8 group">
+                        <div th:each="timeline : ${tour.timelines}" class="relative pl-8 group">
                             <div class="absolute w-8 h-8 bg-white border-2 border-secondary rounded-full -left-[17px] top-0 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                                <span class="material-symbols-outlined text-[16px] text-secondary font-bold">directions_bus</span>
+                                <span class="material-symbols-outlined text-[16px] text-secondary font-bold" th:text="${timeline.icon}">directions_bus</span>
                             </div>
-                            <h3 class="font-headline-md text-body-lg font-bold text-primary group-hover:text-secondary transition-colors">07:30 - Khởi hành từ TP.HCM</h3>
-                            <p class="text-on-surface-variant mt-2 font-body-md leading-relaxed">
-                                Xe đón quý khách tại điểm hẹn trung tâm, bắt đầu hành trình di chuyển đến Cần Giờ. Dọc đường, quý khách sẽ thưởng thức cảnh quan thay đổi từ đô thị nhộn nhịp sang vùng ven bình yên.
-                            </p>
-                        </div>
-                        <!-- Timeline Item 2 -->
-                        <div class="relative pl-8 group">
-                            <div class="absolute w-8 h-8 bg-white border-2 border-secondary rounded-full -left-[17px] top-0 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                                <span class="material-symbols-outlined text-[16px] text-secondary font-bold">sailing</span>
-                            </div>
-                            <h3 class="font-headline-md text-body-lg font-bold text-primary group-hover:text-secondary transition-colors">09:30 - Tham quan Đảo Khỉ &amp; Khu căn cứ Rừng Sác</h3>
-                            <p class="text-on-surface-variant mt-2 font-body-md leading-relaxed">
-                                Đến Cần Giờ, di chuyển bằng cano len lỏi qua những con rạch rợp bóng đước. Tham quan Đảo Khỉ tự nhiên và Khu di tích lịch sử Rừng Sác hào hùng.
-                            </p>
-                        </div>
-                        <!-- Timeline Item 3 -->
-                        <div class="relative pl-8 group">
-                            <div class="absolute w-8 h-8 bg-white border-2 border-secondary rounded-full -left-[17px] top-0 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                                <span class="material-symbols-outlined text-[16px] text-secondary font-bold">restaurant</span>
-                            </div>
-                            <h3 class="font-headline-md text-body-lg font-bold text-primary group-hover:text-secondary transition-colors">12:00 - Thưởng thức hải sản địa phương</h3>
-                            <p class="text-on-surface-variant mt-2 font-body-md leading-relaxed">
-                                Dùng bữa trưa tại nhà hàng ven sông với các món hải sản tươi sống đặc sản của vùng biển Cần Giờ.
+                            <h3 class="font-headline-md text-body-lg font-bold text-primary group-hover:text-secondary transition-colors" th:text="${timeline.timeSlot} + ' - ' + ${timeline.locationTitle}">07:30 - Khởi hành từ TP.HCM</h3>
+                            <p class="text-on-surface-variant mt-2 font-body-md leading-relaxed" th:text="${timeline.description}">
+                                Xe đón quý khách tại điểm hẹn trung tâm, bắt đầu hành trình di chuyển đến Cần Giờ...
                             </p>
                         </div>
                     </div>
                     <div class="mt-8 flex justify-start">
-                        <a th:href="@{/tour-detail/timeline}" href="/tour-detail/timeline" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-forest-green hover:bg-forest-green/90 text-white font-label-md text-label-md font-bold rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-md hover:shadow-lg">
+                        <a th:href="@{/tour-detail/{id}/timeline(id=${tour.id})}" href="/tour-detail/timeline" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-forest-green hover:bg-forest-green/90 text-white font-label-md text-label-md font-bold rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-md hover:shadow-lg">
                             <span class="material-symbols-outlined text-[20px]">timeline</span>
                             Xem chi tiết mốc thời gian
                         </a>
@@ -350,13 +323,12 @@
                                  data-alt="A candid, warm portrait of a smiling Vietnamese tour guide wearing a professional yet outdoor-friendly forest green uniform." 
                                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDiwmV1YONxXxlgLSXaGpGsN9Uk6V7N6FkgAC0r0BnFhtUr1UExIsjLZvWld5F-X2H99psLA4AEFEpo4JQmMu9CQA9AB-ehJfzRZIUBWCgLVaWzAkAbmOVK4huqgTTYTDiZ8JMCabcOHNGwVtgU7ut-Cy2_ntYlLnLG_PkiuqxyWvpoaQitcUyHUD4NhADhOL7vXGASWO-xhEv_vQHJaeazhZOgSw_uE2dcnkzMWyqTzaX9mEysv2tJKsIdtBTgHoLn69P2Mg1yQc"/>
                             <div class="absolute -bottom-4 -right-4 bg-white p-3.5 shadow-md rounded-2xl rotate-3 border border-surface-variant/30 max-w-[200px] hover:rotate-0 transition-transform duration-300">
-                                <p class="font-serif italic text-sm text-primary">"Mỗi chuyến đi là một trải nghiệm xanh mới lạ."</p>
-                                <p class="text-[10px] text-on-surface-variant mt-1.5 text-right font-bold">- HDV Tuấn Anh</p>
+                                <p class="font-serif italic text-sm text-primary" th:text="${tour.journalQuote}">"Mỗi chuyến đi là một trải nghiệm xanh mới lạ."</p>
+                                <p class="text-[10px] text-on-surface-variant mt-1.5 text-right font-bold" th:text="'- HDV ' + ${tour.guideName}">- HDV Tuấn Anh</p>
                             </div>
                         </div>
                         <div class="w-full md:w-2/3 font-serif text-[17px] md:text-[19px] leading-relaxed text-on-surface-variant italic space-y-4 pt-6 md:pt-2">
-                            <p class="before:content-['“'] after:content-['”']">Cần Giờ luôn mang lại cho tôi cảm giác yên bình đến lạ. Dẫn đoàn qua những tán đước xanh mướt, nghe tiếng chim hót và kể về lịch sử hào hùng của Rừng Sác là niềm tự hào của tôi.</p>
-                            <p class="before:content-['“'] after:content-['”']">Đừng quên mang theo một chút kem chống muỗi, và hãy chuẩn bị tinh thần để 'làm bạn' với những chú khỉ tinh nghịch nhé. Chuyến đi này chắc chắn sẽ giúp bạn quên đi khói bụi thành phố.</p>
+                            <p class="before:content-['“'] after:content-['”']" th:text="${tour.journalContent}">Cần Giờ luôn mang lại cho tôi cảm giác yên bình đến lạ. Dẫn đoàn qua những tán đước xanh mướt, nghe tiếng chim hót và kể về lịch sử hào hùng của Rừng Sác là niềm tự hào của tôi.</p>
                         </div>
                     </div>
                 </section>
@@ -369,49 +341,41 @@
                     
                     <div class="flex items-center gap-6 mb-8 bg-white p-5 rounded-2xl border border-outline-variant/30 shadow-sm">
                         <div class="flex items-center justify-center w-16 h-16 bg-golden-yellow/10 rounded-2xl shrink-0">
-                            <span class="font-display-lg text-[26px] md:text-headline-lg font-bold text-golden-yellow">4.8</span>
+                            <span class="font-display-lg text-[26px] md:text-headline-lg font-bold text-golden-yellow" th:text="${tour.rating}">4.8</span>
                         </div>
                         <div>
                             <div class="flex text-golden-yellow mb-1 gap-0.5">
-                                <span class="material-symbols-outlined text-xl fill">star</span>
-                                <span class="material-symbols-outlined text-xl fill">star</span>
-                                <span class="material-symbols-outlined text-xl fill">star</span>
-                                <span class="material-symbols-outlined text-xl fill">star</span>
-                                <span class="material-symbols-outlined text-xl fill">star_half</span>
+                                <span th:each="i : ${#numbers.sequence(1, 5)}" 
+                                      class="material-symbols-outlined text-xl"
+                                      th:classappend="${i <= tour.rating} ? 'fill' : ''"
+                                      th:text="${i <= tour.rating} ? 'star' : 'star_border'">star</span>
                             </div>
-                            <p class="font-label-md text-label-md text-on-surface-variant">Dựa trên 124 đánh giá thực tế</p>
+                            <p class="font-label-md text-label-md text-on-surface-variant" th:text="'Dựa trên ' + ${tour.reviewCount} + ' đánh giá thực tế'">Dựa trên 124 đánh giá thực tế</p>
                         </div>
                     </div>
                     
                     <div class="space-y-6">
-                        <!-- Review Card 1 -->
-                        <div class="bg-white p-6 rounded-2xl shadow-[0_4px_20px_rgba(26,60,52,0.04)] border border-outline-variant/20 hover:shadow-md transition-shadow">
+                        <!-- Dynamic Reviews -->
+                        <div th:each="review : ${reviews}" class="bg-white p-6 rounded-2xl shadow-[0_4px_20px_rgba(26,60,52,0.04)] border border-outline-variant/20 hover:shadow-md transition-shadow">
                             <div class="flex items-center gap-4 mb-4">
-                                <img alt="Avatar" class="w-12 h-12 rounded-full object-cover shadow-inner" 
-                                     data-alt="A small, circular avatar portrait of a cheerful young Vietnamese woman wearing a sun hat." 
-                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIMCY-OF5MqtQ1cJAR_3UNt-shZOIWmh8Huo-K64eMiCUdAj5Fus3v-gwF3qVr6zqENP9JPezsNZji-Gaki_uUandAAltokQ1uDqF3nOI8zs73iKPw1O7n1LrzF9kcb2XaR0bbi56l-P0ip5Md_mcR2gqjnBNV9K03qfDURYV2iX17NDNmxn0Hw2snjx7jED9SHkR5abcCcZIijdRfXt374NSNY0IRPlbDlX9y7BNVQKc2atH5V9ePy-BaXuuMXQ4A0A2QiG2fznU"/>
+                                <img alt="Avatar" class="w-12 h-12 rounded-full object-cover shadow-inner" th:src="${review.avatarUrl}"/>
                                 <div class="flex-grow">
-                                    <h4 class="font-label-md text-label-md font-bold text-primary">Nguyễn Thị Mai</h4>
+                                    <h4 class="font-label-md text-label-md font-bold text-primary" th:text="${review.author}">Nguyễn Thị Mai</h4>
                                     <div class="flex text-golden-yellow gap-0.5 mt-0.5">
-                                        <span class="material-symbols-outlined text-[16px] fill">star</span>
-                                        <span class="material-symbols-outlined text-[16px] fill">star</span>
-                                        <span class="material-symbols-outlined text-[16px] fill">star</span>
-                                        <span class="material-symbols-outlined text-[16px] fill">star</span>
-                                        <span class="material-symbols-outlined text-[16px] fill">star</span>
+                                        <span th:each="i : ${#numbers.sequence(1, 5)}" 
+                                              class="material-symbols-outlined text-[16px]"
+                                              th:classappend="${i <= review.rating} ? 'fill' : ''"
+                                              th:text="${i <= review.rating} ? 'star' : 'star_border'">star</span>
                                     </div>
                                 </div>
-                                <span class="text-on-surface-variant text-xs font-medium self-start mt-1 shrink-0">2 tuần trước</span>
+                                <span class="text-on-surface-variant text-xs font-medium self-start mt-1 shrink-0" th:text="${review.timeAgo}">2 tuần trước</span>
                             </div>
-                            <p class="text-on-surface-variant text-body-md mb-6 leading-relaxed">
-                                "Tour rất tuyệt vời! Hướng dẫn viên nhiệt tình, cano chạy êm và phong cảnh Rừng Sác thật sự hùng vĩ. Hải sản buổi trưa tươi ngon vô cùng. Rất đáng tiền!"
+                            <p class="text-on-surface-variant text-body-md mb-6 leading-relaxed" th:text="${review.content}">
+                                "Tour rất tuyệt vời! Hướng dẫn viên nhiệt tình, cano chạy êm và phong cảnh Rừng Sác thật sự hùng vĩ..."
                             </p>
-                            <div class="flex gap-3">
-                                <img alt="Review Image 1" class="w-20 h-20 rounded-xl object-cover cursor-pointer hover:opacity-90 shadow-sm border border-surface-variant/40 hover:scale-105 transition-all duration-300" 
-                                     data-alt="A smartphone photo taken by a tourist showing a delicious spread of fresh grilled seafood." 
-                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIi0rmgTRKjq-5NF17zteYhNWUQQxbdvjJeCgdy9SFBkv23I4BJQWSdaIxoKCTQ_Mmx5k7BQcTILl-PdEm_tl-z6hg2O4IkGn3UubusmlrOyPE8og54IYSEu0yGvlBWWJxDJWmg79-Tt_-CxbSU6xZGMY-uK7-mCeKzPOzmtoMjUo8GuRc0L3akHrTQP5KEse6YR9rmF6NanjGkGBcoJiamlfXN1KVLiO6P3LdnWIz_mb01YiKKq4o5JQUohrF-CR_hVmaxk-AD7s"/>
-                                <img alt="Review Image 2" class="w-20 h-20 rounded-xl object-cover cursor-pointer hover:opacity-90 shadow-sm border border-surface-variant/40 hover:scale-105 transition-all duration-300" 
-                                     data-alt="A tourist's photo taken from inside a small boat moving through a narrow mangrove canal." 
-                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSpZLRKEEsz2M1YvydfVxpNSNczNEpIIq2eqgbIDbojqivMOf2Kf4SgAu45k-Z25bHiIm7OmCq0Ve_G1k5Mqo0YlhO_gw2D9hC7Bzd13ExZtgEgpDbTxF_HMAmNHOrBZkw4mA0IlvV2PFSYu0IrkHSIJwNffBLJexyiSwV-O5mOhb9WN_FQkEqOA8v0Qpzp813mdRExO9Kua1QFi6tjsFlK3ZkfpgNwUx1vi0N9jXSFBYZiUniuLUiMGy-H7M4w8MXwNUDDWoYs5M"/>
+                            <div class="flex gap-3" th:if="${review.imageUrl1 != null || review.imageUrl2 != null}">
+                                <img th:if="${review.imageUrl1 != null}" th:src="${review.imageUrl1}" alt="Review Image 1" class="w-20 h-20 rounded-xl object-cover cursor-pointer hover:opacity-90 shadow-sm border border-surface-variant/40 hover:scale-105 transition-all duration-300"/>
+                                <img th:if="${review.imageUrl2 != null}" th:src="${review.imageUrl2}" alt="Review Image 2" class="w-20 h-20 rounded-xl object-cover cursor-pointer hover:opacity-90 shadow-sm border border-surface-variant/40 hover:scale-105 transition-all duration-300"/>
                             </div>
                         </div>
                     </div>
@@ -420,50 +384,147 @@
             
             <!-- Right Column (Sticky Sidebar) -->
             <div class="w-full lg:w-1/3 relative shrink-0">
-                <div class="sticky top-28 bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgba(26,60,52,0.08)] border border-outline-variant/30 flex flex-col gap-6 w-full">
-                    <div>
-                        <p class="text-on-surface-variant font-label-md text-label-md mb-1.5">Giá từ</p>
-                        <p class="font-display-lg text-[32px] font-bold text-golden-yellow leading-none flex items-baseline gap-1">
-                            1.190.000 đ 
-                            <span class="text-body-md text-on-surface-variant font-normal">/ khách</span>
+                <div class="sticky top-28 flex flex-col gap-4">
+
+                    <!-- Booking Success / Error Flash Messages -->
+                    <div th:if="${bookingSuccess}" class="bg-green-50 border border-green-300 text-green-800 px-4 py-4 rounded-2xl flex items-start gap-3 shadow-sm">
+                        <span class="material-symbols-outlined text-green-600 shrink-0 mt-0.5">check_circle</span>
+                        <p class="font-body-md text-sm leading-relaxed" th:text="${bookingSuccess}"></p>
+                    </div>
+                    <div th:if="${bookingError}" class="bg-red-50 border border-red-300 text-red-800 px-4 py-4 rounded-2xl flex items-start gap-3 shadow-sm">
+                        <span class="material-symbols-outlined text-red-500 shrink-0 mt-0.5">error</span>
+                        <p class="font-body-md text-sm leading-relaxed" th:text="${bookingError}"></p>
+                    </div>
+
+                    <!-- Booking Card -->
+                    <div class="bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgba(26,60,52,0.08)] border border-outline-variant/30 flex flex-col gap-5 w-full">
+                        <!-- Price -->
+                        <div>
+                            <p class="text-on-surface-variant font-label-md text-label-md mb-1.5">Giá từ</p>
+                            <p class="font-display-lg text-[32px] font-bold text-golden-yellow leading-none flex items-baseline gap-1">
+                                <span th:text="${#numbers.formatDecimal(tour.price, 0, 'COMMA', 0, 'POINT')} + ' đ'">1.190.000 đ</span>
+                                <span class="text-body-md text-on-surface-variant font-normal">/ khách</span>
+                            </p>
+                        </div>
+
+                        <!-- Dynamic Inclusions List -->
+                        <div class="space-y-2.5" th:if="${tour.inclusions != null and !tour.inclusions.isEmpty()}">
+                            <div th:each="inc : ${tour.inclusions.split(';')}"
+                                 class="flex items-center gap-3"
+                                 th:if="${!#strings.isEmpty(#strings.trim(inc))}">
+                                <span class="material-symbols-outlined text-secondary fill text-xl">check_circle</span>
+                                <span class="font-body-md text-body-md text-on-surface" th:text="${#strings.trim(inc)}"></span>
+                            </div>
+                        </div>
+                        <!-- Fallback if inclusions is null -->
+                        <div class="space-y-2.5" th:if="${tour.inclusions == null or tour.inclusions.isEmpty()}">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-secondary fill text-xl">check_circle</span>
+                                <span class="font-body-md text-body-md text-on-surface">Đưa đón tận nơi tại TP.HCM</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-secondary fill text-xl">check_circle</span>
+                                <span class="font-body-md text-body-md text-on-surface">Bao gồm bữa trưa hải sản</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-secondary fill text-xl">check_circle</span>
+                                <span class="font-body-md text-body-md text-on-surface">Bảo hiểm du lịch</span>
+                            </div>
+                        </div>
+
+                        <hr class="border-outline-variant/30"/>
+
+                        <!-- Booking Form -->
+                        <form th:action="@{/bookings/create}" method="post" class="flex flex-col gap-4" id="booking-form">
+                            <input type="hidden" name="tourId" th:value="${tour.id}"/>
+
+                            <!-- Name -->
+                            <div class="flex flex-col gap-1.5">
+                                <label for="customerName" class="font-label-md text-label-md text-on-surface-variant font-semibold">Họ và tên <span class="text-red-500">*</span></label>
+                                <input type="text" id="customerName" name="customerName" required
+                                       placeholder="Nguyễn Văn A"
+                                       class="w-full border border-outline-variant rounded-xl px-4 py-2.5 text-body-md text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/40 transition"/>
+                            </div>
+
+                            <!-- Phone -->
+                            <div class="flex flex-col gap-1.5">
+                                <label for="customerPhone" class="font-label-md text-label-md text-on-surface-variant font-semibold">Số điện thoại <span class="text-red-500">*</span></label>
+                                <input type="tel" id="customerPhone" name="customerPhone" required
+                                       placeholder="0901 234 567"
+                                       class="w-full border border-outline-variant rounded-xl px-4 py-2.5 text-body-md text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/40 transition"/>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="flex flex-col gap-1.5">
+                                <label for="customerEmail" class="font-label-md text-label-md text-on-surface-variant font-semibold">Email</label>
+                                <input type="email" id="customerEmail" name="customerEmail"
+                                       placeholder="email@example.com"
+                                       class="w-full border border-outline-variant rounded-xl px-4 py-2.5 text-body-md text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/40 transition"/>
+                            </div>
+
+                            <!-- Departure Date -->
+                            <div class="flex flex-col gap-1.5">
+                                <label for="departureDate" class="font-label-md text-label-md text-on-surface-variant font-semibold">Ngày khởi hành <span class="text-red-500">*</span></label>
+                                <input type="date" id="departureDate" name="departureDate" required
+                                       class="w-full border border-outline-variant rounded-xl px-4 py-2.5 text-body-md text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/40 transition"/>
+                            </div>
+
+                            <!-- Adults & Children -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="flex flex-col gap-1.5">
+                                    <label for="numAdults" class="font-label-md text-label-md text-on-surface-variant font-semibold">Người lớn</label>
+                                    <input type="number" id="numAdults" name="numAdults" min="1" value="1"
+                                           class="w-full border border-outline-variant rounded-xl px-4 py-2.5 text-body-md text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/40 transition text-center"/>
+                                </div>
+                                <div class="flex flex-col gap-1.5">
+                                    <label for="numChildren" class="font-label-md text-label-md text-on-surface-variant font-semibold">Trẻ em</label>
+                                    <input type="number" id="numChildren" name="numChildren" min="0" value="0"
+                                           class="w-full border border-outline-variant rounded-xl px-4 py-2.5 text-body-md text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/40 transition text-center"/>
+                                </div>
+                            </div>
+
+                            <!-- Special Requests -->
+                            <div class="flex flex-col gap-1.5">
+                                <label for="specialRequests" class="font-label-md text-label-md text-on-surface-variant font-semibold">Yêu cầu đặc biệt</label>
+                                <textarea id="specialRequests" name="specialRequests" rows="2"
+                                          placeholder="Ăn chay, dị ứng thực phẩm..."
+                                          class="w-full border border-outline-variant rounded-xl px-4 py-2.5 text-body-md text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/40 transition resize-none"></textarea>
+                            </div>
+
+                            <!-- Live Price Preview -->
+                            <div class="bg-surface-container-low rounded-xl px-4 py-3 flex items-center justify-between border border-outline-variant/30">
+                                <span class="font-label-md text-label-md text-on-surface-variant">Tổng dự tính</span>
+                                <span id="price-preview" class="font-bold text-golden-yellow text-[18px]"
+                                      th:attr="data-price=${tour.price}">—</span>
+                            </div>
+
+                            <!-- Submit -->
+                            <button type="submit"
+                                    class="w-full bg-golden-yellow hover:bg-[#ca8a04] text-white font-label-md text-label-md font-bold py-4 rounded-2xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined text-[20px]">confirmation_number</span>
+                                Đặt Tour Ngay
+                            </button>
+                        </form>
+
+                        <!-- Contact Buttons -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <a href="https://zalo.me/" target="_blank"
+                               class="bg-zalo-blue hover:bg-blue-700 text-white font-label-md text-label-md py-3 rounded-2xl transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-1.5 font-bold shadow-sm">
+                                <span class="material-symbols-outlined text-[20px]">chat</span> Zalo
+                            </a>
+                            <a href="tel:+8418008888"
+                               class="bg-white text-forest-green border-2 border-forest-green hover:bg-forest-green/5 font-label-md text-label-md py-3 rounded-2xl transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-1.5 font-bold shadow-sm">
+                                <span class="material-symbols-outlined text-[20px]">call</span> Gọi Tư Vấn
+                            </a>
+                        </div>
+
+                        <p class="text-center text-label-sm text-on-surface-variant font-medium">
+                            Miễn phí hủy tour trước 48 giờ
                         </p>
                     </div>
-                    
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3 text-primary font-medium">
-                            <span class="material-symbols-outlined text-secondary fill text-xl">check_circle</span>
-                            <span class="font-body-md text-body-md text-on-surface">Đưa đón tận nơi tại TP.HCM</span>
-                        </div>
-                        <div class="flex items-center gap-3 text-primary font-medium">
-                            <span class="material-symbols-outlined text-secondary fill text-xl">check_circle</span>
-                            <span class="font-body-md text-body-md text-on-surface">Bao gồm bữa trưa hải sản</span>
-                        </div>
-                        <div class="flex items-center gap-3 text-primary font-medium">
-                            <span class="material-symbols-outlined text-secondary fill text-xl">check_circle</span>
-                            <span class="font-body-md text-body-md text-on-surface">Bảo hiểm du lịch</span>
-                        </div>
-                    </div>
-                    
-                    <hr class="border-outline-variant/30"/>
-                    
-                    <div class="flex flex-col gap-3">
-                        <button class="w-full bg-golden-yellow hover:bg-[#ca8a04] text-white font-label-md text-label-md font-bold py-4 rounded-2xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300">
-                            Đặt Tour Ngay
-                        </button>
-                        <div class="grid grid-cols-2 gap-3">
-                            <button class="bg-zalo-blue hover:bg-blue-700 text-white font-label-md text-label-md py-3 rounded-2xl transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-1.5 font-bold shadow-sm">
-                                <span class="material-symbols-outlined text-[20px]">chat</span> Zalo
-                            </button>
-                            <button class="bg-white text-forest-green border-2 border-forest-green hover:bg-forest-green/5 font-label-md text-label-md py-3 rounded-2xl transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-1.5 font-bold shadow-sm">
-                                <span class="material-symbols-outlined text-[20px]">call</span> Gọi Tư Vấn
-                            </button>
-                        </div>
-                    </div>
-                    <p class="text-center text-label-sm text-on-surface-variant font-medium mt-1">
-                        Miễn phí hủy tour trước 48 giờ
-                    </p>
                 </div>
             </div>
+
         </div>
     </div>
 </main>
@@ -559,6 +620,37 @@
     menuBtn.addEventListener('click', () => {
         mobileMenu.classList.toggle('hidden');
     });
+
+    // Live price preview calculator
+    const pricePreview = document.getElementById('price-preview');
+    const pricePerPerson = parseFloat(pricePreview ? pricePreview.dataset.price : 0);
+    const adultsInput = document.getElementById('numAdults');
+    const childrenInput = document.getElementById('numChildren');
+
+    function updatePricePreview() {
+        const adults = parseInt(adultsInput.value) || 1;
+        const children = parseInt(childrenInput.value) || 0;
+        const total = (pricePerPerson * adults) + (pricePerPerson * 0.5 * children);
+        pricePreview.textContent = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+            maximumFractionDigits: 0
+        }).format(total);
+    }
+
+    if (adultsInput && childrenInput && pricePreview) {
+        adultsInput.addEventListener('input', updatePricePreview);
+        childrenInput.addEventListener('input', updatePricePreview);
+        updatePricePreview(); // Initial calculation
+    }
+
+    // Set min date for departure date picker to today
+    const dateInput = document.getElementById('departureDate');
+    if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+    }
+
 </script>
 
 </body>

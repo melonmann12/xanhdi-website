@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Staff Dashboard — Xanh Đi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .tab-btn.active { color: #065f46; border-color: #065f46; background-color: #ecfdf5; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+        .fade-in { animation: fadeIn 0.35s ease-out forwards; }
+    </style>
+</head>
+<body class="bg-emerald-50/40 min-h-screen text-gray-800">
+
+    <!-- ===== TOP NAVIGATION BAR ===== -->
+    <header class="sticky top-0 z-50 bg-emerald-900 shadow-lg">
+        <div class="max-w-[1440px] mx-auto flex items-center justify-between px-6 py-3">
+            <!-- Brand -->
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-emerald-600 flex items-center justify-center shadow">
+                    <span class="material-symbols-outlined text-white text-xl">eco</span>
+                </div>
+                <div>
+                    <span class="text-white font-bold text-lg tracking-tight">Xanh Đi</span>
+                    <span class="text-emerald-300 text-xs ml-2 font-medium">Staff Panel</span>
+                </div>
+            </div>
+            <!-- Right side -->
+            <div class="flex items-center gap-5">
+                <span class="text-emerald-200 text-sm hidden sm:inline-flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-base">person</span>
+                    Chào, <strong class="text-white" th:text="${staff.fullName != null ? staff.fullName : staff.username}">Nhân viên</strong>
+                </span>
+                <a th:href="@{/staff/logout}"
+                   class="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-600 text-emerald-100 hover:text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all duration-200">
+                    <span class="material-symbols-outlined text-base">logout</span>
+                    Đăng xuất
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="max-w-[1440px] mx-auto px-4 sm:px-6 py-6 sm:py-8 fade-in">
+
+        <!-- Flash message banner -->
+        <div th:if="${dashMsg}"
+             class="mb-6 bg-emerald-100 border border-emerald-300 text-emerald-800 px-5 py-3.5 rounded-xl flex items-center gap-3 shadow-sm">
+            <span class="material-symbols-outlined text-emerald-600">check_circle</span>
+            <span class="text-sm font-medium" th:text="${dashMsg}"></span>
+        </div>
+
+        <!-- ===== TAB BUTTONS ===== -->
+        <div class="flex items-center gap-2 border-b border-emerald-200 mb-6">
+            <button onclick="switchTab('bookings')" id="tab-bookings"
+                    class="tab-btn active inline-flex items-center gap-2 px-5 py-3 text-sm font-bold border-b-2 border-transparent transition-all duration-200 rounded-t-lg hover:bg-emerald-50">
+                <span class="material-symbols-outlined text-lg">receipt_long</span>
+                Quản lý Đặt Tour
+            </button>
+            <button onclick="switchTab('tours')" id="tab-tours"
+                    class="tab-btn inline-flex items-center gap-2 px-5 py-3 text-sm font-bold text-gray-500 border-b-2 border-transparent transition-all duration-200 rounded-t-lg hover:bg-emerald-50">
+                <span class="material-symbols-outlined text-lg">landscape</span>
+                Quản lý Danh sách Tour
+            </button>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TAB 1 — BOOKINGS TABLE                                       -->
+        <!-- ============================================================ -->
+        <section id="panel-bookings">
+            <div class="bg-white rounded-2xl shadow-sm border border-emerald-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-emerald-100 flex items-center justify-between">
+                    <h2 class="text-lg font-bold text-emerald-900 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-emerald-600">list_alt</span>
+                        Danh sách đơn đặt tour
+                    </h2>
+                    <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full"
+                          th:text="${#lists.size(bookings)} + ' đơn'">0 đơn</span>
+                </div>
+
+                <!-- Responsive wrapper -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-emerald-50/70">
+                            <tr class="text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">
+                                <th class="px-5 py-3">Mã Đơn</th>
+                                <th class="px-5 py-3">Khách hàng</th>
+                                <th class="px-5 py-3">Điện thoại</th>
+                                <th class="px-5 py-3">Tên Tour</th>
+                                <th class="px-5 py-3 text-center">Số lượng</th>
+                                <th class="px-5 py-3 text-right">Tổng tiền</th>
+                                <th class="px-5 py-3 text-center">Ngày đi</th>
+                                <th class="px-5 py-3 text-center">Trạng thái</th>
+                                <th class="px-5 py-3 text-center">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-emerald-50">
+                            <tr th:each="booking : ${bookings}"
+                                class="hover:bg-emerald-50/40 transition-colors">
+                                <!-- Mã Đơn -->
+                                <td class="px-5 py-3.5 font-bold text-emerald-800">
+                                    <span th:text="'#' + ${booking.id}">#1</span>
+                                </td>
+                                <!-- Khách hàng -->
+                                <td class="px-5 py-3.5">
+                                    <div class="font-semibold text-gray-800" th:text="${booking.customerName}">Nguyễn Văn A</div>
+                                    <div class="text-xs text-gray-400 mt-0.5" th:if="${booking.customerEmail}"
+                                         th:text="${booking.customerEmail}">email@test.com</div>
+                                </td>
+                                <!-- Điện thoại -->
+                                <td class="px-5 py-3.5 text-gray-600" th:text="${booking.customerPhone}">0901 234 567</td>
+                                <!-- Tên Tour -->
+                                <td class="px-5 py-3.5 font-medium text-gray-700 max-w-[200px] truncate"
+                                    th:text="${booking.tour.title}">Khám phá Cần Giờ</td>
+                                <!-- Số lượng -->
+                                <td class="px-5 py-3.5 text-center text-gray-600">
+                                    <span th:text="${booking.numAdults}">1</span>NL,
+                                    <span th:text="${booking.numChildren}">0</span>TE
+                                </td>
+                                <!-- Tổng tiền -->
+                                <td class="px-5 py-3.5 text-right font-bold text-emerald-700"
+                                    th:text="${#numbers.formatDecimal(booking.totalPrice, 0, 'COMMA', 0, 'POINT')} + ' đ'">1.190.000 đ</td>
+                                <!-- Ngày đi -->
+                                <td class="px-5 py-3.5 text-center text-gray-500 text-xs"
+                                    th:text="${booking.departureDate}">2026-07-01</td>
+                                <!-- Trạng thái -->
+                                <td class="px-5 py-3.5 text-center">
+                                    <!-- PENDING -->
+                                    <span th:if="${booking.status.name() == 'PENDING'}"
+                                          class="inline-flex items-center gap-1 bg-yellow-100 text-yellow-700 text-xs font-bold px-2.5 py-1 rounded-full">
+                                        <span class="w-1.5 h-1.5 bg-yellow-500 rounded-full"></span> Chờ duyệt
+                                    </span>
+                                    <!-- CONFIRMED -->
+                                    <span th:if="${booking.status.name() == 'CONFIRMED'}"
+                                          class="inline-flex items-center gap-1 bg-emerald-100 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-full">
+                                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> Đã xác nhận
+                                    </span>
+                                    <!-- PAID -->
+                                    <span th:if="${booking.status.name() == 'PAID'}"
+                                          class="inline-flex items-center gap-1 bg-blue-100 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-full">
+                                        <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span> Đã thanh toán
+                                    </span>
+                                    <!-- CANCELLED -->
+                                    <span th:if="${booking.status.name() == 'CANCELLED'}"
+                                          class="inline-flex items-center gap-1 bg-red-100 text-red-600 text-xs font-bold px-2.5 py-1 rounded-full">
+                                        <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span> Đã huỷ
+                                    </span>
+                                </td>
+                                <!-- Hành động -->
+                                <td class="px-5 py-3.5 text-center">
+                                    <div th:if="${booking.status.name() == 'PENDING'}" class="flex items-center justify-center gap-2">
+                                        <!-- Xác nhận -->
+                                        <form th:action="@{/staff/bookings/{id}/confirm(id=${booking.id})}" method="post">
+                                            <button type="submit"
+                                                    class="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                                                <span class="material-symbols-outlined text-sm">check</span>
+                                                Xác nhận
+                                            </button>
+                                        </form>
+                                        <!-- Hủy đơn -->
+                                        <form th:action="@{/staff/bookings/{id}/cancel(id=${booking.id})}" method="post">
+                                            <button type="submit"
+                                                    class="inline-flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                                                <span class="material-symbols-outlined text-sm">close</span>
+                                                Hủy đơn
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <span th:if="${booking.status.name() != 'PENDING'}" class="text-gray-300 text-xs">—</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Empty state -->
+                <div th:if="${#lists.isEmpty(bookings)}" class="py-16 text-center text-gray-400">
+                    <span class="material-symbols-outlined text-5xl mb-3 block">inbox</span>
+                    <p class="text-sm font-medium">Chưa có đơn đặt tour nào.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- TAB 2 — TOURS MANAGEMENT                                     -->
+        <!-- ============================================================ -->
+        <section id="panel-tours" class="hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-emerald-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-emerald-100 flex items-center justify-between flex-wrap gap-3">
+                    <h2 class="text-lg font-bold text-emerald-900 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-emerald-600">landscape</span>
+                        Danh sách Tour
+                    </h2>
+                    <a th:href="@{/staff/tours/new}"
+                       class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-all duration-200 hover:shadow-md hover:scale-[1.02]">
+                        <span class="material-symbols-outlined text-lg">add_circle</span>
+                        Thêm Tour Mới
+                    </a>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-emerald-50/70">
+                            <tr class="text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">
+                                <th class="px-5 py-3">Hình ảnh</th>
+                                <th class="px-5 py-3">Tên Tour</th>
+                                <th class="px-5 py-3">Tag</th>
+                                <th class="px-5 py-3">Thời gian</th>
+                                <th class="px-5 py-3 text-right">Giá tour</th>
+                                <th class="px-5 py-3 text-center">Đánh giá</th>
+                                <th class="px-5 py-3 text-center">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-emerald-50">
+                            <tr th:each="tour : ${tours}" class="hover:bg-emerald-50/40 transition-colors">
+                                <!-- Hình ảnh thumbnail -->
+                                <td class="px-5 py-3">
+                                    <img th:src="${tour.imageUrl}" alt="Tour thumbnail"
+                                         class="w-16 h-12 object-cover rounded-lg border border-emerald-100 shadow-sm"
+                                         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2264%22 height=%2248%22><rect width=%2264%22 height=%2248%22 fill=%22%23ecfdf5%22/><text x=%2232%22 y=%2228%22 text-anchor=%22middle%22 fill=%22%2310b981%22 font-size=%2212%22>🌿</text></svg>'"/>
+                                </td>
+                                <!-- Tên Tour -->
+                                <td class="px-5 py-3">
+                                    <div class="font-semibold text-gray-800 max-w-[260px] truncate" th:text="${tour.title}">Tour name</div>
+                                    <div class="text-xs text-gray-400 mt-0.5" th:text="${tour.departure}" th:if="${tour.departure}">Xuất phát</div>
+                                </td>
+                                <!-- Tag -->
+                                <td class="px-5 py-3">
+                                    <span th:if="${tour.tag}"
+                                          class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-0.5 rounded-md"
+                                          th:text="${tour.tag}">Hot</span>
+                                </td>
+                                <!-- Thời gian -->
+                                <td class="px-5 py-3 text-gray-600" th:text="${tour.duration}">1 Ngày</td>
+                                <!-- Giá -->
+                                <td class="px-5 py-3 text-right font-bold text-emerald-700"
+                                    th:text="${tour.price != null ? #numbers.formatDecimal(tour.price, 0, 'COMMA', 0, 'POINT') + ' đ' : '—'}">1.190.000 đ</td>
+                                <!-- Đánh giá -->
+                                <td class="px-5 py-3 text-center">
+                                    <span class="inline-flex items-center gap-1 text-yellow-500 text-xs font-bold">
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                                        <span th:text="${tour.rating}">5.0</span>
+                                    </span>
+                                </td>
+                                <!-- Actions -->
+                                <td class="px-5 py-3 text-center">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <a th:href="@{/staff/tours/edit/{id}(id=${tour.id})}"
+                                           class="inline-flex items-center gap-1 bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                                            <span class="material-symbols-outlined text-sm">edit</span>
+                                            Sửa
+                                        </a>
+                                        <form th:action="@{/staff/tours/delete/{id}(id=${tour.id})}" method="post"
+                                              onsubmit="return confirm('Bạn có chắc muốn xoá tour này? Hành động này không thể hoàn tác.');">
+                                            <button type="submit"
+                                                    class="inline-flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                                                <span class="material-symbols-outlined text-sm">delete</span>
+                                                Xóa
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Empty state -->
+                <div th:if="${#lists.isEmpty(tours)}" class="py-16 text-center text-gray-400">
+                    <span class="material-symbols-outlined text-5xl mb-3 block">travel_explore</span>
+                    <p class="text-sm font-medium">Chưa có tour nào. Hãy thêm tour đầu tiên!</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== TAB SWITCHING SCRIPT ===== -->
+    <script>
+        function switchTab(tab) {
+            // Panels
+            document.getElementById('panel-bookings').classList.toggle('hidden', tab !== 'bookings');
+            document.getElementById('panel-tours').classList.toggle('hidden', tab !== 'tours');
+            // Buttons
+            document.getElementById('tab-bookings').classList.toggle('active', tab === 'bookings');
+            document.getElementById('tab-tours').classList.toggle('active', tab === 'tours');
+            // Inactive colors
+            if (tab === 'bookings') {
+                document.getElementById('tab-tours').classList.add('text-gray-500');
+                document.getElementById('tab-bookings').classList.remove('text-gray-500');
+            } else {
+                document.getElementById('tab-bookings').classList.add('text-gray-500');
+                document.getElementById('tab-tours').classList.remove('text-gray-500');
+            }
+        }
+    </script>
+
+</body>
+</html>

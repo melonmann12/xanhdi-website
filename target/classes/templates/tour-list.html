@@ -289,239 +289,36 @@
         
         <!-- Product Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
-            <!-- Card 1: Cần Giờ -->
-            <article class="group bg-surface-container-lowest rounded-3xl overflow-hidden shadow-[0px_4px_20px_rgba(26,60,52,0.06)] border border-surface-container-high hover-lift flex flex-col relative">
+            <!-- Dynamic Tour Cards -->
+            <article th:each="tour : ${tours}" class="group bg-surface-container-lowest rounded-3xl overflow-hidden shadow-[0px_4px_20px_rgba(26,60,52,0.06)] border border-surface-container-high hover-lift flex flex-col relative">
                 <div class="relative h-64 overflow-hidden shrink-0">
-                    <img alt="Cần Giờ" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" 
-                         data-alt="Lush green mangrove forest with calm, reflective water. Sunlight filtering through the dense canopy of trees." 
-                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuDw8ybf5IgK2v4iNiOjnAoy0tSEUQt3WVIqwMkC_7qeJGV_evKAKFstKSiJ_Gx1CKEfIyi4fvu0vHKxx8-wOGk1vF6ZQ8MNqonW6h4JRgz4lm_eaJQFGoQcimblLnhES3pyqDCMCD4oJT4a2KHK_8_LPpC8nxL5uKFCFnbNU2pumH7hU5ayTv9DDZo8cDrSOdnBztxlgx5Livw2qI1MefIJiRZtOGHcbt7gzFUv52Ea2YDNSawTwwaKg9f-7LbUu91OpBzp33PXoPo"/>
+                    <img th:src="${tour.imageUrl}" th:alt="${tour.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" src=""/>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-                    <div class="absolute top-4 right-4 bg-secondary text-on-secondary px-3.5 py-1.5 rounded-full font-label-sm shadow-sm text-xs font-bold uppercase tracking-wide">
+                    <div th:if="${tour.tag != null && !tour.tag.isEmpty()}" th:text="${tour.tag}" class="absolute top-4 right-4 bg-secondary text-on-secondary px-3.5 py-1.5 rounded-full font-label-sm shadow-sm text-xs font-bold uppercase tracking-wide">
                         Bán chạy
                     </div>
                 </div>
                 <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="font-headline-md text-xl text-primary mb-2 group-hover:text-secondary transition-colors font-bold line-clamp-2">
+                    <h3 th:text="${tour.title}" class="font-headline-md text-xl text-primary mb-2 group-hover:text-secondary transition-colors font-bold line-clamp-2">
                         Tour Trải Nghiệm Cần Giờ 1 Ngày
                     </h3>
                     <div class="flex items-center gap-1 text-[#eab308] mb-4">
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star_half</span>
-                        <span class="text-on-surface-variant font-label-sm ml-2 font-normal">(128 đánh giá)</span>
+                        <span th:each="i : ${#numbers.sequence(1, 5)}" 
+                              class="material-symbols-outlined text-sm"
+                              th:classappend="${i <= tour.rating} ? 'fill' : ''"
+                              th:text="${i <= tour.rating} ? 'star' : 'star_border'">star</span>
+                        <span class="text-on-surface-variant font-label-sm ml-2 font-normal" th:text="'(' + ${tour.reviewCount} + ' đánh giá)'">(128 đánh giá)</span>
                     </div>
                     <p class="text-on-surface-variant font-body-md flex items-center mb-6 gap-2">
                         <span class="material-symbols-outlined text-outline text-[18px]">schedule</span>
-                        <span>Khởi hành: Thứ 7 hàng tuần</span>
+                        <span th:text="'Khởi hành: ' + ${tour.departure}">Khởi hành: Thứ 7 hàng tuần</span>
                     </p>
                     <div class="mt-auto flex items-center justify-between pt-4 border-t border-surface-variant/60">
                         <div>
                             <p class="text-outline font-label-sm text-xs">Giá từ</p>
-                            <p class="text-[#eab308] font-bold text-xl md:text-2xl">1.190.000 đ</p>
+                            <p th:text="${#numbers.formatDecimal(tour.price, 0, 'COMMA', 0, 'POINT')} + ' đ'" class="text-[#eab308] font-bold text-xl md:text-2xl">1.190.000 đ</p>
                         </div>
-                        <a th:href="@{/tour-detail}" class="bg-primary hover:bg-secondary text-white px-5 py-2.5 rounded-full font-label-md hover:scale-105 transition-all duration-300 flex items-center gap-1 shadow-sm text-center inline-flex justify-center">
-                            Xem Chi Tiết
-                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                        </a>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Card 2: Nam Du -->
-            <article class="group bg-surface-container-lowest rounded-3xl overflow-hidden shadow-[0px_4px_20px_rgba(26,60,52,0.06)] border border-surface-container-high hover-lift flex flex-col relative">
-                <div class="relative h-64 overflow-hidden shrink-0">
-                    <img alt="Nam Du" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" 
-                         data-alt="Stunning aerial view of a tropical island archipelago with crystal clear turquoise waters." 
-                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIm0WvIoUEcCsHfYWyoBWKuTvBOrUARvM_RpQdQEYwk5LIz82jwbP2JUcbRzPGxDDOC_hW8_02_hsvzWJ04MOvD1nwczb1Fm5vj6rzEjwnJUBvCXKWADRptYhaR-HgAUHX_AfW5KcA0Cgz9tejcHybHWsZhuItL_Wog6WRKa_Jwco6DksMOFxPeuQEVj7zQB2v7C8Z6AGrG3YTGcuV1GnPq8TWlFqvYBHpXb-sKy3JWRFwmC3TuLihCzcYzQviTqjqNEnrIZX66lI"/>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-                    <div class="absolute top-4 right-4 bg-primary text-on-primary px-3.5 py-1.5 rounded-full font-label-sm shadow-sm text-xs font-bold uppercase tracking-wide">
-                        Mới
-                    </div>
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="font-headline-md text-xl text-primary mb-2 group-hover:text-secondary transition-colors font-bold line-clamp-2">
-                        Khám Phá Đảo Nam Du 3N2Đ
-                    </h3>
-                    <div class="flex items-center gap-1 text-[#eab308] mb-4">
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="text-on-surface-variant font-label-sm ml-2 font-normal">(85 đánh giá)</span>
-                    </div>
-                    <p class="text-on-surface-variant font-body-md flex items-center mb-6 gap-2">
-                        <span class="material-symbols-outlined text-outline text-[18px]">schedule</span>
-                        <span>Khởi hành: Thứ 6 hàng tuần</span>
-                    </p>
-                    <div class="mt-auto flex items-center justify-between pt-4 border-t border-surface-variant/60">
-                        <div>
-                            <p class="text-outline font-label-sm text-xs">Giá từ</p>
-                            <p class="text-[#eab308] font-bold text-xl md:text-2xl">2.450.000 đ</p>
-                        </div>
-                        <a th:href="@{/tour-detail}" class="bg-primary hover:bg-secondary text-white px-5 py-2.5 rounded-full font-label-md hover:scale-105 transition-all duration-300 flex items-center gap-1 shadow-sm text-center inline-flex justify-center">
-                            Xem Chi Tiết
-                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                        </a>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Card 3: Tà Xùa -->
-            <article class="group bg-surface-container-lowest rounded-3xl overflow-hidden shadow-[0px_4px_20px_rgba(26,60,52,0.06)] border border-surface-container-high hover-lift flex flex-col relative">
-                <div class="relative h-64 overflow-hidden shrink-0">
-                    <img alt="Trekking" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" 
-                         data-alt="Spectacular sweeping view of vibrant green terraced rice fields winding up a steep mountain valley." 
-                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1toytiqiWlhFG7ZKUzdF2kD3wD5HeKmlc8VzgGvLi-WL_E5jf5SgRefTqBqu08TEL7BBlPBmZCnABj7rQLz5IRS73j6HNR1VHxZ2Q0ytFeDcCUlRD7cOanjyT5f29rbMJ8Krn9CqXLpoVC_SFt8oAmHc4XAiA0HFydrQB6a099Oz0DcJOjshQG_QyHLaM_mtHKPY25oc2Y8dhddpC7NhhP4s4khzPe-1e33El3eXAYGtzcAjYSndClN_MFfHR2ZP91gr8UhvWMsU"/>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-                    <div class="absolute top-4 right-4 bg-secondary text-on-secondary px-3.5 py-1.5 rounded-full font-label-sm shadow-sm text-xs font-bold uppercase tracking-wide">
-                        Bán chạy
-                    </div>
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="font-headline-md text-xl text-primary mb-2 group-hover:text-secondary transition-colors font-bold line-clamp-2">
-                        Trekking Săn Mây Tà Xùa 2N1Đ
-                    </h3>
-                    <div class="flex items-center gap-1 text-[#eab308] mb-4">
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill text-gray-300">star_border</span>
-                        <span class="text-on-surface-variant font-label-sm ml-2 font-normal">(210 đánh giá)</span>
-                    </div>
-                    <p class="text-on-surface-variant font-body-md flex items-center mb-6 gap-2">
-                        <span class="material-symbols-outlined text-outline text-[18px]">schedule</span>
-                        <span>Khởi hành: Hàng ngày</span>
-                    </p>
-                    <div class="mt-auto flex items-center justify-between pt-4 border-t border-surface-variant/60">
-                        <div>
-                            <p class="text-outline font-label-sm text-xs">Giá từ</p>
-                            <p class="text-[#eab308] font-bold text-xl md:text-2xl">1.890.000 đ</p>
-                        </div>
-                        <a th:href="@{/tour-detail}" class="bg-primary hover:bg-secondary text-white px-5 py-2.5 rounded-full font-label-md hover:scale-105 transition-all duration-300 flex items-center gap-1 shadow-sm text-center inline-flex justify-center">
-                            Xem Chi Tiết
-                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                        </a>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Card 4: Fansipan -->
-            <article class="group bg-surface-container-lowest rounded-3xl overflow-hidden shadow-[0px_4px_20px_rgba(26,60,52,0.06)] border border-surface-container-high hover-lift flex flex-col relative">
-                <div class="relative h-64 overflow-hidden shrink-0">
-                    <img alt="Fansipan" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" 
-                         data-alt="Majestic high mountain pass with a winding road under clear skies." 
-                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVncGdEeewUPqcsveKedccdsZ90FhdI3Rwtfi5kQRhnrbnjILHmtbN1gFosad_mcQydG3h4xH8kG7vZ8vZPz1tu43h5LQBLb1a9Kge1pKkyjvTvsUUuMgATiPKik5gLMzIPv37YF52T3448fDqMn67vnTzpbqokqwwR4wEDEWoHZtrx3Dz3ogFMybYJvB6RRZOeg3yz0pHimHfIJSOtWlEO0jx4viIEcAU9heua3kbaCaj9AA96FNw9F9kieBs4LlMu8oUhtxplx0"/>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-                    <div class="absolute top-4 right-4 bg-secondary text-on-secondary px-3.5 py-1.5 rounded-full font-label-sm shadow-sm text-xs font-bold uppercase tracking-wide">
-                        Bán chạy
-                    </div>
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="font-headline-md text-xl text-primary mb-2 group-hover:text-secondary transition-colors font-bold line-clamp-2">
-                        Chinh Phục Đỉnh Fansipan Nóc Nhà Đông Dương 2N1Đ
-                    </h3>
-                    <div class="flex items-center gap-1 text-[#eab308] mb-4">
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="text-on-surface-variant font-label-sm ml-2 font-normal">(96 đánh giá)</span>
-                    </div>
-                    <p class="text-on-surface-variant font-body-md flex items-center mb-6 gap-2">
-                        <span class="material-symbols-outlined text-outline text-[18px]">schedule</span>
-                        <span>Khởi hành: Thứ 5 hàng tuần</span>
-                    </p>
-                    <div class="mt-auto flex items-center justify-between pt-4 border-t border-surface-variant/60">
-                        <div>
-                            <p class="text-outline font-label-sm text-xs">Giá từ</p>
-                            <p class="text-[#eab308] font-bold text-xl md:text-2xl">2.790.000 đ</p>
-                        </div>
-                        <a th:href="@{/tour-detail}" class="bg-primary hover:bg-secondary text-white px-5 py-2.5 rounded-full font-label-md hover:scale-105 transition-all duration-300 flex items-center gap-1 shadow-sm text-center inline-flex justify-center">
-                            Xem Chi Tiết
-                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                        </a>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Card 5: Cát Tiên -->
-            <article class="group bg-surface-container-lowest rounded-3xl overflow-hidden shadow-[0px_4px_20px_rgba(26,60,52,0.06)] border border-surface-container-high hover-lift flex flex-col relative">
-                <div class="relative h-64 overflow-hidden shrink-0">
-                    <img alt="Cát Tiên" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" 
-                         data-alt="Dense atmospheric rainforest with mossy paths and green canopy." 
-                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1VZZ2DgYDU19B5igClmQvwOPP8g63eSQRlaS9_y7jowVl8jKqZSf75NmsGz-6DG9mp0PmchZ6ABYx0dhpVl9JhZzKCrY7kLCmYfsklGJatZeMilAVqECk-t_ELkIU95kDoNPf_qz4IF55U2EbrxCbSij8xb5yZ5rA0_KD41xvvmFQJcqmiCw3zlpdXG98y9B0AXS4kYa1rK8fs7WVEE7wWJod50ne8pSdTZL9iwiw-VTgYsr5MG5sRS0DVCwaqXbwu7KR8QXDdF8"/>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-                    <div class="absolute top-4 right-4 bg-primary text-on-primary px-3.5 py-1.5 rounded-full font-label-sm shadow-sm text-xs font-bold uppercase tracking-wide">
-                        Mới
-                    </div>
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="font-headline-md text-xl text-primary mb-2 group-hover:text-secondary transition-colors font-bold line-clamp-2">
-                        Tour Sinh Thái Vườn Quốc Gia Cát Tiên 2N1Đ
-                    </h3>
-                    <div class="flex items-center gap-1 text-[#eab308] mb-4">
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="text-on-surface-variant font-label-sm ml-2 font-normal">(112 đánh giá)</span>
-                    </div>
-                    <p class="text-on-surface-variant font-body-md flex items-center mb-6 gap-2">
-                        <span class="material-symbols-outlined text-outline text-[18px]">schedule</span>
-                        <span>Khởi hành: Thứ 7 hàng tuần</span>
-                    </p>
-                    <div class="mt-auto flex items-center justify-between pt-4 border-t border-surface-variant/60">
-                        <div>
-                            <p class="text-outline font-label-sm text-xs">Giá từ</p>
-                            <p class="text-[#eab308] font-bold text-xl md:text-2xl">1.690.000 đ</p>
-                        </div>
-                        <a th:href="@{/tour-detail}" class="bg-primary hover:bg-secondary text-white px-5 py-2.5 rounded-full font-label-md hover:scale-105 transition-all duration-300 flex items-center gap-1 shadow-sm text-center inline-flex justify-center">
-                            Xem Chi Tiết
-                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                        </a>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Card 6: Bản Giốc -->
-            <article class="group bg-surface-container-lowest rounded-3xl overflow-hidden shadow-[0px_4px_20px_rgba(26,60,52,0.06)] border border-surface-container-high hover-lift flex flex-col relative">
-                <div class="relative h-64 overflow-hidden shrink-0">
-                    <img alt="Bản Giốc" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" 
-                         data-alt="Beautiful, towering waterfall cascading down rocky moss cliffs." 
-                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwk4g9wFDpc4pSpYXLbpjFn6ZQgRO1N6CVOIOY1Ui4zYEpHaa0H4ojTaQsbvfF9SjMTG1YMzolrdM413HBbceaodtRyHBsf7VpqZYXr-oKl83D6KAKrqnFOQSjn8J-AD79pyOMvnT5WaQzYhZY99tKFXw3to9uT1NocmUJxoWCnl03Mk5-3ImY53lIF9fL82VkskPtuAgeineLWpST7V53d3Dafmn5TnI475vqK6OzH9Hif-QByK9cwrvA3I0wnoLtj1_-SfmXdBg"/>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-                    <div class="absolute top-4 right-4 bg-orange-600 text-white px-3.5 py-1.5 rounded-full font-label-sm shadow-sm text-xs font-bold uppercase tracking-wide">
-                        Khuyến mãi
-                    </div>
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="font-headline-md text-xl text-primary mb-2 group-hover:text-secondary transition-colors font-bold line-clamp-2">
-                        Nghỉ Dưỡng Thác Bản Giốc Cao Bằng 3N2Đ
-                    </h3>
-                    <div class="flex items-center gap-1 text-[#eab308] mb-4">
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="material-symbols-outlined text-sm fill">star</span>
-                        <span class="text-on-surface-variant font-label-sm ml-2 font-normal">(145 đánh giá)</span>
-                    </div>
-                    <p class="text-on-surface-variant font-body-md flex items-center mb-6 gap-2">
-                        <span class="material-symbols-outlined text-outline text-[18px]">schedule</span>
-                        <span>Khởi hành: Thứ 6 hàng tuần</span>
-                    </p>
-                    <div class="mt-auto flex items-center justify-between pt-4 border-t border-surface-variant/60">
-                        <div>
-                            <p class="text-outline font-label-sm text-xs">Giá từ</p>
-                            <p class="text-[#eab308] font-bold text-xl md:text-2xl">3.190.000 đ</p>
-                        </div>
-                        <a th:href="@{/tour-detail}" class="bg-primary hover:bg-secondary text-white px-5 py-2.5 rounded-full font-label-md hover:scale-105 transition-all duration-300 flex items-center gap-1 shadow-sm text-center inline-flex justify-center">
+                        <a th:href="@{/tour-detail/{id}(id=${tour.id})}" class="bg-primary hover:bg-secondary text-white px-5 py-2.5 rounded-full font-label-md hover:scale-105 transition-all duration-300 flex items-center gap-1 shadow-sm text-center inline-flex justify-center">
                             Xem Chi Tiết
                             <span class="material-symbols-outlined text-sm">arrow_forward</span>
                         </a>
