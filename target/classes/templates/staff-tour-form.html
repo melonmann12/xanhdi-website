@@ -48,7 +48,7 @@
 
         <!-- Card -->
         <div class="bg-white rounded-2xl shadow-sm border border-emerald-100 overflow-hidden">
-            <form th:action="${tour.id != null} ? @{/staff/tours/update/{id}(id=${tour.id})} : @{/staff/tours/save}" method="POST" class="p-6 sm:p-8 space-y-6">
+            <form th:action="${tour.id != null} ? @{/staff/tours/update/{id}(id=${tour.id})} : @{/staff/tours/save}" method="POST" enctype="multipart/form-data" class="p-6 sm:p-8 space-y-6">
 
                 <!-- Hidden ID for edit -->
                 <input type="hidden" name="id" th:value="${tour.id}"/>
@@ -193,20 +193,30 @@
                         Hình ảnh
                     </legend>
 
-                    <!-- Image URL -->
+                    <!-- Album Ảnh Tour (Gallery) -->
                     <div class="flex flex-col gap-1.5">
-                        <label for="imageUrl" class="text-sm font-semibold text-gray-700">Link ảnh đại diện (URL)</label>
-                        <input type="url" id="imageUrl" name="imageUrl"
-                               th:value="${tour.imageUrl}"
-                               placeholder="https://example.com/image.jpg"
-                               class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition"/>
+                        <label for="galleryFiles" class="text-sm font-semibold text-gray-700">Tải lên album ảnh Tour (Đa phương tiện) <span class="text-xs font-normal text-gray-400">(Có thể chọn nhiều file hình ảnh)</span></label>
+                        <input type="file" id="galleryFiles" name="galleryFiles" multiple accept="image/*"
+                               class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer"/>
                     </div>
 
-                    <!-- Thumbnail preview -->
-                    <div th:if="${tour.imageUrl != null and !tour.imageUrl.isEmpty()}" class="flex items-center gap-3">
-                        <img th:src="${tour.imageUrl}" alt="Preview"
-                             class="w-24 h-16 object-cover rounded-lg border border-emerald-200 shadow-sm"/>
-                        <span class="text-xs text-gray-400">Ảnh hiện tại</span>
+                    <!-- Album ảnh hiện tại -->
+                    <div th:if="${tour.images != null and !tour.images.isEmpty()}" class="space-y-3">
+                        <label class="text-sm font-semibold text-gray-700 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-emerald-600 text-lg">photo_library</span>
+                            Album ảnh hiện tại (<span th:text="${tour.images.size()}">0</span>)
+                        </label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                            <div th:each="img : ${tour.images}" class="relative group rounded-xl overflow-hidden border border-emerald-100 shadow-sm aspect-video">
+                                <img th:src="${img.imageUrl}" alt="Tour image" class="w-full h-full object-cover"/>
+                                <!-- Delete button on hover -->
+                                <button type="button" th:onclick="'deleteGalleryImage(' + ${tour.id} + ', ' + ${img.id} + ')'"
+                                        class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white gap-1 text-xs font-medium cursor-pointer">
+                                    <span class="material-symbols-outlined text-xl">delete</span>
+                                    Xoá ảnh
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </fieldset>
 
@@ -229,7 +239,243 @@
             </form>
         </div>
 
+        <!-- ===== SECTION: QUẢN LÝ LỊCH TRÌNH (TIMELINE) ===== -->
+        <div th:if="${isEdit}" class="mt-8 bg-white rounded-2xl shadow-sm border border-emerald-100 overflow-hidden">
+            <div class="p-6 sm:p-8 space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-emerald-50 pb-4 gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-emerald-900 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-emerald-600">route</span>
+                            Lịch trình trải nghiệm (Timeline)
+                        </h2>
+                        <p class="text-xs text-gray-500 mt-1">Cấu hình các bước hoạt động chi tiết của tour theo thứ tự thời gian.</p>
+                    </div>
+                    <button type="button" onclick="openTimelineModal()"
+                            class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-4 py-2.5 rounded-xl transition duration-150 shadow-sm cursor-pointer hover:shadow">
+                        <span class="material-symbols-outlined text-base">add</span>
+                        Thêm bước mới
+                    </button>
+                </div>
+
+                <!-- Timeline Step List -->
+                <div th:if="${tour.timelines == null or tour.timelines.isEmpty()}" class="py-8 text-center text-gray-400 text-sm">
+                    <span class="material-symbols-outlined text-3xl mb-2 text-gray-300 block">event_busy</span>
+                    Chưa có bước lịch trình nào. Hãy click "Thêm bước mới" để bắt đầu!
+                </div>
+
+                <div th:if="${tour.timelines != null and !tour.timelines.isEmpty()}" class="space-y-4">
+                    <div th:each="step : ${tour.timelines}" class="flex flex-col sm:flex-row items-start gap-4 p-4 rounded-xl border border-emerald-50 hover:bg-emerald-50/20 transition">
+                        <!-- Left Icon / Order badge -->
+                        <div class="bg-emerald-100 text-emerald-800 text-xs font-bold rounded-lg w-8 h-8 flex items-center justify-center shrink-0">
+                            <span th:text="${step.sortOrder}">1</span>
+                        </div>
+                        
+                        <!-- Middle info -->
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span th:text="${step.timeSlot}" class="text-xs font-bold text-emerald-700 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-100">08:00 - 09:30</span>
+                                <h3 th:text="${step.title}" class="text-sm font-bold text-gray-800 truncate">Đón Khách</h3>
+                            </div>
+                            <p th:if="${step.locationTitle != null and !step.locationTitle.isEmpty()}" class="text-xs font-medium text-gray-500 mt-1 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">location_on</span>
+                                <span th:text="${step.locationTitle}">Địa điểm</span>
+                            </p>
+                            <p th:text="${step.description}" class="text-xs text-gray-600 mt-2 whitespace-pre-line">Mô tả chi tiết hoạt động...</p>
+                            
+                            <!-- Thumbnail of timeline step image if present -->
+                            <div th:if="${step.imageUrl != null and !step.imageUrl.isEmpty()}" class="mt-2">
+                                <img th:src="${step.imageUrl}" alt="Timeline Step Image" class="w-32 h-20 object-cover rounded-lg border border-emerald-100 shadow-sm"/>
+                            </div>
+                        </div>
+
+                        <!-- Right Actions -->
+                        <div class="flex items-center gap-1 shrink-0 self-end sm:self-start">
+                            <!-- Edit Button -->
+                            <button type="button" 
+                                    th:data-id="${step.id}"
+                                    th:data-timeslot="${step.timeSlot}"
+                                    th:data-title="${step.title}"
+                                    th:data-location="${step.locationTitle}"
+                                    th:data-description="${step.description}"
+                                    th:data-sortorder="${step.sortOrder}"
+                                    th:data-imageurl="${step.imageUrl}"
+                                    onclick="editTimelineStep(this)"
+                                    class="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg transition cursor-pointer">
+                                <span class="material-symbols-outlined text-lg">edit</span>
+                            </button>
+                            <!-- Delete Button -->
+                            <button type="button" th:onclick="'deleteTimelineStep(' + ${tour.id} + ', ' + ${step.id} + ')'"
+                                    class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition cursor-pointer">
+                                <span class="material-symbols-outlined text-lg">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
+
+    <!-- ===== TIMELINE MODAL DIALOG ===== -->
+    <div th:if="${isEdit}" id="timelineModal" class="fixed inset-0 z-[100] hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Overlay -->
+            <div class="fixed inset-0 bg-gray-500/75 backdrop-blur-sm transition-opacity" onclick="closeTimelineModal()"></div>
+
+            <!-- Center elements trick -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <!-- Modal Content -->
+            <div class="relative z-10 inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-emerald-50">
+                <form th:action="@{/staff/tours/{tourId}/timeline/save(tourId=${tour.id})}" method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
+                    <input type="hidden" id="stepId" name="id"/>
+                    
+                    <div class="flex justify-between items-center border-b border-emerald-50 pb-3">
+                        <h3 class="text-base font-bold text-emerald-900 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-emerald-600 text-lg">edit_road</span>
+                            <span id="modalTitleText">Thêm bước lịch trình mới</span>
+                        </h3>
+                        <button type="button" onclick="closeTimelineModal()" class="text-gray-400 hover:text-gray-600">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+
+                    <!-- Form fields -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1">
+                            <label for="stepTimeSlot" class="text-xs font-semibold text-gray-700">Khung thời gian *</label>
+                            <input type="text" id="stepTimeSlot" name="timeSlot" required placeholder="VD: 08:00 - 09:30"
+                                   class="border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-emerald-500"/>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label for="stepSortOrder" class="text-xs font-semibold text-gray-700">Thứ tự hiển thị *</label>
+                            <input type="number" id="stepSortOrder" name="sortOrder" required min="1" value="1"
+                                   class="border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-emerald-500"/>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <label for="stepTitle" class="text-xs font-semibold text-gray-700">Tiêu đề bước *</label>
+                        <input type="text" id="stepTitle" name="title" required placeholder="VD: Đón Khách Trải Nghiệm"
+                               class="border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-emerald-500"/>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <label for="stepLocation" class="text-xs font-semibold text-gray-700">Tên địa điểm</label>
+                        <input type="text" id="stepLocation" name="locationTitle" placeholder="VD: Nhà hát lớn Thành Phố"
+                               class="border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-emerald-500"/>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <label for="stepDescription" class="text-xs font-semibold text-gray-700">Mô tả hoạt động</label>
+                        <textarea id="stepDescription" name="description" rows="3" placeholder="Chi tiết hoạt động tại bước này..."
+                                  class="border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-emerald-500 resize-none"></textarea>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <label for="stepImageFile" class="text-xs font-semibold text-gray-700">Tải lên hình ảnh bước lịch trình</label>
+                        <input type="file" id="stepImageFile" name="timelineImageFile" accept="image/*"
+                               class="border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-emerald-500 cursor-pointer"/>
+                    </div>
+
+                    <div id="stepImagePreviewContainer" class="hidden flex items-center gap-2 border border-emerald-50 p-2 rounded-lg bg-emerald-50/20">
+                        <img id="stepImagePreview" src="" alt="Timeline Image Preview" class="w-16 h-12 object-cover rounded"/>
+                        <span class="text-[10px] text-gray-500">Ảnh hiện có của bước</span>
+                    </div>
+
+                    <div class="flex justify-end gap-2 pt-2 border-t border-emerald-50">
+                        <button type="button" onclick="closeTimelineModal()"
+                                class="bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold text-xs px-4 py-2 rounded-lg transition cursor-pointer">
+                            Hủy
+                        </button>
+                        <button type="submit"
+                                class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-5 py-2 rounded-lg transition cursor-pointer shadow-sm">
+                            Lưu bước lịch trình
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script actions for multi-image album and timeline step CRUD -->
+    <script th:inline="javascript">
+        // 1. DELETE GALLERY IMAGE
+        function deleteGalleryImage(tourId, imageId) {
+            if (confirm("Bạn có chắc chắn muốn xoá hình ảnh này khỏi album của Tour? Hành động này không thể hoàn tác.")) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/staff/tours/' + tourId + '/images/delete/' + imageId;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        // 2. TIMELINE MODAL MANAGEMENTS
+        const modal = document.getElementById('timelineModal');
+        if (modal) {
+            const stepIdInput = document.getElementById('stepId');
+            const timeSlotInput = document.getElementById('stepTimeSlot');
+            const sortOrderInput = document.getElementById('stepSortOrder');
+            const titleInput = document.getElementById('stepTitle');
+            const locationInput = document.getElementById('stepLocation');
+            const descInput = document.getElementById('stepDescription');
+            const fileInput = document.getElementById('stepImageFile');
+            const previewContainer = document.getElementById('stepImagePreviewContainer');
+            const previewImg = document.getElementById('stepImagePreview');
+            const modalTitle = document.getElementById('modalTitleText');
+
+            window.openTimelineModal = function() {
+                modalTitle.innerText = "Thêm bước lịch trình mới";
+                stepIdInput.value = "";
+                timeSlotInput.value = "";
+                sortOrderInput.value = "1";
+                titleInput.value = "";
+                locationInput.value = "";
+                descInput.value = "";
+                fileInput.value = "";
+                previewContainer.classList.add('hidden');
+                previewImg.src = "";
+                modal.classList.remove('hidden');
+            };
+
+            window.editTimelineStep = function(button) {
+                modalTitle.innerText = "Chỉnh sửa bước lịch trình";
+                stepIdInput.value = button.getAttribute('data-id') || "";
+                timeSlotInput.value = button.getAttribute('data-timeslot') || "";
+                sortOrderInput.value = button.getAttribute('data-sortorder') || "1";
+                titleInput.value = button.getAttribute('data-title') || "";
+                locationInput.value = button.getAttribute('data-location') || "";
+                descInput.value = button.getAttribute('data-description') || "";
+                fileInput.value = "";
+
+                const imgUrl = button.getAttribute('data-imageurl');
+                if (imgUrl && imgUrl.trim() !== "") {
+                    previewImg.src = imgUrl;
+                    previewContainer.classList.remove('hidden');
+                } else {
+                    previewContainer.classList.add('hidden');
+                    previewImg.src = "";
+                }
+
+                modal.classList.remove('hidden');
+            };
+
+            window.closeTimelineModal = function() {
+                modal.classList.add('hidden');
+            };
+
+            window.deleteTimelineStep = function(tourId, stepId) {
+                if (confirm("Bạn có chắc chắn muốn xoá bước lịch trình này?")) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '/staff/tours/' + tourId + '/timeline/delete/' + stepId;
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            };
+        }
+    </script>
 
 </body>
 </html>

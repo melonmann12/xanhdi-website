@@ -218,18 +218,26 @@
                     <img th:src="${tour.imageUrl}" th:alt="${tour.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" src=""/>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent md:hidden flex items-end p-4">
                         <span class="text-white font-label-md text-label-md bg-black/40 backdrop-blur-sm px-3 py-1 rounded-full flex items-center">
-                            <span class="material-symbols-outlined text-[16px] mr-1">photo_camera</span> 5 Ảnh
+                            <span class="material-symbols-outlined text-[16px] mr-1">photo_camera</span>
+                            <span th:text="${tour.images != null and !tour.images.isEmpty() ? tour.images.size() : (tour.timelines.size() + 1)} + ' Ảnh'">5 Ảnh</span>
                         </span>
                     </div>
                 </div>
                 <div class="hidden md:flex flex-col gap-4 h-full">
+                    <!-- Top-Right Image: 2nd image of gallery, or 1st image of timeline, or default placeholder -->
                     <div class="h-[calc(50%-8px)] overflow-hidden rounded-tr-3xl">
-                        <img th:src="${tour.timelines.size() > 0 ? tour.timelines[0].imageUrl : 'https://lh3.googleusercontent.com/aida-public/AB6AXuC5BjE3Jxi-5dz4Jt9fhuapEi-fyFzCnmx637liVNzYVGjftBTw-U9aCVmzz2e7atCKgZb6KeBYtitYq7y2MjQhxefgS4Wxt4S1skWjURoTQNz9Y090cDNt6YLe-l3WA_UihbI0oaqOjonodHYWVrRrqu7-46ETZHvPI1DZX2Fzf-B521bss5_od6PAAOP8sG0fNuqi_3OUmAEdtX18LdkzVeWwWr8KYdT-Z3J5NLh-V2qavB0b7fRmNBI1IXtv1e0pdL61qvL7ze0'}" alt="Timeline image" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"/>
+                        <img th:src="${tour.images != null and tour.images.size() > 1 ? tour.images[1].imageUrl : (tour.timelines.size() > 0 ? tour.timelines[0].imageUrl : 'https://lh3.googleusercontent.com/aida-public/AB6AXuC5BjE3Jxi-5dz4Jt9fhuapEi-fyFzCnmx637liVNzYVGjftBTw-U9aCVmzz2e7atCKgZb6KeBYtitYq7y2MjQhxefgS4Wxt4S1skWjURoTQNz9Y090cDNt6YLe-l3WA_UihbI0oaqOjonodHYWVrRrqu7-46ETZHvPI1DZX2Fzf-B521bss5_od6PAAOP8sG0fNuqi_3OUmAEdtX18LdkzVeWwWr8KYdT-Z3J5NLh-V2qavB0b7fRmNBI1IXtv1e0pdL61qvL7ze0')}" alt="Gallery/Timeline Image 1" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"/>
                     </div>
+                    <!-- Bottom-Right Image: 3rd image of gallery, or 2nd image of timeline, or default placeholder -->
                     <div class="h-[calc(50%-8px)] relative overflow-hidden rounded-br-3xl">
-                        <img th:src="${tour.timelines.size() > 1 ? tour.timelines[1].imageUrl : 'https://lh3.googleusercontent.com/aida-public/AB6AXuDzTrwWwH6RwCfptdKUVynXQbTqwhcNzu9Jae2-LDuUclhN3lppmMBPI7S5TxdSM3nk2hyf4NUHCd-2wiioC5g1u67S3vWD-loHtadbJFjXoWMPED6kp1hSmJ2sucR70GwRopFjflMGWXwgAJvdMNidggnLc1xxlzCdzX9pZFBABahIx7admEOzt-RDS9xpuuJY8P2C7w-ONFCC4dyIjvNRVCxkAV9ggvPGf_bjFUCF_FHXaHIPc73nm0kAjNOLbWwNhLBXQfJ_ANU'}" alt="Timeline image 2" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"/>
-                        <div class="absolute inset-0 bg-black/30 flex items-center justify-center cursor-pointer hover:bg-black/25 transition-colors">
-                            <span class="text-white font-headline-md text-headline-md font-bold">+3</span>
+                        <img th:src="${tour.images != null and tour.images.size() > 2 ? tour.images[2].imageUrl : (tour.timelines.size() > 1 ? tour.timelines[1].imageUrl : 'https://lh3.googleusercontent.com/aida-public/AB6AXuDzTrwWwH6RwCfptdKUVynXQbTqwhcNzu9Jae2-LDuUclhN3lppmMBPI7S5TxdSM3nk2hyf4NUHCd-2wiioC5g1u67S3vWD-loHtadbJFjXoWMPED6kp1hSmJ2sucR70GwRopFjflMGWXwgAJvdMNidggnLc1xxlzCdzX9pZFBABahIx7admEOzt-RDS9xpuuJY8P2C7w-ONFCC4dyIjvNRVCxkAV9ggvPGf_bjFUCF_FHXaHIPc73nm0kAjNOLbWwNhLBXQfJ_ANU')}" alt="Gallery/Timeline Image 2" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"/>
+                        
+                        <!-- Overlay for remaining images count -->
+                        <div th:if="${tour.images != null and tour.images.size() > 3}" class="absolute inset-0 bg-black/30 flex items-center justify-center cursor-pointer hover:bg-black/25 transition-colors">
+                            <span th:text="'+' + (${tour.images.size() - 3})" class="text-white font-headline-md text-headline-md font-bold">+3</span>
+                        </div>
+                        <div th:if="${(tour.images == null or tour.images.size() <= 3) and tour.timelines.size() > 2}" class="absolute inset-0 bg-black/30 flex items-center justify-center cursor-pointer hover:bg-black/25 transition-colors">
+                            <span th:text="'+' + (${tour.timelines.size() - 2})" class="text-white font-headline-md text-headline-md font-bold">+3</span>
                         </div>
                     </div>
                 </div>
@@ -263,7 +271,7 @@
                                 <span class="material-symbols-outlined text-[16px] text-secondary font-bold" th:text="${timeline.icon}">directions_bus</span>
                             </div>
                             <h3 class="font-headline-md text-body-lg font-bold text-primary group-hover:text-secondary transition-colors"
-                                th:text="${timeline.timeSlot} + ${timeline.locationTitle != null ? ' - ' + timeline.locationTitle : ''}">07:30 - Khởi hành từ TP.HCM</h3>
+                                th:text="${timeline.timeSlot} + ${timeline.title != null ? ' - ' + timeline.title : ''} + ${timeline.locationTitle != null and !timeline.locationTitle.isEmpty() ? ' (' + timeline.locationTitle + ')' : ''}">07:30 - Khởi hành từ TP.HCM</h3>
                             <p class="text-on-surface-variant mt-2 font-body-md leading-relaxed" th:text="${timeline.description}">
                                 Xe đón quý khách tại điểm hẹn trung tâm, bắt đầu hành trình di chuyển đến Cần Giờ...
                             </p>

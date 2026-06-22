@@ -49,7 +49,13 @@ public class Tour {
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<TourImage> images = new ArrayList<>();
+
     public Tour() {}
+
+    public List<TourImage> getImages() { return images; }
+    public void setImages(List<TourImage> images) { this.images = images; }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

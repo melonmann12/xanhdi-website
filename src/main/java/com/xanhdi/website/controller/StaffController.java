@@ -3,15 +3,20 @@ package com.xanhdi.website.controller;
 import com.xanhdi.website.model.Booking;
 import com.xanhdi.website.model.StaffUser;
 import com.xanhdi.website.model.Tour;
+import com.xanhdi.website.model.TourImage;
+import com.xanhdi.website.model.TourTimeline;
 import com.xanhdi.website.repository.BookingRepository;
 import com.xanhdi.website.repository.StaffUserRepository;
 import com.xanhdi.website.repository.TourRepository;
+import com.xanhdi.website.repository.TourTimelineRepository;
 import com.xanhdi.website.service.EmailService;
+import com.xanhdi.website.service.StorageService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -24,16 +29,22 @@ public class StaffController {
     private final TourRepository tourRepository;
     private final BookingRepository bookingRepository;
     private final EmailService emailService;
+    private final StorageService storageService;
+    private final TourTimelineRepository tourTimelineRepository;
 
     @Autowired
     public StaffController(StaffUserRepository staffUserRepository,
                            TourRepository tourRepository,
                            BookingRepository bookingRepository,
-                           EmailService emailService) {
+                           EmailService emailService,
+                           StorageService storageService,
+                           TourTimelineRepository tourTimelineRepository) {
         this.staffUserRepository = staffUserRepository;
         this.tourRepository = tourRepository;
         this.bookingRepository = bookingRepository;
         this.emailService = emailService;
+        this.storageService = storageService;
+        this.tourTimelineRepository = tourTimelineRepository;
     }
 
     // =========================================================
@@ -173,7 +184,7 @@ public class StaffController {
             @RequestParam(value = "activity", required = false) String activity,
             @RequestParam(value = "tag", required = false) String tag,
             @RequestParam(value = "departure", required = false) String departure,
-            @RequestParam(value = "imageUrl", required = false) String imageUrl,
+            @RequestParam(value = "galleryFiles", required = false) MultipartFile[] galleryFiles,
             @RequestParam(value = "description", required = false) String description,
             @RequestParam(value = "inclusions", required = false) String inclusions,
             @RequestParam(value = "journalContent", required = false) String journalContent,
@@ -194,12 +205,31 @@ public class StaffController {
         tour.setActivity(activity);
         tour.setTag(tag);
         tour.setDeparture(departure);
-        tour.setImageUrl(imageUrl);
         tour.setDescription(description);
         tour.setInclusions(inclusions);
         tour.setJournalContent(journalContent);
         tour.setJournalQuote(journalQuote);
         tour.setGuideName(guideName);
+
+        // Upload gallery files and add to tour images
+        if (galleryFiles != null && galleryFiles.length > 0) {
+            for (MultipartFile file : galleryFiles) {
+                if (file != null && !file.isEmpty()) {
+                    try {
+                        String uploadedUrl = storageService.uploadFile(file);
+                        TourImage tourImage = new TourImage(uploadedUrl, tour);
+                        tour.getImages().add(tourImage);
+                    } catch (Exception e) {
+                        System.err.println("Failed to upload gallery file: " + e.getMessage());
+                    }
+                }
+            }
+        }
+
+        // Set primary imageUrl to first gallery image if present
+        if (!tour.getImages().isEmpty()) {
+            tour.setImageUrl(tour.getImages().get(0).getImageUrl());
+        }
 
         tourRepository.save(tour);
 
@@ -216,7 +246,7 @@ public class StaffController {
             @RequestParam(value = "activity", required = false) String activity,
             @RequestParam(value = "tag", required = false) String tag,
             @RequestParam(value = "departure", required = false) String departure,
-            @RequestParam(value = "imageUrl", required = false) String imageUrl,
+            @RequestParam(value = "galleryFiles", required = false) MultipartFile[] galleryFiles,
             @RequestParam(value = "description", required = false) String description,
             @RequestParam(value = "inclusions", required = false) String inclusions,
             @RequestParam(value = "journalContent", required = false) String journalContent,
@@ -239,17 +269,141 @@ public class StaffController {
         tour.setActivity(activity);
         tour.setTag(tag);
         tour.setDeparture(departure);
-        tour.setImageUrl(imageUrl);
         tour.setDescription(description);
         tour.setInclusions(inclusions);
         tour.setJournalContent(journalContent);
         tour.setJournalQuote(journalQuote);
         tour.setGuideName(guideName);
 
+        // Upload gallery files and add to tour images
+        if (galleryFiles != null && galleryFiles.length > 0) {
+            for (MultipartFile file : galleryFiles) {
+                if (file != null && !file.isEmpty()) {
+                    try {
+                        String uploadedUrl = storageService.uploadFile(file);
+                        TourImage tourImage = new TourImage(uploadedUrl, tour);
+                        tour.getImages().add(tourImage);
+                    } catch (Exception e) {
+                        System.err.println("Failed to upload gallery file: " + e.getMessage());
+                    }
+                }
+            }
+        }
+
+        // Set primary imageUrl to first gallery image if current is blank and we have images
+        if ((tour.getImageUrl() == null || tour.getImageUrl().isEmpty()) && !tour.getImages().isEmpty()) {
+            tour.setImageUrl(tour.getImages().get(0).getImageUrl());
+        }
+
         tourRepository.save(tour);
 
         ra.addFlashAttribute("dashMsg", "Tour \"" + title + "\" đã được cập nhật!");
         return "redirect:/staffdashboard";
+    }
+
+    @PostMapping({"/staff/tours/{tourId}/images/delete/{imageId}", "/staff/tours/{tourId}/images/delete/{imageId}/"})
+    public String deleteGalleryImage(
+            @PathVariable("tourId") Long tourId,
+            @PathVariable("imageId") Long imageId,
+            HttpSession session,
+            RedirectAttributes ra) {
+
+        if (session.getAttribute("staff") == null) return "redirect:/staff/login";
+
+        Optional<Tour> tourOpt = tourRepository.findById(tourId);
+        if (tourOpt.isPresent()) {
+            Tour tour = tourOpt.get();
+            tour.getImages().removeIf(img -> {
+                if (img.getId().equals(imageId)) {
+                    if (img.getImageUrl().equals(tour.getImageUrl())) {
+                        tour.setImageUrl(null);
+                    }
+                    return true;
+                }
+                return false;
+            });
+
+            if (tour.getImageUrl() == null && !tour.getImages().isEmpty()) {
+                tour.setImageUrl(tour.getImages().get(0).getImageUrl());
+            }
+
+            tourRepository.save(tour);
+            ra.addFlashAttribute("dashMsg", "Đã xoá ảnh khỏi album thành công.");
+        }
+        return "redirect:/staff/tours/edit/" + tourId;
+    }
+
+    @PostMapping({"/staff/tours/{tourId}/timeline/save", "/staff/tours/{tourId}/timeline/save/"})
+    public String saveTimelineStep(
+            @PathVariable("tourId") Long tourId,
+            @RequestParam(value = "id", required = false) Long id,
+            @RequestParam("timeSlot") String timeSlot,
+            @RequestParam("title") String title,
+            @RequestParam(value = "locationTitle", required = false) String locationTitle,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "sortOrder", defaultValue = "1") Integer sortOrder,
+            @RequestParam(value = "timelineImageFile", required = false) MultipartFile file,
+            HttpSession session,
+            RedirectAttributes ra) {
+
+        if (session.getAttribute("staff") == null) return "redirect:/staff/login";
+
+        Tour tour = tourRepository.findById(tourId).orElse(null);
+        if (tour == null) {
+            ra.addFlashAttribute("dashMsg", "Tour không tồn tại.");
+            return "redirect:/staffdashboard";
+        }
+
+        TourTimeline timeline;
+        if (id != null) {
+            timeline = tourTimelineRepository.findById(id).orElse(new TourTimeline());
+        } else {
+            timeline = new TourTimeline();
+            timeline.setTour(tour);
+        }
+
+        timeline.setTimeSlot(timeSlot.trim());
+        timeline.setTitle(title.trim());
+        timeline.setLocationTitle(locationTitle != null ? locationTitle.trim() : null);
+        timeline.setDescription(description != null ? description.trim() : null);
+        timeline.setSortOrder(sortOrder);
+        if (timeline.getIcon() == null || timeline.getIcon().isEmpty()) {
+            timeline.setIcon("location_on");
+        }
+
+        if (file != null && !file.isEmpty()) {
+            try {
+                String imageUrl = storageService.uploadFile(file);
+                timeline.setImageUrl(imageUrl);
+            } catch (Exception e) {
+                System.err.println("=== ERROR UPLOADING TIMELINE IMAGE ===");
+                e.printStackTrace();
+                ra.addFlashAttribute("dashMsg", "Lịch trình đã lưu nhưng tải ảnh thất bại: " + e.getMessage());
+            }
+        }
+
+        tourTimelineRepository.save(timeline);
+        if (ra.getFlashAttributes().get("dashMsg") == null) {
+            ra.addFlashAttribute("dashMsg", "Lịch trình đã được cập nhật thành công!");
+        }
+        return "redirect:/staff/tours/edit/" + tourId;
+    }
+
+    @PostMapping({"/staff/tours/{tourId}/timeline/delete/{id}", "/staff/tours/{tourId}/timeline/delete/{id}/"})
+    public String deleteTimelineStep(
+            @PathVariable("tourId") Long tourId,
+            @PathVariable("id") Long id,
+            HttpSession session,
+            RedirectAttributes ra) {
+
+        if (session.getAttribute("staff") == null) return "redirect:/staff/login";
+
+        tourTimelineRepository.findById(id).ifPresent(t -> {
+            tourTimelineRepository.delete(t);
+        });
+
+        ra.addFlashAttribute("dashMsg", "Đã xoá bước lịch trình.");
+        return "redirect:/staff/tours/edit/" + tourId;
     }
 
     @PostMapping({"/staff/tours/delete/{id}", "/staff/tours/delete/{id}/"})
