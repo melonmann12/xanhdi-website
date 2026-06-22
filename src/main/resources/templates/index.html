@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Xanh Đi - Giải Pháp Kỳ Nghỉ Quốc Tế</title>
+    <title>Xanh Đi - Khám Phá Trải Nghiệm Phú Yên</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap"
         rel="stylesheet">
@@ -133,47 +133,8 @@
 <body
     class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden selection:bg-secondary-container selection:text-on-secondary-container">
 
-    <!-- TopNavBar -->
-    <nav class="w-full z-50 fixed top-0 transition-all duration-300 bg-surface/80 backdrop-blur-md shadow-sm border-b border-surface-variant/20"
-        id="main-nav">
-        <div
-            class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
-            <a class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2 hover:opacity-80 transition-opacity"
-                th:href="@{/}" href="#">
-                <span class="material-symbols-outlined text-secondary text-3xl">eco</span>
-                Xanh Đi
-            </a>
-            <div class="hidden md:flex items-center gap-8 font-body-md text-label-md">
-                <a class="text-primary font-bold border-b-2 border-primary pb-1" href="#kham-pha">Khám phá</a>
-                <a class="text-on-surface-variant hover:text-primary transition-colors" th:href="@{/tours}" href="#diem-den">Điểm đến</a>
-                <a class="text-on-surface-variant hover:text-primary transition-colors" href="#uy-tin">Uy tín</a>
-                <a class="text-on-surface-variant hover:text-primary transition-colors" href="#lien-he">Liên hệ</a>
-            </div>
-            <div class="flex items-center gap-4">
-                <button
-                    class="hidden md:block font-body-md text-label-md text-primary font-bold hover:opacity-80 transition-opacity">
-                    Đăng nhập
-                </button>
-                <button id="mobile-menu-btn"
-                    class="md:hidden text-primary focus:outline-none hover:text-secondary transition-colors">
-                    <span class="material-symbols-outlined text-3xl">menu</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu"
-            class="hidden md:hidden bg-surface/95 backdrop-blur-md border-t border-surface-variant/30 px-margin-mobile py-4 space-y-4">
-            <a class="block text-primary font-bold" href="#kham-pha">Khám phá</a>
-            <a class="block text-on-surface-variant hover:text-primary transition-colors" th:href="@{/tours}" href="#diem-den">Điểm đến</a>
-            <a class="block text-on-surface-variant hover:text-primary transition-colors" href="#uy-tin">Uy tín</a>
-            <a class="block text-on-surface-variant hover:text-primary transition-colors" href="#lien-he">Liên hệ</a>
-            <button
-                class="w-full text-left font-body-md text-label-md text-primary font-bold py-2 border-t border-surface-variant/30">
-                Đăng nhập
-            </button>
-        </div>
-    </nav>
+    <!-- TopNavBar (fragment) -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <!-- Hero Section -->
     <header class="relative w-full h-[819px] min-h-[600px] flex items-center justify-start overflow-hidden pt-20">
@@ -189,7 +150,7 @@
             class="relative z-10 text-left px-margin-mobile md:px-margin-desktop max-w-4xl flex flex-col items-start gap-6 mt-16 mr-auto">
             <h1
                 class="font-display-lg text-[40px] sm:text-display-lg md:text-[72px] leading-tight text-white drop-shadow-lg">
-                Giải Pháp Kỳ Nghỉ Quốc Tế.
+                Khám Phá Trải Nghiệm Phú Yên
             </h1>
             <p class="font-body-lg text-[16px] sm:text-body-lg text-white/90 max-w-2xl drop-shadow-md">
                 Trải nghiệm du lịch sinh thái đẳng cấp với những hành trình được thiết kế tỉ mỉ, mang lại sự bình yên và
@@ -260,20 +221,26 @@
                             th:src="${tour.imageUrl}" th:alt="${tour.title}" src="">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent">
                         </div>
-                        <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm text-primary px-3 py-1.5 rounded-full font-label-sm text-label-sm flex items-center gap-1 font-bold shadow-sm">
-                            <span class="material-symbols-outlined text-[16px] text-secondary fill">star</span> 
+                        <div
+                            class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm text-primary px-3 py-1.5 rounded-full font-label-sm text-label-sm flex items-center gap-1 font-bold shadow-sm">
+                            <span class="material-symbols-outlined text-[16px] text-secondary fill">star</span>
                             <span th:text="${tour.rating}">4.8</span>
                         </div>
                     </div>
                     <div class="p-6 flex-grow flex flex-col justify-between">
                         <div>
-                            <h3 th:text="${tour.title}" class="font-headline-md text-headline-md text-on-surface mb-2 font-bold">Indonesia</h3>
-                            <p th:text="${tour.activity}" class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Khám phá ruộng bậc thang xanh mướt...</p>
+                            <h3 th:text="${tour.title}"
+                                class="font-headline-md text-headline-md text-on-surface mb-2 font-bold">Indonesia</h3>
+                            <p th:text="${tour.activity}"
+                                class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Khám phá ruộng
+                                bậc thang xanh mướt...</p>
                         </div>
                         <div class="flex items-center justify-between mt-6 pt-4 border-t border-surface-variant/60">
-                            <div class="flex items-center gap-1 font-label-md text-label-md text-primary font-bold group-hover:text-secondary transition-colors">
+                            <div
+                                class="flex items-center gap-1 font-label-md text-label-md text-primary font-bold group-hover:text-secondary transition-colors">
                                 Khám phá thêm
-                                <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                <span
+                                    class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
                             </div>
                         </div>
                     </div>
@@ -282,11 +249,15 @@
         </section>
 
         <!-- EXPLORE Section (4-column Grid) -->
-        <section class="py-12 md:py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto bg-surface-container-low rounded-[3rem]" id="kham-pha">
+        <section
+            class="py-12 md:py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto bg-surface-container-low rounded-[3rem]"
+            id="kham-pha">
             <!-- Header Block with dedicated spacing -->
             <div class="text-center mb-10 md:mb-12 px-4">
-                <span class="font-label-sm text-label-sm text-secondary tracking-widest uppercase mb-2 block font-bold">EXPLORE</span>
-                <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold">
+                <span
+                    class="font-label-sm text-label-sm text-secondary tracking-widest uppercase mb-2 block font-bold">EXPLORE</span>
+                <h2
+                    class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold">
                     Điểm đến thiết kế riêng cho bạn
                 </h2>
                 <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto mt-4">
@@ -298,56 +269,64 @@
             <div class="px-4 md:px-8 pb-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 w-full">
                     <!-- Card 1: Thác Nước Ẩn Mình -->
-                    <a th:href="@{/tours}" class="relative rounded-3xl overflow-hidden group cursor-pointer h-[350px] md:h-[400px] border border-surface-variant/20 soft-shadow hover-lift block">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                             data-alt="A hidden waterfall flowing inside a dark, mysterious cave with sunbeams." 
-                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9Mz29aka1wL_e6NuHaI_EknVN4rkifW1UiBoJ5_QpQ7SsN9147eom_5vxOfxHMvwuUmNkudC5fIhCI7hCdCacvCgjjGM99rJsKowEX7tn8UOxVjkGa8ukMFIaXbbKyHUAGB71SJvqD5P6RtUkahOqCVFXLqLg3IVEL-lVc06sOqOt9bgTSBJe1z2_S9kMxo_HKLlv0HfJrJFZ8eIZZsviQeyJ2BVNANAZkyMPCqsK0Hhtnd7L2us_-8pLHjZc8wsutuhqVIP342U">
+                    <a th:href="@{/tours}"
+                        class="relative rounded-3xl overflow-hidden group cursor-pointer h-[350px] md:h-[400px] border border-surface-variant/20 soft-shadow hover-lift block">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            data-alt="A hidden waterfall flowing inside a dark, mysterious cave with sunbeams."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9Mz29aka1wL_e6NuHaI_EknVN4rkifW1UiBoJ5_QpQ7SsN9147eom_5vxOfxHMvwuUmNkudC5fIhCI7hCdCacvCgjjGM99rJsKowEX7tn8UOxVjkGa8ukMFIaXbbKyHUAGB71SJvqD5P6RtUkahOqCVFXLqLg3IVEL-lVc06sOqOt9bgTSBJe1z2_S9kMxo_HKLlv0HfJrJFZ8eIZZsviQeyJ2BVNANAZkyMPCqsK0Hhtnd7L2us_-8pLHjZc8wsutuhqVIP342U">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                         <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
                             <h3 class="font-headline-md text-headline-md text-white font-bold">Thác Nước Ẩn Mình</h3>
-                            <span class="bg-white/20 backdrop-blur-md text-white border border-white/40 px-4 py-2 rounded-full font-label-sm text-label-sm hover:bg-white hover:text-primary transition-all duration-300 text-center">
+                            <span
+                                class="bg-white/20 backdrop-blur-md text-white border border-white/40 px-4 py-2 rounded-full font-label-sm text-label-sm hover:bg-white hover:text-primary transition-all duration-300 text-center">
                                 Xem thêm
                             </span>
                         </div>
                     </a>
 
                     <!-- Card 2: Vịnh Biển Kín -->
-                    <a th:href="@{/tours}" class="relative rounded-3xl overflow-hidden group cursor-pointer h-[350px] md:h-[400px] border border-surface-variant/20 soft-shadow hover-lift block">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                             data-alt="A pristine, secluded beach cove with turquoise water and dramatic limestone cliffs." 
-                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIp5o9_BEpy846EOMaf5gpT5N4z4idgVyaOSJJEmNmluyB4tFT2IOJmju8rqvQS6uApISTFefD5Bqp4A4eaoynJPyk4_vHzA-5c_qRybXA6bkW7l5LFzYvYzfvBw8O-nEb8meo6JCNvw_PUOaO7Q3TlVI-8VNQtBD_V8tRS5rh01WHnHk11nfMmMI4wVLD8dnxf9Lv5RLQ9INjNnwSuHuHPNZ9z1jHWUW1mxB-qEQiRxQHYwe_w11nbGfe-M7C5u3cdfP_UsKWkvc">
+                    <a th:href="@{/tours}"
+                        class="relative rounded-3xl overflow-hidden group cursor-pointer h-[350px] md:h-[400px] border border-surface-variant/20 soft-shadow hover-lift block">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            data-alt="A pristine, secluded beach cove with turquoise water and dramatic limestone cliffs."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIp5o9_BEpy846EOMaf5gpT5N4z4idgVyaOSJJEmNmluyB4tFT2IOJmju8rqvQS6uApISTFefD5Bqp4A4eaoynJPyk4_vHzA-5c_qRybXA6bkW7l5LFzYvYzfvBw8O-nEb8meo6JCNvw_PUOaO7Q3TlVI-8VNQtBD_V8tRS5rh01WHnHk11nfMmMI4wVLD8dnxf9Lv5RLQ9INjNnwSuHuHPNZ9z1jHWUW1mxB-qEQiRxQHYwe_w11nbGfe-M7C5u3cdfP_UsKWkvc">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                         <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
                             <h3 class="font-headline-md text-headline-md text-white font-bold">Vịnh Biển Kín</h3>
-                            <span class="bg-white/20 backdrop-blur-md text-white border border-white/40 px-4 py-2 rounded-full font-label-sm text-label-sm hover:bg-white hover:text-primary transition-all duration-300 text-center">
+                            <span
+                                class="bg-white/20 backdrop-blur-md text-white border border-white/40 px-4 py-2 rounded-full font-label-sm text-label-sm hover:bg-white hover:text-primary transition-all duration-300 text-center">
                                 Xem thêm
                             </span>
                         </div>
                     </a>
 
                     <!-- Card 3: Rừng Già -->
-                    <a th:href="@{/tours}" class="relative rounded-3xl overflow-hidden group cursor-pointer h-[350px] md:h-[400px] border border-surface-variant/20 soft-shadow hover-lift block">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                             data-alt="Ancient, moss-covered stone stairs in a forest." 
-                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1VZZ2DgYDU19B5igClmQvwOPP8g63eSQRlaS9_y7jowVl8jKqZSf75NmsGz-6DG9mp0PmchZ6ABYx0dhpVl9JhZzKCrY7kLCmYfsklGJatZeMilAVqECk-t_ELkIU95kDoNPf_qz4IF55U2EbrxCbSij8xb5yZ5rA0_KD41xvvmFQJcqmiCw3zlpdXG98y9B0AXS4kYa1rK8fs7WVEE7wWJod50ne8pSdTZL9iwiw-VTgYsr5MG5sRS0DVCwaqXbwu7KR8QXDdF8">
+                    <a th:href="@{/tours}"
+                        class="relative rounded-3xl overflow-hidden group cursor-pointer h-[350px] md:h-[400px] border border-surface-variant/20 soft-shadow hover-lift block">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            data-alt="Ancient, moss-covered stone stairs in a forest."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1VZZ2DgYDU19B5igClmQvwOPP8g63eSQRlaS9_y7jowVl8jKqZSf75NmsGz-6DG9mp0PmchZ6ABYx0dhpVl9JhZzKCrY7kLCmYfsklGJatZeMilAVqECk-t_ELkIU95kDoNPf_qz4IF55U2EbrxCbSij8xb5yZ5rA0_KD41xvvmFQJcqmiCw3zlpdXG98y9B0AXS4kYa1rK8fs7WVEE7wWJod50ne8pSdTZL9iwiw-VTgYsr5MG5sRS0DVCwaqXbwu7KR8QXDdF8">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                         <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
                             <h3 class="font-headline-md text-headline-md text-white font-bold">Rừng Già</h3>
-                            <span class="bg-white/20 backdrop-blur-md text-white border border-white/40 px-4 py-2 rounded-full font-label-sm text-label-sm hover:bg-white hover:text-primary transition-all duration-300 text-center">
+                            <span
+                                class="bg-white/20 backdrop-blur-md text-white border border-white/40 px-4 py-2 rounded-full font-label-sm text-label-sm hover:bg-white hover:text-primary transition-all duration-300 text-center">
                                 Xem thêm
                             </span>
                         </div>
                     </a>
 
                     <!-- Card 4: Núi Non Tĩnh Lặng -->
-                    <a th:href="@{/tours}" class="relative rounded-3xl overflow-hidden group cursor-pointer h-[350px] md:h-[400px] border border-surface-variant/20 soft-shadow hover-lift block">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                             data-alt="Mist-enshrouded mountain valley." 
-                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmAVxbHR0ClqDjzGzXwfaxGi3vU7RjOsWqpgfDa6Fdt-e-gxgderQ-RRXsporBXpzKP-uFxTm9VobQCo3AtgiN-_RuFvEBO38o8cg-qf4UdYrfitErCtXMSQURpn4ozZ5VS0WyWh8aTSV1Q_dl2McebxhF_9xxOYo0Q7DaIWcHoEtUzBRPFa4uT4iaVqsjVv5NYUIgicJZa986_v-mdSt1a9BdMQWQLZ0FrIrbyVotcvPvmAwgBrThEkZNeXVTeSGh5LL9b00TCKY">
+                    <a th:href="@{/tours}"
+                        class="relative rounded-3xl overflow-hidden group cursor-pointer h-[350px] md:h-[400px] border border-surface-variant/20 soft-shadow hover-lift block">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            data-alt="Mist-enshrouded mountain valley."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmAVxbHR0ClqDjzGzXwfaxGi3vU7RjOsWqpgfDa6Fdt-e-gxgderQ-RRXsporBXpzKP-uFxTm9VobQCo3AtgiN-_RuFvEBO38o8cg-qf4UdYrfitErCtXMSQURpn4ozZ5VS0WyWh8aTSV1Q_dl2McebxhF_9xxOYo0Q7DaIWcHoEtUzBRPFa4uT4iaVqsjVv5NYUIgicJZa986_v-mdSt1a9BdMQWQLZ0FrIrbyVotcvPvmAwgBrThEkZNeXVTeSGh5LL9b00TCKY">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                         <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
                             <h3 class="font-headline-md text-headline-md text-white font-bold">Núi Non Tĩnh Lặng</h3>
-                            <span class="bg-white/20 backdrop-blur-md text-white border border-white/40 px-4 py-2 rounded-full font-label-sm text-label-sm hover:bg-white hover:text-primary transition-all duration-300 text-center">
+                            <span
+                                class="bg-white/20 backdrop-blur-md text-white border border-white/40 px-4 py-2 rounded-full font-label-sm text-label-sm hover:bg-white hover:text-primary transition-all duration-300 text-center">
                                 Xem thêm
                             </span>
                         </div>
@@ -385,24 +364,27 @@
                             <h4 th:text="${tour.title}"
                                 class="font-headline-md text-[18px] text-on-surface mb-1 font-bold group-hover:text-secondary transition-colors line-clamp-2">
                                 Vách Đá Hùng Vĩ</h4>
-                            <div class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm mb-3">
-                                <span class="material-symbols-outlined text-[14px]">schedule</span> 
+                            <div
+                                class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm mb-3">
+                                <span class="material-symbols-outlined text-[14px]">schedule</span>
                                 <span th:text="${tour.duration}">1 Ngày</span>
                             </div>
                             <div class="flex items-center gap-1 mb-4">
                                 <div class="flex text-secondary text-[14px]">
-                                    <span th:each="i : ${#numbers.sequence(1, 5)}" 
-                                          class="material-symbols-outlined text-sm"
-                                          th:classappend="${i <= tour.rating} ? 'fill' : ''"
-                                          th:text="${i <= tour.rating} ? 'star' : 'star_border'">star</span>
+                                    <span th:each="i : ${#numbers.sequence(1, 5)}"
+                                        class="material-symbols-outlined text-sm"
+                                        th:classappend="${i <= tour.rating} ? 'fill' : ''"
+                                        th:text="${i <= tour.rating} ? 'star' : 'star_border'">star</span>
                                 </div>
-                                <span th:text="'(' + ${tour.reviewCount} + ')'" class="text-on-surface-variant font-label-sm text-[12px] font-bold">(120)</span>
+                                <span th:text="'(' + ${tour.reviewCount} + ')'"
+                                    class="text-on-surface-variant font-label-sm text-[12px] font-bold">(120)</span>
                             </div>
                         </div>
                         <div class="flex justify-between items-end border-t border-surface-variant/60 pt-4">
                             <div>
                                 <span class="text-on-surface-variant font-label-sm text-[12px]">Từ</span>
-                                <div th:text="${#numbers.formatDecimal(tour.price, 0, 'COMMA', 0, 'POINT')} + ' đ'" class="font-headline-md text-[20px] text-primary font-bold">1.190.000 đ</div>
+                                <div th:text="${#numbers.formatDecimal(tour.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"
+                                    class="font-headline-md text-[20px] text-primary font-bold">1.190.000 đ</div>
                             </div>
                             <a th:href="@{/tour-detail/{id}(id=${tour.id})}"
                                 class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center hover:bg-secondary hover:scale-105 transition-all duration-300 shadow-md">
@@ -537,11 +519,9 @@
             class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-16 max-w-container-max mx-auto">
             <!-- Brand Column -->
             <div class="col-span-1 md:col-span-2 pr-0 md:pr-12">
-                <div class="font-headline-md text-headline-md text-on-primary font-bold mb-6 flex items-center gap-2">
-                    <div class="w-8 h-8 bg-secondary rounded flex items-center justify-center shadow-sm">
-                        <span class="material-symbols-outlined text-white text-[20px]">eco</span>
-                    </div>
-                    Xanh Đi
+                <div class="mb-6">
+                    <img th:src="@{/images/logo.png}" alt="Xanh Đi Logo"
+                        class="h-10 w-auto object-contain brightness-0 invert">
                 </div>
                 <p class="text-on-primary/80 mb-8 max-w-md">
                     Đừng bỏ lỡ những chương trình khuyến mãi hấp dẫn. Theo dõi mạng xã hội của chúng tôi để cập nhật
@@ -621,25 +601,9 @@
     </footer>
 
     <script>
-        // Navbar scroll effect
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('main-nav');
-            if (window.scrollY > 50) {
-                nav.classList.add('bg-surface/95', 'shadow-sm');
-                nav.classList.remove('bg-transparent', 'backdrop-blur-md');
-            } else {
-                nav.classList.remove('bg-surface/95', 'shadow-sm');
-                nav.classList.add('bg-transparent', 'backdrop-blur-md');
-            }
-        });
-
-        // Mobile menu toggle
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+        // Page-specific scripts for index.html
     </script>
+
 
 </body>
 

@@ -191,40 +191,8 @@
 </head>
 <body class="bg-background text-on-background min-h-screen flex flex-col antialiased selection:bg-secondary-container selection:text-on-secondary-container">
 
-<!-- TopNavBar -->
-<nav class="w-full z-50 fixed top-0 transition-all duration-300 bg-surface/85 backdrop-blur-md shadow-sm border-b border-surface-variant/20" id="main-nav">
-    <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
-        <a class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2 hover:opacity-80 transition-opacity" th:href="@{/}" href="/">
-            <span class="material-symbols-outlined text-secondary text-3xl">eco</span>
-            Xanh Đi
-        </a>
-        <div class="hidden md:flex items-center gap-8 font-body-md text-label-md">
-            <a class="text-on-surface-variant hover:text-primary transition-colors" th:href="@{/#kham-pha}" href="/#kham-pha">Khám phá</a>
-            <a class="text-primary font-bold border-b-2 border-primary pb-1" th:href="@{/tours}" href="/tours">Điểm đến</a>
-            <a class="text-on-surface-variant hover:text-primary transition-colors" href="/#uy-tin">Uy tín</a>
-            <a class="text-on-surface-variant hover:text-primary transition-colors" href="/#lien-he">Liên hệ</a>
-        </div>
-        <div class="flex items-center gap-4">
-            <button class="hidden md:block font-body-md text-label-md text-primary font-bold hover:opacity-80 transition-opacity">
-                Đăng nhập
-            </button>
-            <button id="mobile-menu-btn" class="md:hidden text-primary focus:outline-none hover:text-secondary transition-colors">
-                <span class="material-symbols-outlined text-3xl">menu</span>
-            </button>
-        </div>
-    </div>
-    
-    <!-- Mobile Menu Dropdown -->
-    <div id="mobile-menu" class="hidden md:hidden bg-surface/95 backdrop-blur-md border-t border-surface-variant/30 px-margin-mobile py-4 space-y-4">
-        <a class="block text-on-surface-variant hover:text-primary transition-colors" th:href="@{/#kham-pha}" href="/#kham-pha">Khám phá</a>
-        <a class="block text-primary font-bold" th:href="@{/tours}" href="/tours">Điểm đến</a>
-        <a class="block text-on-surface-variant hover:text-primary transition-colors" href="/#uy-tin">Uy tín</a>
-        <a class="block text-on-surface-variant hover:text-primary transition-colors" href="/#lien-he">Liên hệ</a>
-        <button class="w-full text-left font-body-md text-label-md text-primary font-bold py-2 border-t border-surface-variant/30">
-            Đăng nhập
-        </button>
-    </div>
-</nav>
+<!-- TopNavBar (fragment) -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <main class="flex-grow pt-[72px]">
     <!-- Header Banner -->
@@ -342,11 +310,8 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-16 max-w-container-max mx-auto">
         <!-- Brand Column -->
         <div class="col-span-1 md:col-span-2 pr-0 md:pr-12">
-            <div class="font-headline-md text-headline-md text-on-primary font-bold mb-6 flex items-center gap-2">
-                <div class="w-8 h-8 bg-secondary rounded flex items-center justify-center shadow-sm">
-                    <span class="material-symbols-outlined text-white text-[20px]">eco</span>
-                </div>
-                Xanh Đi
+            <div class="mb-6">
+                <img th:src="@{/images/logo.png}" alt="Xanh Đi Logo" class="h-10 w-auto object-contain brightness-0 invert">
             </div>
             <p class="text-on-primary/80 mb-8 max-w-md">
                 Đừng bỏ lỡ những chương trình khuyến mãi hấp dẫn. Theo dõi mạng xã hội của chúng tôi để cập nhật thông tin mới nhất.
@@ -412,24 +377,14 @@
 </footer>
 
 <script>
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-        const nav = document.getElementById('main-nav');
-        if (window.scrollY > 50) {
-            nav.classList.add('bg-surface/95', 'shadow-sm');
-            nav.classList.remove('bg-surface/85', 'backdrop-blur-md');
-        } else {
-            nav.classList.remove('bg-surface/95', 'shadow-sm');
-            nav.classList.add('bg-surface/85', 'backdrop-blur-md');
-        }
-    });
-
     // Mobile menu toggle
     const menuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
-    menuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
 </script>
 
 </body>
