@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xanh Đi - Xác nhận tour thành công</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f6f5; color: #333333; -webkit-font-smoothing: antialiased;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f4f6f5; padding: 20px 0;">
+        <tr>
+            <td align="center">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background-color: #01261f; padding: 35px 30px; text-align: center;">
+                            <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 700; letter-spacing: 1px;">XANH ĐI</h1>
+                            <p style="color: #a3b899; margin: 5px 0 0 0; font-size: 14px; font-weight: 500;">Du lịch sinh thái & Trải nghiệm thiên nhiên</p>
+                        </td>
+                    </tr>
+                    <!-- Body Content -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <h2 style="color: #15803d; margin-top: 0; font-size: 20px; font-weight: 700; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px;">Tin vui! Tour của bạn đã được xác nhận thành công!</h2>
+                            <p style="font-size: 15px; color: #475569; line-height: 1.6; margin: 20px 0;">
+                                Chào <strong th:text="${booking.customerName}">Quý khách</strong>,<br>
+                                Chúng tôi rất vui mừng thông báo rằng yêu cầu đặt tour của Quý khách đã được ban quản lý <strong>Xanh Đi</strong> phê duyệt và xác nhận chính thức. Dưới đây là thông tin chi tiết đơn hàng và hướng dẫn thanh toán.
+                            </p>
+
+                            <!-- Booking details table -->
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top: 25px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+                                <tr>
+                                    <th style="background-color: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600; padding: 12px 15px; text-align: left; border-bottom: 1px solid #e2e8f0; width: 35%;">Mã đặt tour</th>
+                                    <td style="color: #1e293b; font-size: 14px; font-weight: 600; padding: 12px 15px; border-bottom: 1px solid #e2e8f0;">
+                                        #<span th:text="${booking.id}">123</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600; padding: 12px 15px; text-align: left; border-bottom: 1px solid #e2e8f0;">Khách hàng</th>
+                                    <td style="color: #1e293b; font-size: 14px; padding: 12px 15px; border-bottom: 1px solid #e2e8f0;" th:text="${booking.customerName}">Nguyễn Văn A</td>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600; padding: 12px 15px; text-align: left; border-bottom: 1px solid #e2e8f0;">Tên Tour</th>
+                                    <td style="color: #1e293b; font-size: 14px; font-weight: 500; padding: 12px 15px; border-bottom: 1px solid #e2e8f0;" th:text="${booking.tour.title}">Tour sinh thái Hồ Ba Bể</td>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600; padding: 12px 15px; text-align: left; border-bottom: 1px solid #e2e8f0;">Số lượng khách</th>
+                                    <td style="color: #1e293b; font-size: 14px; padding: 12px 15px; border-bottom: 1px solid #e2e8f0;">
+                                        <span th:text="${booking.numAdults}">1</span> người lớn
+                                        <span th:if="${booking.numChildren > 0}">, <span th:text="${booking.numChildren}">0</span> trẻ em</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600; padding: 12px 15px; text-align: left; border-bottom: 1px solid #e2e8f0;">Ngày khởi hành</th>
+                                    <td style="color: #1e293b; font-size: 14px; padding: 12px 15px; border-bottom: 1px solid #e2e8f0;" th:text="${booking.departureDate}">2026-07-15</td>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600; padding: 12px 15px; text-align: left; border-bottom: 1px solid #e2e8f0;">Tổng chi phí</th>
+                                    <td style="color: #15803d; font-size: 15px; font-weight: 700; padding: 12px 15px; border-bottom: 1px solid #e2e8f0;" th:text="${#numbers.formatDecimal(booking.totalPrice, 0, 'COMMA', 0, 'POINT')} + ' đ'">1.500.000 đ</td>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600; padding: 12px 15px; text-align: left;">Trạng thái</th>
+                                    <td style="padding: 12px 15px;">
+                                        <span style="display: inline-block; padding: 4px 10px; background-color: #dcfce7; color: #15803d; border-radius: 50px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px;">XÁC NHẬN</span>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Payment details box -->
+                            <div style="margin-top: 30px; padding: 20px; background-color: #f0fdf4; border-left: 4px solid #16a34a; border-radius: 0 8px 8px 0;">
+                                <h3 style="color: #166534; margin: 0 0 10px 0; font-size: 16px; font-weight: 700;">HƯỚNG DẪN THANH TOÁN</h3>
+                                <p style="font-size: 14px; color: #374151; line-height: 1.5; margin: 0 0 12px 0;">
+                                    Quý khách vui lòng chuyển khoản thanh toán 100% giá trị tour theo thông tin sau để giữ chỗ chính thức:
+                                </p>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="font-size: 13px; color: #374151; line-height: 1.6;">
+                                    <tr>
+                                        <td style="padding: 4px 0; font-weight: 600; border: none; width: 40%;">Ngân hàng:</td>
+                                        <td style="padding: 4px 0; border: none;"><strong>Techcombank (TCB)</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 4px 0; font-weight: 600; border: none;">Số tài khoản:</td>
+                                        <td style="padding: 4px 0; border: none;"><strong>1903 8888 9999</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 4px 0; font-weight: 600; border: none;">Chủ tài khoản:</td>
+                                        <td style="padding: 4px 0; border: none;"><strong>CONG TY TNHH XANH DI</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 4px 0; font-weight: 600; border: none;">Nội dung CK:</td>
+                                        <td style="padding: 4px 0; color: #b45309; font-weight: 700; border: none;" th:text="'XD' + ${booking.id} + ' ' + ${booking.customerPhone}">XD123 0987654321</td>
+                                    </tr>
+                                </table>
+                                <p style="font-size: 12px; color: #166534; margin: 12px 0 0 0; font-style: italic;">
+                                    * Sau khi nhận được thanh toán, Xanh Đi sẽ gửi email biên nhận và hướng dẫn chi tiết về hành trình chuẩn bị trước chuyến đi.
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f8fafc; padding: 25px 30px; text-align: center; border-top: 1px solid #e2e8f0; font-size: 13px; color: #64748b; line-height: 1.6;">
+                            <p style="margin: 0; font-weight: 600; color: #01261f;">Hệ thống du lịch sinh thái Xanh Đi</p>
+                            <p style="margin: 4px 0 0 0;">Hotline: 0987-654-321 | Email: support@xanhdi.vn</p>
+                            <p style="margin: 4px 0 0 0;">Địa chỉ: 144 Xuân Thủy, Cầu Giấy, Hà Nội</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

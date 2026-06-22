@@ -4,6 +4,7 @@ import com.xanhdi.website.model.Booking;
 import com.xanhdi.website.model.Tour;
 import com.xanhdi.website.repository.BookingRepository;
 import com.xanhdi.website.repository.TourRepository;
+import com.xanhdi.website.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +20,15 @@ public class BookingController {
 
     private final TourRepository tourRepository;
     private final BookingRepository bookingRepository;
+    private final EmailService emailService;
 
     @Autowired
-    public BookingController(TourRepository tourRepository, BookingRepository bookingRepository) {
+    public BookingController(TourRepository tourRepository,
+                             BookingRepository bookingRepository,
+                             EmailService emailService) {
         this.tourRepository = tourRepository;
         this.bookingRepository = bookingRepository;
+        this.emailService = emailService;
     }
 
     /**
@@ -68,10 +73,17 @@ public class BookingController {
                          + (tour.getPrice() * 0.5 * booking.getNumChildren());
             booking.setTotalPrice(total);
 
-            bookingRepository.save(booking);
+            Booking savedBooking = bookingRepository.save(booking);
+
+            // Initialize lazy Hibernate proxy for Tour in main thread before async email processing
+            if (savedBooking.getTour() != null) {
+                savedBooking.getTour().getTitle();
+            }
+
+            emailService.sendBookingPendingEmail(savedBooking);
 
             redirectAttributes.addFlashAttribute("bookingSuccess",
-                    "Đặt tour thành công! Chúng tôi sẽ liên hệ xác nhận trong thời gian sớm nhất. Mã đặt tour: #" + booking.getId());
+                    "Đặt tour thành công! Chúng tôi sẽ liên hệ xác nhận trong thời gian sớm nhất. Mã đặt tour: #" + savedBooking.getId());
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("bookingError",

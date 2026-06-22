@@ -6,6 +6,7 @@ import com.xanhdi.website.model.Tour;
 import com.xanhdi.website.repository.BookingRepository;
 import com.xanhdi.website.repository.StaffUserRepository;
 import com.xanhdi.website.repository.TourRepository;
+import com.xanhdi.website.service.EmailService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,14 +23,17 @@ public class StaffController {
     private final StaffUserRepository staffUserRepository;
     private final TourRepository tourRepository;
     private final BookingRepository bookingRepository;
+    private final EmailService emailService;
 
     @Autowired
     public StaffController(StaffUserRepository staffUserRepository,
                            TourRepository tourRepository,
-                           BookingRepository bookingRepository) {
+                           BookingRepository bookingRepository,
+                           EmailService emailService) {
         this.staffUserRepository = staffUserRepository;
         this.tourRepository = tourRepository;
         this.bookingRepository = bookingRepository;
+        this.emailService = emailService;
     }
 
     // =========================================================
@@ -105,6 +109,10 @@ public class StaffController {
         bookingRepository.findById(id).ifPresent(b -> {
             b.setStatus(Booking.BookingStatus.CONFIRMED);
             bookingRepository.save(b);
+            if (b.getTour() != null) {
+                b.getTour().getTitle();
+            }
+            emailService.sendBookingConfirmedEmail(b);
         });
         ra.addFlashAttribute("dashMsg", "Đơn đặt #" + id + " đã được xác nhận.");
         return "redirect:/staffdashboard";
@@ -119,6 +127,10 @@ public class StaffController {
         bookingRepository.findById(id).ifPresent(b -> {
             b.setStatus(Booking.BookingStatus.CANCELLED);
             bookingRepository.save(b);
+            if (b.getTour() != null) {
+                b.getTour().getTitle();
+            }
+            emailService.sendBookingCancelledEmail(b);
         });
         ra.addFlashAttribute("dashMsg", "Đơn đặt #" + id + " đã bị huỷ.");
         return "redirect:/staffdashboard";

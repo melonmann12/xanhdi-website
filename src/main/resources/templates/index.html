@@ -376,7 +376,7 @@
                                         th:classappend="${i <= tour.rating} ? 'fill' : ''"
                                         th:text="${i <= tour.rating} ? 'star' : 'star_border'">star</span>
                                 </div>
-                                <span th:text="'(' + ${tour.reviewCount} + ')'"
+                                <span th:text="'(' + (${tour.reviews != null ? tour.reviews.size() : 0}) + ')'"
                                     class="text-on-surface-variant font-label-sm text-[12px] font-bold">(120)</span>
                             </div>
                         </div>
