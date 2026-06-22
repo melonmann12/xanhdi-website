@@ -48,7 +48,7 @@ public class StaffController {
         return "staff-login";
     }
 
-    @PostMapping("/staff/login")
+    @PostMapping({"/staff/login", "/staff/login/"})
     public String processLogin(
             @RequestParam("username") String username,
             @RequestParam("password") String password,
@@ -100,7 +100,7 @@ public class StaffController {
     // BOOKING MANAGEMENT
     // =========================================================
 
-    @PostMapping("/staff/bookings/{id}/confirm")
+    @PostMapping({"/staff/bookings/{id}/confirm", "/staff/bookings/{id}/confirm/"})
     public String confirmBooking(@PathVariable Long id,
                                  HttpSession session,
                                  RedirectAttributes ra) {
@@ -118,7 +118,7 @@ public class StaffController {
         return "redirect:/staffdashboard";
     }
 
-    @PostMapping("/staff/bookings/{id}/cancel")
+    @PostMapping({"/staff/bookings/{id}/cancel", "/staff/bookings/{id}/cancel/"})
     public String cancelBooking(@PathVariable Long id,
                                 HttpSession session,
                                 RedirectAttributes ra) {
@@ -165,9 +165,8 @@ public class StaffController {
         return "staff-tour-form";
     }
 
-    @PostMapping("/staff/tours/save")
+    @PostMapping({"/staff/tours/save", "/staff/tours/save/"})
     public String saveTour(
-            @RequestParam(value = "id", required = false) Long id,
             @RequestParam("title") String title,
             @RequestParam(value = "price", defaultValue = "0") Double price,
             @RequestParam(value = "duration", required = false) String duration,
@@ -185,14 +184,53 @@ public class StaffController {
 
         if (session.getAttribute("staff") == null) return "redirect:/staff/login";
 
-        Tour tour;
-        boolean isNew = (id == null);
-        if (isNew) {
-            tour = new Tour();
-            tour.setRating(5.0);
-            tour.setReviewCount(0);
-        } else {
-            tour = tourRepository.findById(id).orElse(new Tour());
+        Tour tour = new Tour();
+        tour.setRating(5.0);
+        tour.setReviewCount(0);
+
+        tour.setTitle(title.trim());
+        tour.setPrice(price);
+        tour.setDuration(duration);
+        tour.setActivity(activity);
+        tour.setTag(tag);
+        tour.setDeparture(departure);
+        tour.setImageUrl(imageUrl);
+        tour.setDescription(description);
+        tour.setInclusions(inclusions);
+        tour.setJournalContent(journalContent);
+        tour.setJournalQuote(journalQuote);
+        tour.setGuideName(guideName);
+
+        tourRepository.save(tour);
+
+        ra.addFlashAttribute("dashMsg", "Tour \"" + title + "\" đã được tạo thành công!");
+        return "redirect:/staffdashboard";
+    }
+
+    @PostMapping({"/staff/tours/update/{id}", "/staff/tours/update/{id}/"})
+    public String updateTour(
+            @PathVariable("id") Long id,
+            @RequestParam("title") String title,
+            @RequestParam(value = "price", defaultValue = "0") Double price,
+            @RequestParam(value = "duration", required = false) String duration,
+            @RequestParam(value = "activity", required = false) String activity,
+            @RequestParam(value = "tag", required = false) String tag,
+            @RequestParam(value = "departure", required = false) String departure,
+            @RequestParam(value = "imageUrl", required = false) String imageUrl,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "inclusions", required = false) String inclusions,
+            @RequestParam(value = "journalContent", required = false) String journalContent,
+            @RequestParam(value = "journalQuote", required = false) String journalQuote,
+            @RequestParam(value = "guideName", required = false) String guideName,
+            HttpSession session,
+            RedirectAttributes ra) {
+
+        if (session.getAttribute("staff") == null) return "redirect:/staff/login";
+
+        Tour tour = tourRepository.findById(id).orElse(null);
+        if (tour == null) {
+            ra.addFlashAttribute("dashMsg", "Tour không tồn tại.");
+            return "redirect:/staffdashboard";
         }
 
         tour.setTitle(title.trim());
@@ -210,12 +248,11 @@ public class StaffController {
 
         tourRepository.save(tour);
 
-        ra.addFlashAttribute("dashMsg",
-                isNew ? "Tour \"" + title + "\" đã được tạo thành công!" : "Tour \"" + title + "\" đã được cập nhật!");
+        ra.addFlashAttribute("dashMsg", "Tour \"" + title + "\" đã được cập nhật!");
         return "redirect:/staffdashboard";
     }
 
-    @PostMapping("/staff/tours/delete/{id}")
+    @PostMapping({"/staff/tours/delete/{id}", "/staff/tours/delete/{id}/"})
     public String deleteTour(@PathVariable Long id,
                              HttpSession session,
                              RedirectAttributes ra) {

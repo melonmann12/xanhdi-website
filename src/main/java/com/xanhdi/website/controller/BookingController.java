@@ -36,7 +36,7 @@ public class BookingController {
      * Calculates total price, saves the booking as PENDING,
      * then redirects to the same tour page with a success/error flash.
      */
-    @PostMapping("/bookings/create")
+    @PostMapping({"/bookings/create", "/bookings/create/"})
     public String createBooking(
             @RequestParam("tourId") Long tourId,
             @RequestParam("customerName") String customerName,
