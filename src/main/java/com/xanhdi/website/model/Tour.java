@@ -46,7 +46,7 @@ public class Tour {
     @OrderBy("sortOrder ASC")
     private List<TourTimeline> timelines = new ArrayList<>();
 
-    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Review> reviews = new ArrayList<>();
 
     public Tour() {}
