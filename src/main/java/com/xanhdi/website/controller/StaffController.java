@@ -147,6 +147,29 @@ public class StaffController {
         return "redirect:/staffdashboard";
     }
 
+    @PostMapping({"/staff/bookings/{id}/reject", "/staff/bookings/{id}/reject/"})
+    public String rejectBooking(@PathVariable Long id,
+                                @RequestParam(value = "rejectionReason", required = false) String rejectionReason,
+                                HttpSession session,
+                                RedirectAttributes ra) {
+        if (session.getAttribute("staff") == null) return "redirect:/staff/login";
+
+        bookingRepository.findById(id).ifPresent(b -> {
+            b.setStatus(Booking.BookingStatus.CANCELLED);
+            String reason = (rejectionReason != null && !rejectionReason.trim().isEmpty())
+                    ? rejectionReason.trim() : null;
+            b.setRejectionReason(reason);
+            bookingRepository.save(b);
+            // Ensure lazy association is initialized before async email thread reads it
+            if (b.getTour() != null) {
+                b.getTour().getTitle();
+            }
+            emailService.sendBookingCancelledEmail(b);
+        });
+        ra.addFlashAttribute("dashMsg", "Đơn đặt #" + id + " đã bị từ chối.");
+        return "redirect:/staffdashboard";
+    }
+
     // =========================================================
     // TOUR CRUD
     // =========================================================
