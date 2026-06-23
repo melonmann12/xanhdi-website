@@ -248,92 +248,84 @@
             </div>
         </section>
 
-        <!-- EXPLORE Section (4-column Grid) -->
+        <!-- FEATURED TOUR GUIDES Section (3-column Grid) -->
         <section
             class="py-12 md:py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto bg-surface-container-low rounded-[3rem]"
-            id="kham-pha">
+            id="doi-ngu">
             <!-- Header Block with dedicated spacing -->
             <div class="text-center mb-10 md:mb-12 px-4">
                 <span
-                    class="font-label-sm text-label-sm text-secondary tracking-widest uppercase mb-2 block font-bold">EXPLORE</span>
+                    class="font-label-sm text-label-sm text-secondary tracking-widest uppercase mb-2 block font-bold">ĐỒI NGŨ</span>
                 <h2
                     class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold">
-                    Điểm đến thiết kế riêng cho bạn
+                    Đội ngũ Xanh Đi đồng hành cùng bạn
                 </h2>
                 <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto mt-4">
-                    Tận hưởng những trải nghiệm độc quyền tại các địa điểm hoang sơ và yên bình nhất.
+                    Những hướng dẫn viên bản địa, chuyên nghiệp và tận tâm, luôn sẵn sàng cùng bạn chinh phục mọi cung đường trải nghiệm.
                 </p>
             </div>
 
-            <!-- Image Grid Block -->
-            <div class="px-4 md:px-8 pb-8">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 w-full">
-                    <!-- Card 1: Thác Nước Ẩn Mình -->
-                    <a th:href="@{/tours}"
-                        class="relative rounded-3xl overflow-hidden group cursor-pointer h-[350px] md:h-[400px] border border-surface-variant/20 soft-shadow hover-lift block">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                            data-alt="A hidden waterfall flowing inside a dark, mysterious cave with sunbeams."
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9Mz29aka1wL_e6NuHaI_EknVN4rkifW1UiBoJ5_QpQ7SsN9147eom_5vxOfxHMvwuUmNkudC5fIhCI7hCdCacvCgjjGM99rJsKowEX7tn8UOxVjkGa8ukMFIaXbbKyHUAGB71SJvqD5P6RtUkahOqCVFXLqLg3IVEL-lVc06sOqOt9bgTSBJe1z2_S9kMxo_HKLlv0HfJrJFZ8eIZZsviQeyJ2BVNANAZkyMPCqsK0Hhtnd7L2us_-8pLHjZc8wsutuhqVIP342U">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                        <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
-                            <h3 class="font-headline-md text-headline-md text-white font-bold">Thác Nước Ẩn Mình</h3>
-                            <span
-                                class="bg-white/20 backdrop-blur-md text-white border border-white/40 px-4 py-2 rounded-full font-label-sm text-label-sm hover:bg-white hover:text-primary transition-all duration-300 text-center">
-                                Xem thêm
-                            </span>
+            <!-- Guide Cards Grid -->
+            <div class="px-4 md:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+                    <!-- Guide Card -->
+                    <div th:each="guide : ${featuredGuides}" class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                        <!-- Top Half: Full-width cover image with floating badge -->
+                        <div class="relative w-full h-64 shrink-0">
+                            <img class="w-full h-64 object-cover rounded-t-2xl" 
+                                 th:src="${guide.avatarUrl != null and !guide.avatarUrl.isEmpty() ? guide.avatarUrl : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=512&q=80'}"
+                                 th:alt="${guide.name}">
+                            <!-- Specialty Badge floating absolute -->
+                            <span class="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm text-emerald-800 text-xs font-semibold px-2.5 py-1 rounded-md shadow-sm border border-emerald-100/50" 
+                                  th:text="${guide.specialty}">Chuyên môn</span>
                         </div>
-                    </a>
 
-                    <!-- Card 2: Vịnh Biển Kín -->
-                    <a th:href="@{/tours}"
-                        class="relative rounded-3xl overflow-hidden group cursor-pointer h-[350px] md:h-[400px] border border-surface-variant/20 soft-shadow hover-lift block">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                            data-alt="A pristine, secluded beach cove with turquoise water and dramatic limestone cliffs."
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIp5o9_BEpy846EOMaf5gpT5N4z4idgVyaOSJJEmNmluyB4tFT2IOJmju8rqvQS6uApISTFefD5Bqp4A4eaoynJPyk4_vHzA-5c_qRybXA6bkW7l5LFzYvYzfvBw8O-nEb8meo6JCNvw_PUOaO7Q3TlVI-8VNQtBD_V8tRS5rh01WHnHk11nfMmMI4wVLD8dnxf9Lv5RLQ9INjNnwSuHuHPNZ9z1jHWUW1mxB-qEQiRxQHYwe_w11nbGfe-M7C5u3cdfP_UsKWkvc">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                        <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
-                            <h3 class="font-headline-md text-headline-md text-white font-bold">Vịnh Biển Kín</h3>
-                            <span
-                                class="bg-white/20 backdrop-blur-md text-white border border-white/40 px-4 py-2 rounded-full font-label-sm text-label-sm hover:bg-white hover:text-primary transition-all duration-300 text-center">
-                                Xem thêm
-                            </span>
-                        </div>
-                    </a>
+                        <!-- Bottom Half: Left-aligned details block -->
+                        <div class="p-5 flex flex-col justify-between flex-grow text-left space-y-3">
+                            <div class="space-y-2">
+                                <!-- Name -->
+                                <h3 class="text-xl font-bold text-slate-900 tracking-tight leading-snug" th:text="${guide.name}">Tên Hướng Dẫn Viên</h3>
+                                
+                                <!-- Rating Block -->
+                                <div class="flex items-center gap-1 text-slate-700 text-xs font-semibold">
+                                    <span class="material-symbols-outlined text-amber-500 text-base" style="font-variation-settings: 'FILL' 1;">star</span>
+                                    <span th:text="${guide.rating != null ? guide.rating : '5.0'}">4.9</span>
+                                    <span class="text-slate-400 font-normal" th:text="'(' + (${guide.reviewCount != null ? guide.reviewCount : 0}) + ' đánh giá)'">(120 đánh giá)</span>
+                                </div>
+                            </div>
 
-                    <!-- Card 3: Rừng Già -->
-                    <a th:href="@{/tours}"
-                        class="relative rounded-3xl overflow-hidden group cursor-pointer h-[350px] md:h-[400px] border border-surface-variant/20 soft-shadow hover-lift block">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                            data-alt="Ancient, moss-covered stone stairs in a forest."
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1VZZ2DgYDU19B5igClmQvwOPP8g63eSQRlaS9_y7jowVl8jKqZSf75NmsGz-6DG9mp0PmchZ6ABYx0dhpVl9JhZzKCrY7kLCmYfsklGJatZeMilAVqECk-t_ELkIU95kDoNPf_qz4IF55U2EbrxCbSij8xb5yZ5rA0_KD41xvvmFQJcqmiCw3zlpdXG98y9B0AXS4kYa1rK8fs7WVEE7wWJod50ne8pSdTZL9iwiw-VTgYsr5MG5sRS0DVCwaqXbwu7KR8QXDdF8">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                        <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
-                            <h3 class="font-headline-md text-headline-md text-white font-bold">Rừng Già</h3>
-                            <span
-                                class="bg-white/20 backdrop-blur-md text-white border border-white/40 px-4 py-2 rounded-full font-label-sm text-label-sm hover:bg-white hover:text-primary transition-all duration-300 text-center">
-                                Xem thêm
-                            </span>
-                        </div>
-                    </a>
+                            <!-- Languages Bullet Row -->
+                            <div class="text-xs text-slate-500 font-medium">
+                                <span class="text-slate-400">Thông thạo: </span>
+                                <span th:each="lang, iterStat : ${#strings.arraySplit(guide.languages, ',')}">
+                                    <span th:text="${#strings.trim(lang) == 'VN' ? 'Tiếng Việt' : (#strings.trim(lang) == 'EN' ? 'Tiếng Anh' : (#strings.trim(lang) == 'JP' ? 'Tiếng Nhật' : #strings.trim(lang)))}">Tiếng Việt</span><span th:if="${!iterStat.last}" class="text-slate-300 mx-1">•</span>
+                                </span>
+                            </div>
 
-                    <!-- Card 4: Núi Non Tĩnh Lặng -->
-                    <a th:href="@{/tours}"
-                        class="relative rounded-3xl overflow-hidden group cursor-pointer h-[350px] md:h-[400px] border border-surface-variant/20 soft-shadow hover-lift block">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                            data-alt="Mist-enshrouded mountain valley."
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmAVxbHR0ClqDjzGzXwfaxGi3vU7RjOsWqpgfDa6Fdt-e-gxgderQ-RRXsporBXpzKP-uFxTm9VobQCo3AtgiN-_RuFvEBO38o8cg-qf4UdYrfitErCtXMSQURpn4ozZ5VS0WyWh8aTSV1Q_dl2McebxhF_9xxOYo0Q7DaIWcHoEtUzBRPFa4uT4iaVqsjVv5NYUIgicJZa986_v-mdSt1a9BdMQWQLZ0FrIrbyVotcvPvmAwgBrThEkZNeXVTeSGh5LL9b00TCKY">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                        <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
-                            <h3 class="font-headline-md text-headline-md text-white font-bold">Núi Non Tĩnh Lặng</h3>
-                            <span
-                                class="bg-white/20 backdrop-blur-md text-white border border-white/40 px-4 py-2 rounded-full font-label-sm text-label-sm hover:bg-white hover:text-primary transition-all duration-300 text-center">
-                                Xem thêm
-                            </span>
+                            <!-- Bio with line clamp -->
+                            <p class="text-sm text-slate-600 leading-relaxed line-clamp-2" th:text="${guide.bio}">Mô tả tóm tắt về hướng dẫn viên.</p>
+                            
+                            <!-- Premium Interaction CTA -->
+                            <a th:href="@{/guides/{id}(id=${guide.id})}" class="inline-flex items-center gap-1 text-emerald-700 font-bold hover:text-emerald-800 text-sm mt-2 transition-colors group">
+                                <span>Xem hồ sơ</span>
+                                <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
                         </div>
+                    </div>
+                </div>
+
+                <!-- View All CTA Link -->
+                <div class="flex justify-center mt-10">
+                    <a th:href="@{/guides}" class="inline-flex items-center gap-2 border border-primary text-primary hover:bg-primary hover:text-white px-8 py-3 rounded-full font-bold text-sm transition-all duration-300 shadow-sm hover:shadow">
+                        <span>Xem tất cả hướng dẫn viên</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
                     </a>
                 </div>
             </div>
-        </section>
         </section>
 
         <!-- Popular Tours Section -->

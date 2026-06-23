@@ -2,8 +2,10 @@ package com.xanhdi.website.controller;
 
 import com.xanhdi.website.model.Tour;
 import com.xanhdi.website.model.TourTimeline;
+import com.xanhdi.website.model.TourGuide;
 import com.xanhdi.website.repository.TourRepository;
 import com.xanhdi.website.repository.TourTimelineRepository;
+import com.xanhdi.website.repository.TourGuideRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,16 +19,21 @@ public class TourController {
 
     private final TourRepository tourRepository;
     private final TourTimelineRepository tourTimelineRepository;
+    private final TourGuideRepository tourGuideRepository;
 
     @Autowired
-    public TourController(TourRepository tourRepository, TourTimelineRepository tourTimelineRepository) {
+    public TourController(TourRepository tourRepository, 
+                          TourTimelineRepository tourTimelineRepository,
+                          TourGuideRepository tourGuideRepository) {
         this.tourRepository = tourRepository;
         this.tourTimelineRepository = tourTimelineRepository;
+        this.tourGuideRepository = tourGuideRepository;
     }
 
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("tours", tourRepository.findAll());
+        model.addAttribute("featuredGuides", tourGuideRepository.findTop3ByOrderByRatingDesc());
         return "index";
     }
 

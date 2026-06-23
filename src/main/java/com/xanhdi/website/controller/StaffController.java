@@ -98,7 +98,8 @@ public class StaffController {
     // =========================================================
 
     @GetMapping("/staffdashboard")
-    public String dashboard(HttpSession session, Model model) {
+    public String dashboard(@RequestParam(value = "tab", required = false) String tab,
+                            HttpSession session, Model model) {
         if (session.getAttribute("staff") == null) {
             return "redirect:/staff/login";
         }
@@ -109,6 +110,7 @@ public class StaffController {
         model.addAttribute("staff", staff);
         model.addAttribute("tours", tours);
         model.addAttribute("bookings", bookings);
+        model.addAttribute("activeTab", tab != null ? tab : "bookings");
         return "staff-dashboard";
     }
 
@@ -456,6 +458,7 @@ public class StaffController {
         if (session.getAttribute("staff") == null) return "redirect:/staff/login";
         List<TourGuide> guides = tourGuideRepository.findAll();
         model.addAttribute("guides", guides);
+        model.addAttribute("activeTab", "guides");
         return "staff-guide-list";
     }
 

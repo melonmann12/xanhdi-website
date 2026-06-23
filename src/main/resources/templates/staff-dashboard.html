@@ -1,19 +1,44 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Staff Dashboard — Xanh Đi</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0..1&display=swap"
+        rel="stylesheet" />
     <style>
-        body { font-family: 'Be Vietnam Pro', sans-serif; }
-        .tab-btn.active { color: #065f46; border-color: #065f46; background-color: #ecfdf5; }
-        @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-        .fade-in { animation: fadeIn 0.35s ease-out forwards; }
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+
+        .tab-btn.active {
+            color: #065f46;
+            border-color: #065f46;
+            background-color: #ecfdf5;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.35s ease-out forwards;
+        }
     </style>
 </head>
+
 <body class="bg-emerald-50/40 min-h-screen text-gray-800">
 
     <!-- ===== TOP NAVIGATION BAR ===== -->
@@ -22,23 +47,24 @@
             <!-- Brand & Navigation Links -->
             <div class="flex items-center gap-6">
                 <a th:href="@{/staffdashboard}" class="flex items-center gap-3 hover:opacity-90">
-                    <img th:src="@{/images/logo.png}" alt="Xanh Đi Logo" class="h-9 w-auto object-contain brightness-0 invert">
+                    <img th:src="@{/images/logo.png}" alt="Xanh Đi Logo"
+                        class="h-9 w-auto object-contain brightness-0 invert">
                     <span class="text-emerald-300 text-xs font-medium">Staff Panel</span>
                 </a>
                 <div class="hidden md:flex items-center gap-4 text-emerald-200 text-sm">
-                    <a th:href="@{/staffdashboard}" class="hover:text-white transition font-bold text-white">Dashboard</a>
-                    <span class="opacity-30">|</span>
-                    <a th:href="@{/staff/guides}" class="hover:text-white transition">Hướng dẫn viên</a>
+                    <a th:href="@{/staffdashboard}"
+                        class="hover:text-white transition font-bold text-white">Dashboard</a>
                 </div>
             </div>
             <!-- Right side -->
             <div class="flex items-center gap-5">
                 <span class="text-emerald-200 text-sm hidden sm:inline-flex items-center gap-1.5">
                     <span class="material-symbols-outlined text-base">person</span>
-                    Chào, <strong class="text-white" th:text="${staff.fullName != null ? staff.fullName : staff.username}">Nhân viên</strong>
+                    Chào, <strong class="text-white"
+                        th:text="${staff.fullName != null ? staff.fullName : staff.username}">Nhân viên</strong>
                 </span>
                 <a th:href="@{/staff/logout}"
-                   class="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-600 text-emerald-100 hover:text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all duration-200">
+                    class="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-600 text-emerald-100 hover:text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all duration-200">
                     <span class="material-symbols-outlined text-base">logout</span>
                     Đăng xuất
                 </a>
@@ -51,7 +77,7 @@
 
         <!-- Flash message banner -->
         <div th:if="${dashMsg}"
-             class="mb-6 bg-emerald-100 border border-emerald-300 text-emerald-800 px-5 py-3.5 rounded-xl flex items-center gap-3 shadow-sm">
+            class="mb-6 bg-emerald-100 border border-emerald-300 text-emerald-800 px-5 py-3.5 rounded-xl flex items-center gap-3 shadow-sm">
             <span class="material-symbols-outlined text-emerald-600">check_circle</span>
             <span class="text-sm font-medium" th:text="${dashMsg}"></span>
         </div>
@@ -59,21 +85,30 @@
         <!-- ===== TAB BUTTONS ===== -->
         <div class="flex items-center gap-2 border-b border-emerald-200 mb-6">
             <button onclick="switchTab('bookings')" id="tab-bookings"
-                    class="tab-btn active inline-flex items-center gap-2 px-5 py-3 text-sm font-bold border-b-2 border-transparent transition-all duration-200 rounded-t-lg hover:bg-emerald-50">
+                class="tab-btn inline-flex items-center gap-2 px-5 py-3 text-sm font-bold border-b-2 border-transparent transition-all duration-200 rounded-t-lg hover:bg-emerald-50"
+                th:classappend="${activeTab == 'bookings' ? 'active' : 'text-gray-500'}">
                 <span class="material-symbols-outlined text-lg">receipt_long</span>
                 Quản lý Đặt Tour
             </button>
             <button onclick="switchTab('tours')" id="tab-tours"
-                    class="tab-btn inline-flex items-center gap-2 px-5 py-3 text-sm font-bold text-gray-500 border-b-2 border-transparent transition-all duration-200 rounded-t-lg hover:bg-emerald-50">
+                class="tab-btn inline-flex items-center gap-2 px-5 py-3 text-sm font-bold border-b-2 border-transparent transition-all duration-200 rounded-t-lg hover:bg-emerald-50"
+                th:classappend="${activeTab == 'tours' ? 'active' : 'text-gray-500'}">
                 <span class="material-symbols-outlined text-lg">landscape</span>
                 Quản lý Danh sách Tour
             </button>
+            <a th:href="@{/staff/guides}" id="tab-guides"
+                class="tab-btn inline-flex items-center gap-2 px-5 py-3 text-sm font-bold text-gray-500 border-b-2 border-transparent transition-all duration-200 rounded-t-lg hover:bg-emerald-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                Quản lý Hướng dẫn viên
+            </a>
         </div>
 
         <!-- ============================================================ -->
         <!-- TAB 1 — BOOKINGS TABLE                                       -->
         <!-- ============================================================ -->
-        <section id="panel-bookings">
+        <section id="panel-bookings" th:class="${activeTab == 'bookings' ? '' : 'hidden'}">
             <div class="bg-white rounded-2xl shadow-sm border border-emerald-100 overflow-hidden">
                 <div class="px-6 py-4 border-b border-emerald-100 flex items-center justify-between">
                     <h2 class="text-lg font-bold text-emerald-900 flex items-center gap-2">
@@ -81,7 +116,7 @@
                         Danh sách đơn đặt tour
                     </h2>
                     <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full"
-                          th:text="${#lists.size(bookings)} + ' đơn'">0 đơn</span>
+                        th:text="${#lists.size(bookings)} + ' đơn'">0 đơn</span>
                 </div>
 
                 <!-- Responsive wrapper -->
@@ -101,20 +136,21 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-emerald-50">
-                            <tr th:each="booking : ${bookings}"
-                                class="hover:bg-emerald-50/40 transition-colors">
+                            <tr th:each="booking : ${bookings}" class="hover:bg-emerald-50/40 transition-colors">
                                 <!-- Mã Đơn -->
                                 <td class="px-5 py-3.5 font-bold text-emerald-800">
                                     <span th:text="'#' + ${booking.id}">#1</span>
                                 </td>
                                 <!-- Khách hàng -->
                                 <td class="px-5 py-3.5">
-                                    <div class="font-semibold text-gray-800" th:text="${booking.customerName}">Nguyễn Văn A</div>
+                                    <div class="font-semibold text-gray-800" th:text="${booking.customerName}">Nguyễn
+                                        Văn A</div>
                                     <div class="text-xs text-gray-400 mt-0.5" th:if="${booking.customerEmail}"
-                                         th:text="${booking.customerEmail}">email@test.com</div>
+                                        th:text="${booking.customerEmail}">email@test.com</div>
                                 </td>
                                 <!-- Điện thoại -->
-                                <td class="px-5 py-3.5 text-gray-600" th:text="${booking.customerPhone}">0901 234 567</td>
+                                <td class="px-5 py-3.5 text-gray-600" th:text="${booking.customerPhone}">0901 234 567
+                                </td>
                                 <!-- Tên Tour -->
                                 <td class="px-5 py-3.5 font-medium text-gray-700 max-w-[200px] truncate"
                                     th:text="${booking.tour.title}">Khám phá Cần Giờ</td>
@@ -125,7 +161,8 @@
                                 </td>
                                 <!-- Tổng tiền -->
                                 <td class="px-5 py-3.5 text-right font-bold text-emerald-700"
-                                    th:text="${#numbers.formatDecimal(booking.totalPrice, 0, 'COMMA', 0, 'POINT')} + ' đ'">1.190.000 đ</td>
+                                    th:text="${#numbers.formatDecimal(booking.totalPrice, 0, 'COMMA', 0, 'POINT')} + ' đ'">
+                                    1.190.000 đ</td>
                                 <!-- Ngày đi -->
                                 <td class="px-5 py-3.5 text-center text-gray-500 text-xs"
                                     th:text="${booking.departureDate}">2026-07-01</td>
@@ -133,45 +170,47 @@
                                 <td class="px-5 py-3.5 text-center">
                                     <!-- PENDING -->
                                     <span th:if="${booking.status.name() == 'PENDING'}"
-                                          class="inline-flex items-center gap-1 bg-yellow-100 text-yellow-700 text-xs font-bold px-2.5 py-1 rounded-full">
+                                        class="inline-flex items-center gap-1 bg-yellow-100 text-yellow-700 text-xs font-bold px-2.5 py-1 rounded-full">
                                         <span class="w-1.5 h-1.5 bg-yellow-500 rounded-full"></span> Chờ duyệt
                                     </span>
                                     <!-- CONFIRMED -->
                                     <span th:if="${booking.status.name() == 'CONFIRMED'}"
-                                          class="inline-flex items-center gap-1 bg-emerald-100 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-full">
+                                        class="inline-flex items-center gap-1 bg-emerald-100 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-full">
                                         <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> Đã xác nhận
                                     </span>
                                     <!-- PAID -->
                                     <span th:if="${booking.status.name() == 'PAID'}"
-                                          class="inline-flex items-center gap-1 bg-blue-100 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-full">
+                                        class="inline-flex items-center gap-1 bg-blue-100 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-full">
                                         <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span> Đã thanh toán
                                     </span>
                                     <!-- CANCELLED -->
                                     <span th:if="${booking.status.name() == 'CANCELLED'}"
-                                          class="inline-flex items-center gap-1 bg-red-100 text-red-600 text-xs font-bold px-2.5 py-1 rounded-full">
+                                        class="inline-flex items-center gap-1 bg-red-100 text-red-600 text-xs font-bold px-2.5 py-1 rounded-full">
                                         <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span> Đã huỷ
                                     </span>
                                 </td>
                                 <!-- Hành động -->
                                 <td class="px-5 py-3.5 text-center">
-                                    <div th:if="${booking.status.name() == 'PENDING'}" class="flex items-center justify-center gap-2">
+                                    <div th:if="${booking.status.name() == 'PENDING'}"
+                                        class="flex items-center justify-center gap-2">
                                         <!-- Xác nhận -->
-                                        <form th:action="@{/staff/bookings/{id}/confirm(id=${booking.id})}" method="post">
+                                        <form th:action="@{/staff/bookings/{id}/confirm(id=${booking.id})}"
+                                            method="post">
                                             <button type="submit"
-                                                    class="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                                                class="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
                                                 <span class="material-symbols-outlined text-sm">check</span>
                                                 Xác nhận
                                             </button>
                                         </form>
                                         <!-- Từ chối (opens modal) -->
-                                        <button type="button"
-                                                th:attr="onclick='openRejectModal(' + ${booking.id} + ')'"
-                                                class="inline-flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                                        <button type="button" th:attr="onclick='openRejectModal(' + ${booking.id} + ')'"
+                                            class="inline-flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
                                             <span class="material-symbols-outlined text-sm">block</span>
                                             Từ chối
                                         </button>
                                     </div>
-                                    <span th:if="${booking.status.name() != 'PENDING'}" class="text-gray-300 text-xs">—</span>
+                                    <span th:if="${booking.status.name() != 'PENDING'}"
+                                        class="text-gray-300 text-xs">—</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -189,7 +228,7 @@
         <!-- ============================================================ -->
         <!-- TAB 2 — TOURS MANAGEMENT                                     -->
         <!-- ============================================================ -->
-        <section id="panel-tours" class="hidden">
+        <section id="panel-tours" th:class="${activeTab == 'tours' ? '' : 'hidden'}">
             <div class="bg-white rounded-2xl shadow-sm border border-emerald-100 overflow-hidden">
                 <div class="px-6 py-4 border-b border-emerald-100 flex items-center justify-between flex-wrap gap-3">
                     <h2 class="text-lg font-bold text-emerald-900 flex items-center gap-2">
@@ -197,7 +236,7 @@
                         Danh sách Tour
                     </h2>
                     <a th:href="@{/staff/tours/new}"
-                       class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-all duration-200 hover:shadow-md hover:scale-[1.02]">
+                        class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-all duration-200 hover:shadow-md hover:scale-[1.02]">
                         <span class="material-symbols-outlined text-lg">add_circle</span>
                         Thêm Tour Mới
                     </a>
@@ -221,29 +260,33 @@
                                 <!-- Hình ảnh thumbnail -->
                                 <td class="px-5 py-3">
                                     <img th:src="${tour.imageUrl}" alt="Tour thumbnail"
-                                         class="w-16 h-12 object-cover rounded-lg border border-emerald-100 shadow-sm"
-                                         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2264%22 height=%2248%22><rect width=%2264%22 height=%2248%22 fill=%22%23ecfdf5%22/><text x=%2232%22 y=%2228%22 text-anchor=%22middle%22 fill=%22%2310b981%22 font-size=%2212%22>🌿</text></svg>'"/>
+                                        class="w-16 h-12 object-cover rounded-lg border border-emerald-100 shadow-sm"
+                                        onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2264%22 height=%2248%22><rect width=%2264%22 height=%2248%22 fill=%22%23ecfdf5%22/><text x=%2232%22 y=%2228%22 text-anchor=%22middle%22 fill=%22%2310b981%22 font-size=%2212%22>🌿</text></svg>'" />
                                 </td>
                                 <!-- Tên Tour -->
                                 <td class="px-5 py-3">
-                                    <div class="font-semibold text-gray-800 max-w-[260px] truncate" th:text="${tour.title}">Tour name</div>
-                                    <div class="text-xs text-gray-400 mt-0.5" th:text="${tour.departure}" th:if="${tour.departure}">Xuất phát</div>
+                                    <div class="font-semibold text-gray-800 max-w-[260px] truncate"
+                                        th:text="${tour.title}">Tour name</div>
+                                    <div class="text-xs text-gray-400 mt-0.5" th:text="${tour.departure}"
+                                        th:if="${tour.departure}">Xuất phát</div>
                                 </td>
                                 <!-- Tag -->
                                 <td class="px-5 py-3">
                                     <span th:if="${tour.tag}"
-                                          class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-0.5 rounded-md"
-                                          th:text="${tour.tag}">Hot</span>
+                                        class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-0.5 rounded-md"
+                                        th:text="${tour.tag}">Hot</span>
                                 </td>
                                 <!-- Thời gian -->
                                 <td class="px-5 py-3 text-gray-600" th:text="${tour.duration}">1 Ngày</td>
                                 <!-- Giá -->
                                 <td class="px-5 py-3 text-right font-bold text-emerald-700"
-                                    th:text="${tour.price != null ? #numbers.formatDecimal(tour.price, 0, 'COMMA', 0, 'POINT') + ' đ' : '—'}">1.190.000 đ</td>
+                                    th:text="${tour.price != null ? #numbers.formatDecimal(tour.price, 0, 'COMMA', 0, 'POINT') + ' đ' : '—'}">
+                                    1.190.000 đ</td>
                                 <!-- Đánh giá -->
                                 <td class="px-5 py-3 text-center">
                                     <span class="inline-flex items-center gap-1 text-yellow-500 text-xs font-bold">
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                                        <span class="material-symbols-outlined text-sm"
+                                            style="font-variation-settings:'FILL' 1">star</span>
                                         <span th:text="${tour.rating}">5.0</span>
                                     </span>
                                 </td>
@@ -251,14 +294,14 @@
                                 <td class="px-5 py-3 text-center">
                                     <div class="flex items-center justify-center gap-2">
                                         <a th:href="@{/staff/tours/edit/{id}(id=${tour.id})}"
-                                           class="inline-flex items-center gap-1 bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                                            class="inline-flex items-center gap-1 bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
                                             <span class="material-symbols-outlined text-sm">edit</span>
                                             Sửa
                                         </a>
                                         <form th:action="@{/staff/tours/delete/{id}(id=${tour.id})}" method="post"
-                                              onsubmit="return confirm('Bạn có chắc muốn xoá tour này? Hành động này không thể hoàn tác.');">
+                                            onsubmit="return confirm('Bạn có chắc muốn xoá tour này? Hành động này không thể hoàn tác.');">
                                             <button type="submit"
-                                                    class="inline-flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                                                class="inline-flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
                                                 <span class="material-symbols-outlined text-sm">delete</span>
                                                 Xóa
                                             </button>
@@ -301,14 +344,14 @@
     </script>
 
     <!-- ===== REJECTION MODAL ===== -->
-    <div id="rejectModal"
-         class="fixed inset-0 z-50 flex items-center justify-center hidden"
-         role="dialog" aria-modal="true" aria-labelledby="rejectModalTitle">
+    <div id="rejectModal" class="fixed inset-0 z-50 flex items-center justify-center hidden" role="dialog"
+        aria-modal="true" aria-labelledby="rejectModalTitle">
         <!-- Backdrop -->
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeRejectModal()"></div>
 
         <!-- Dialog panel -->
-        <div class="relative w-full max-w-md mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden animate-[fadeIn_0.25s_ease-out]">
+        <div
+            class="relative w-full max-w-md mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden animate-[fadeIn_0.25s_ease-out]">
             <!-- Modal header -->
             <div class="flex items-center justify-between px-6 py-4 bg-red-50 border-b border-red-100">
                 <div class="flex items-center gap-2">
@@ -316,8 +359,8 @@
                     <h3 id="rejectModalTitle" class="text-base font-bold text-red-700">Từ chối đơn đặt tour</h3>
                 </div>
                 <button type="button" onclick="closeRejectModal()"
-                        class="text-gray-400 hover:text-gray-600 rounded-lg p-1 transition hover:bg-gray-100"
-                        aria-label="Đóng modal">
+                    class="text-gray-400 hover:text-gray-600 rounded-lg p-1 transition hover:bg-gray-100"
+                    aria-label="Đóng modal">
                     <span class="material-symbols-outlined text-xl">close</span>
                 </button>
             </div>
@@ -333,23 +376,20 @@
                     <label for="rejectionReason" class="block text-sm font-semibold text-gray-700 mb-1.5">
                         Lý do từ chối <span class="text-red-500">*</span>
                     </label>
-                    <textarea id="rejectionReason"
-                              name="rejectionReason"
-                              rows="4"
-                              required
-                              placeholder="Ví dụ: Tour đã hết chỗ cho ngày khởi hành đã chọn..."
-                              class="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent resize-none transition"></textarea>
+                    <textarea id="rejectionReason" name="rejectionReason" rows="4" required
+                        placeholder="Ví dụ: Tour đã hết chỗ cho ngày khởi hành đã chọn..."
+                        class="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent resize-none transition"></textarea>
                     <p class="text-xs text-gray-400 mt-1.5">Nội dung này sẽ được gửi tới email của khách hàng.</p>
                 </div>
 
                 <!-- Modal footer -->
                 <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50 border-t border-gray-100">
                     <button type="button" onclick="closeRejectModal()"
-                            class="px-5 py-2 text-sm font-semibold text-gray-600 bg-white border border-gray-300 rounded-xl hover:bg-gray-100 transition">
+                        class="px-5 py-2 text-sm font-semibold text-gray-600 bg-white border border-gray-300 rounded-xl hover:bg-gray-100 transition">
                         Hủy bỏ
                     </button>
                     <button type="submit"
-                            class="inline-flex items-center gap-1.5 px-5 py-2 text-sm font-bold text-white bg-red-500 hover:bg-red-600 rounded-xl transition shadow-sm hover:shadow-md">
+                        class="inline-flex items-center gap-1.5 px-5 py-2 text-sm font-bold text-white bg-red-500 hover:bg-red-600 rounded-xl transition shadow-sm hover:shadow-md">
                         <span class="material-symbols-outlined text-base">block</span>
                         Xác nhận từ chối
                     </button>
@@ -366,7 +406,7 @@
             document.getElementById('rejectModal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             // Focus textarea for accessibility
-            setTimeout(function() {
+            setTimeout(function () {
                 document.getElementById('rejectionReason').focus();
             }, 50);
         }
@@ -377,10 +417,11 @@
         }
 
         // Close on Escape key
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') closeRejectModal();
         });
     </script>
 
 </body>
+
 </html>

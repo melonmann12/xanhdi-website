@@ -1,82 +1,93 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
+
 <body>
 
-<!-- =========================================================
+    <!-- =========================================================
      REUSABLE NAVBAR FRAGMENT
      Usage: <div th:replace="~{fragments/navbar :: navbar}"></div>
      ========================================================= -->
-<nav th:fragment="navbar"
-     class="w-full z-50 fixed top-0 transition-all duration-300 bg-surface/80 backdrop-blur-md shadow-sm border-b border-surface-variant/20"
-     id="main-nav">
+    <nav th:fragment="navbar"
+        class="w-full z-50 fixed top-0 transition-all duration-300 bg-surface/80 backdrop-blur-md shadow-sm border-b border-surface-variant/20"
+        id="main-nav">
 
-    <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+        <div
+            class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
 
-        <!-- Logo / Brand -->
-        <a class="flex items-center hover:opacity-80 transition-opacity" th:href="@{/}" href="/">
-            <img th:src="@{/images/logo.png}" alt="Xanh Đi Logo" class="h-16 md:h-10 w-auto object-contain">
-        </a>
+            <!-- Logo / Brand -->
+            <a class="flex items-center hover:opacity-80 transition-opacity" th:href="@{/}" href="/">
+                <img th:src="@{/images/logo.png}" alt="Xanh Đi Logo" class="h-16 md:h-10 w-auto object-contain">
+            </a>
 
-        <!-- Desktop Links -->
-        <div class="hidden md:flex items-center gap-8 font-body-md text-label-md">
-            <a class="text-on-surface-variant hover:text-primary transition-colors" th:href="@{/}" href="/">Khám phá</a>
-            <a class="text-on-surface-variant hover:text-primary transition-colors" th:href="@{/tours}" href="/tours">Điểm đến</a>
-            <a class="text-on-surface-variant hover:text-primary transition-colors" th:href="@{/guides}" href="/guides">Uy tín</a>
-            <a class="text-on-surface-variant hover:text-primary transition-colors" href="/#lien-he">Liên hệ</a>
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center gap-8 font-body-md text-label-md">
+                <a class="text-on-surface-variant hover:text-primary transition-colors" th:href="@{/}" href="/">Khám
+                    phá</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors" th:href="@{/tours}"
+                    href="/tours">Điểm đến</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors" th:href="@{/guides}"
+                    href="/guides">Đội ngũ</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="/#lien-he">Liên hệ</a>
+            </div>
+
+            <!-- Right Actions -->
+            <div class="flex items-center gap-4">
+                <button
+                    class="hidden md:block font-body-md text-label-md text-primary font-bold hover:opacity-80 transition-opacity">
+                    Đăng nhập
+                </button>
+                <button id="mobile-menu-btn"
+                    class="md:hidden text-primary focus:outline-none hover:text-secondary transition-colors">
+                    <span class="material-symbols-outlined text-3xl">menu</span>
+                </button>
+            </div>
         </div>
 
-        <!-- Right Actions -->
-        <div class="flex items-center gap-4">
-            <button class="hidden md:block font-body-md text-label-md text-primary font-bold hover:opacity-80 transition-opacity">
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-surface/95 backdrop-blur-md border-t border-surface-variant/30 px-margin-mobile py-4 space-y-4">
+            <a class="block text-on-surface-variant hover:text-primary transition-colors" th:href="@{/}" href="/">Khám
+                phá</a>
+            <a class="block text-on-surface-variant hover:text-primary transition-colors" th:href="@{/tours}"
+                href="/tours">Điểm đến</a>
+            <a class="block text-on-surface-variant hover:text-primary transition-colors" th:href="@{/guides}"
+                href="/guides">Đội ngũ</a>
+            <a class="block text-on-surface-variant hover:text-primary transition-colors" href="/#lien-he">Liên hệ</a>
+            <button
+                class="w-full text-left font-body-md text-label-md text-primary font-bold py-2 border-t border-surface-variant/30">
                 Đăng nhập
             </button>
-            <button id="mobile-menu-btn"
-                    class="md:hidden text-primary focus:outline-none hover:text-secondary transition-colors">
-                <span class="material-symbols-outlined text-3xl">menu</span>
-            </button>
         </div>
-    </div>
 
-    <!-- Mobile Menu Dropdown -->
-    <div id="mobile-menu"
-         class="hidden md:hidden bg-surface/95 backdrop-blur-md border-t border-surface-variant/30 px-margin-mobile py-4 space-y-4">
-        <a class="block text-on-surface-variant hover:text-primary transition-colors" th:href="@{/}" href="/">Khám phá</a>
-        <a class="block text-on-surface-variant hover:text-primary transition-colors" th:href="@{/tours}" href="/tours">Điểm đến</a>
-        <a class="block text-on-surface-variant hover:text-primary transition-colors" th:href="@{/guides}" href="/guides">Uy tín</a>
-        <a class="block text-on-surface-variant hover:text-primary transition-colors" href="/#lien-he">Liên hệ</a>
-        <button class="w-full text-left font-body-md text-label-md text-primary font-bold py-2 border-t border-surface-variant/30">
-            Đăng nhập
-        </button>
-    </div>
-
-    <!-- Navbar JS: scroll effect + mobile toggle -->
-    <script th:fragment="navbarScript">
-        (function () {
-            // Scroll effect
-            window.addEventListener('scroll', function () {
-                var nav = document.getElementById('main-nav');
-                if (!nav) return;
-                if (window.scrollY > 50) {
-                    nav.classList.add('bg-surface/95', 'shadow-sm');
-                    nav.classList.remove('bg-surface/80', 'backdrop-blur-md');
-                } else {
-                    nav.classList.remove('bg-surface/95', 'shadow-sm');
-                    nav.classList.add('bg-surface/80', 'backdrop-blur-md');
-                }
-            });
-
-            // Mobile menu toggle
-            var menuBtn = document.getElementById('mobile-menu-btn');
-            var mobileMenu = document.getElementById('mobile-menu');
-            if (menuBtn && mobileMenu) {
-                menuBtn.addEventListener('click', function () {
-                    mobileMenu.classList.toggle('hidden');
+        <!-- Navbar JS: scroll effect + mobile toggle -->
+        <script th:fragment="navbarScript">
+            (function () {
+                // Scroll effect
+                window.addEventListener('scroll', function () {
+                    var nav = document.getElementById('main-nav');
+                    if (!nav) return;
+                    if (window.scrollY > 50) {
+                        nav.classList.add('bg-surface/95', 'shadow-sm');
+                        nav.classList.remove('bg-surface/80', 'backdrop-blur-md');
+                    } else {
+                        nav.classList.remove('bg-surface/95', 'shadow-sm');
+                        nav.classList.add('bg-surface/80', 'backdrop-blur-md');
+                    }
                 });
-            }
-        })();
-    </script>
 
-</nav>
+                // Mobile menu toggle
+                var menuBtn = document.getElementById('mobile-menu-btn');
+                var mobileMenu = document.getElementById('mobile-menu');
+                if (menuBtn && mobileMenu) {
+                    menuBtn.addEventListener('click', function () {
+                        mobileMenu.classList.toggle('hidden');
+                    });
+                }
+            })();
+        </script>
+
+    </nav>
 
 </body>
+
 </html>

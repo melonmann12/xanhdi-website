@@ -161,52 +161,50 @@
     <section class="py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Card -->
-            <div th:each="guide : ${guides}" class="bg-white rounded-2xl p-8 border border-emerald-100/30 card-hover flex flex-col items-center text-center shadow-[0_4px_24px_rgba(26,60,52,0.02)] space-y-5">
-                <!-- Avatar with soft shadow and double rings -->
-                <div class="relative shrink-0">
-                    <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-emerald-50 ring-4 ring-emerald-950/5 shadow-md">
-                        <img class="w-full h-full object-cover" 
-                             th:src="${guide.avatarUrl != null and !guide.avatarUrl.isEmpty() ? guide.avatarUrl : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80'}"
-                             th:alt="${guide.name}">
-                    </div>
-                </div>
-
-                <!-- Info Block -->
-                <div class="space-y-2">
-                    <h3 class="text-xl font-bold text-slate-800 tracking-tight leading-snug" th:text="${guide.name}">Tên Hướng Dẫn Viên</h3>
-                    
-                    <!-- Specialty Badge (Soft Tint) -->
-                    <span class="inline-block bg-emerald-50/60 text-emerald-800 px-3.5 py-1 rounded-full text-xs font-semibold border border-emerald-100/40" 
+            <div th:each="guide : ${guides}" class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full">
+                <!-- Top Half: Full-width cover image with floating badge -->
+                <div class="relative w-full h-64 shrink-0">
+                    <img class="w-full h-full object-cover" 
+                         th:src="${guide.avatarUrl != null and !guide.avatarUrl.isEmpty() ? guide.avatarUrl : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=512&q=80'}"
+                         th:alt="${guide.name}">
+                    <!-- Specialty Badge floating absolute -->
+                    <span class="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm text-emerald-800 text-xs font-semibold px-2.5 py-1 rounded-md shadow-sm border border-emerald-100/50" 
                           th:text="${guide.specialty}">Chuyên môn</span>
                 </div>
 
-                <!-- Rating Block -->
-                <div class="flex items-center justify-center gap-1 text-slate-700 bg-slate-50 px-3 py-1 rounded-lg text-xs font-semibold">
-                    <span class="material-symbols-outlined text-amber-500 fill text-base" style="font-variation-settings: 'FILL' 1;">star</span>
-                    <span th:text="${guide.rating != null ? guide.rating : '5.0'}">4.9</span>
-                    <span class="text-slate-400 font-normal" th:text="'(' + (${guide.reviewCount != null ? guide.reviewCount : 0}) + ')'">(120)</span>
-                </div>
+                <!-- Bottom Half: Left-aligned details block -->
+                <div class="p-5 flex flex-col justify-between flex-grow text-left space-y-3">
+                    <div class="space-y-2">
+                        <!-- Name -->
+                        <h3 class="text-xl font-bold text-slate-900 tracking-tight leading-snug" th:text="${guide.name}">Tên Hướng Dẫn Viên</h3>
+                        
+                        <!-- Rating Block (Compact row, left-aligned) -->
+                        <div class="flex items-center gap-1 text-slate-700 text-xs font-semibold">
+                            <span class="material-symbols-outlined text-amber-500 text-base" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span th:text="${guide.rating != null ? guide.rating : '5.0'}">4.9</span>
+                            <span class="text-slate-400 font-normal" th:text="'(' + (${guide.reviewCount != null ? guide.reviewCount : 0}) + ' đánh giá)'">(120 đánh giá)</span>
+                        </div>
+                    </div>
 
-                <!-- Languages Bullet Row -->
-                <div class="text-xs text-slate-500 font-medium">
-                    <span class="text-slate-400">Ngôn ngữ: </span>
-                    <span th:each="lang, iterStat : ${#strings.arraySplit(guide.languages, ',')}">
-                        <span th:text="${#strings.trim(lang) == 'VN' ? 'Tiếng Việt' : (#strings.trim(lang) == 'EN' ? 'Tiếng Anh' : (#strings.trim(lang) == 'JP' ? 'Tiếng Nhật' : #strings.trim(lang)))}">Tiếng Việt</span><span th:if="${!iterStat.last}" class="text-slate-300 mx-1">•</span>
-                    </span>
-                </div>
+                    <!-- Languages Bullet Row -->
+                    <div class="text-xs text-slate-500 font-medium">
+                        <span class="text-slate-400">Thông thạo: </span>
+                        <span th:each="lang, iterStat : ${#strings.arraySplit(guide.languages, ',')}">
+                            <span th:text="${#strings.trim(lang) == 'VN' ? 'Tiếng Việt' : (#strings.trim(lang) == 'EN' ? 'Tiếng Anh' : (#strings.trim(lang) == 'JP' ? 'Tiếng Nhật' : #strings.trim(lang)))}">Tiếng Việt</span><span th:if="${!iterStat.last}" class="text-slate-300 mx-1">•</span>
+                        </span>
+                    </div>
 
-                <!-- Bio with Relaxed Leading -->
-                <p class="text-sm text-slate-500 leading-relaxed line-clamp-2 h-10" th:text="${guide.bio}">Mô tả tóm tắt về hướng dẫn viên.</p>
-                
-                <!-- Premium Interaction CTA -->
-                <a th:href="@{/guides/{id}(id=${guide.id})}" class="block w-full mt-auto group">
-                    <button class="w-full bg-emerald-950 hover:bg-emerald-800 text-white font-bold text-sm py-3 px-4 rounded-xl shadow-sm hover:shadow transition-all duration-300 flex items-center justify-center gap-1">
+                    <!-- Bio with line clamp -->
+                    <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 h-15" th:text="${guide.bio}">Mô tả tóm tắt về hướng dẫn viên.</p>
+                    
+                    <!-- Premium Interaction CTA -->
+                    <a th:href="@{/guides/{id}(id=${guide.id})}" class="inline-flex items-center gap-1 text-emerald-700 font-bold hover:text-emerald-800 text-sm mt-2 transition-colors group">
                         <span>Xem hồ sơ</span>
-                        <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
                         </svg>
-                    </button>
-                </a>
+                    </a>
+                </div>
             </div>
         </div>
 
