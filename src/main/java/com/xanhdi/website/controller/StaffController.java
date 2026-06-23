@@ -5,10 +5,12 @@ import com.xanhdi.website.model.StaffUser;
 import com.xanhdi.website.model.Tour;
 import com.xanhdi.website.model.TourImage;
 import com.xanhdi.website.model.TourTimeline;
+import com.xanhdi.website.model.TourGuide;
 import com.xanhdi.website.repository.BookingRepository;
 import com.xanhdi.website.repository.StaffUserRepository;
 import com.xanhdi.website.repository.TourRepository;
 import com.xanhdi.website.repository.TourTimelineRepository;
+import com.xanhdi.website.repository.TourGuideRepository;
 import com.xanhdi.website.service.EmailService;
 import com.xanhdi.website.service.StorageService;
 import jakarta.servlet.http.HttpSession;
@@ -31,6 +33,7 @@ public class StaffController {
     private final EmailService emailService;
     private final StorageService storageService;
     private final TourTimelineRepository tourTimelineRepository;
+    private final TourGuideRepository tourGuideRepository;
 
     @Autowired
     public StaffController(StaffUserRepository staffUserRepository,
@@ -38,13 +41,15 @@ public class StaffController {
                            BookingRepository bookingRepository,
                            EmailService emailService,
                            StorageService storageService,
-                           TourTimelineRepository tourTimelineRepository) {
+                           TourTimelineRepository tourTimelineRepository,
+                           TourGuideRepository tourGuideRepository) {
         this.staffUserRepository = staffUserRepository;
         this.tourRepository = tourRepository;
         this.bookingRepository = bookingRepository;
         this.emailService = emailService;
         this.storageService = storageService;
         this.tourTimelineRepository = tourTimelineRepository;
+        this.tourGuideRepository = tourGuideRepository;
     }
 
     // =========================================================
@@ -440,5 +445,112 @@ public class StaffController {
             tourRepository.deleteById(id);
         });
         return "redirect:/staffdashboard";
+    }
+
+    // =========================================================
+    // STAFF TOUR GUIDE CRUD
+    // =========================================================
+
+    @GetMapping({"/staff/guides", "/staff/guides/"})
+    public String staffGuidesList(HttpSession session, Model model) {
+        if (session.getAttribute("staff") == null) return "redirect:/staff/login";
+        List<TourGuide> guides = tourGuideRepository.findAll();
+        model.addAttribute("guides", guides);
+        return "staff-guide-list";
+    }
+
+    @GetMapping({"/staff/guides/new", "/staff/guides/new/"})
+    public String newGuideForm(HttpSession session, Model model) {
+        if (session.getAttribute("staff") == null) return "redirect:/staff/login";
+        model.addAttribute("guide", new TourGuide());
+        model.addAttribute("isEdit", false);
+        return "staff-guide-form";
+    }
+
+    @GetMapping({"/staff/guides/edit/{id}", "/staff/guides/edit/{id}/"})
+    public String editGuideForm(@PathVariable("id") Long id,
+                                HttpSession session,
+                                Model model,
+                                RedirectAttributes ra) {
+        if (session.getAttribute("staff") == null) return "redirect:/staff/login";
+
+        Optional<TourGuide> guideOpt = tourGuideRepository.findById(id);
+        if (guideOpt.isEmpty()) {
+            ra.addFlashAttribute("dashMsg", "Hướng dẫn viên không tồn tại.");
+            return "redirect:/staff/guides";
+        }
+        model.addAttribute("guide", guideOpt.get());
+        model.addAttribute("isEdit", true);
+        return "staff-guide-form";
+    }
+
+    @PostMapping({"/staff/guides/save", "/staff/guides/save/"})
+    public String saveGuide(
+            @RequestParam(value = "id", required = false) Long id,
+            @RequestParam("name") String name,
+            @RequestParam(value = "specialty", required = false) String specialty,
+            @RequestParam(value = "languages", required = false) String languages,
+            @RequestParam(value = "bio", required = false) String bio,
+            @RequestParam(value = "dateOfBirth", required = false) String dateOfBirthStr,
+            @RequestParam(value = "rating", defaultValue = "5.0") Double rating,
+            @RequestParam(value = "reviewCount", defaultValue = "0") Integer reviewCount,
+            @RequestParam(value = "avatarFile", required = false) MultipartFile avatarFile,
+            HttpSession session,
+            RedirectAttributes ra) {
+
+        if (session.getAttribute("staff") == null) return "redirect:/staff/login";
+
+        TourGuide guide;
+        if (id != null) {
+            guide = tourGuideRepository.findById(id).orElse(new TourGuide());
+        } else {
+            guide = new TourGuide();
+            guide.setRating(rating);
+            guide.setReviewCount(reviewCount);
+        }
+
+        guide.setName(name.trim());
+        guide.setSpecialty(specialty != null ? specialty.trim() : null);
+        guide.setLanguages(languages != null ? languages.trim() : null);
+        guide.setBio(bio != null ? bio.trim() : null);
+
+        if (dateOfBirthStr != null && !dateOfBirthStr.trim().isEmpty()) {
+            try {
+                guide.setDateOfBirth(java.time.LocalDate.parse(dateOfBirthStr));
+            } catch (Exception e) {
+                System.err.println("Failed to parse dateOfBirth: " + dateOfBirthStr);
+            }
+        }
+
+        if (avatarFile != null && !avatarFile.isEmpty()) {
+            try {
+                String avatarUrl = storageService.uploadFile(avatarFile);
+                guide.setAvatarUrl(avatarUrl);
+            } catch (Exception e) {
+                System.err.println("Failed to upload avatar: " + e.getMessage());
+                ra.addFlashAttribute("dashMsg", "Đã lưu thông tin nhưng tải ảnh đại diện thất bại: " + e.getMessage());
+            }
+        }
+
+        tourGuideRepository.save(guide);
+        if (ra.getFlashAttributes().get("dashMsg") == null) {
+            ra.addFlashAttribute("dashMsg", "Hướng dẫn viên \"" + name + "\" đã được lưu thành công.");
+        }
+
+        return "redirect:/staff/guides";
+    }
+
+    @PostMapping({"/staff/guides/delete/{id}", "/staff/guides/delete/{id}/"})
+    public String deleteGuide(@PathVariable("id") Long id,
+                              HttpSession session,
+                              RedirectAttributes ra) {
+        if (session.getAttribute("staff") == null) return "redirect:/staff/login";
+
+        tourGuideRepository.findById(id).ifPresent(g -> {
+            tourGuideRepository.deleteById(id);
+            ra.addFlashAttribute("dashMsg", "Hướng dẫn viên \"" + g.getName() + "\" đã được xoá.");
+        });
+
+        return "redirect:/staff/guides";
     }
 }

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${isEdit} ? 'Sửa thông tin Hướng dẫn viên — Xanh Đi' : 'Thêm Hướng dẫn viên mới — Xanh Đi'">Hướng dẫn viên — Xanh Đi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+        .fade-in { animation: fadeIn 0.35s ease-out forwards; }
+    </style>
+</head>
+<body class="bg-emerald-50/40 min-h-screen text-gray-800 flex flex-col">
+
+    <!-- ===== TOP NAVIGATION BAR ===== -->
+    <header class="sticky top-0 z-50 bg-emerald-900 shadow-lg">
+        <div class="max-w-[1440px] mx-auto flex items-center justify-between px-6 py-3">
+            <!-- Brand & Navigation Links -->
+            <div class="flex items-center gap-6">
+                <a th:href="@{/staffdashboard}" class="flex items-center gap-3 hover:opacity-90">
+                    <img th:src="@{/images/logo.png}" alt="Xanh Đi Logo" class="h-9 w-auto object-contain brightness-0 invert">
+                    <span class="text-emerald-300 text-xs font-medium">Staff Panel</span>
+                </a>
+                <div class="hidden md:flex items-center gap-4 text-emerald-200 text-sm">
+                    <a th:href="@{/staffdashboard}" class="hover:text-white transition">Dashboard</a>
+                    <span class="opacity-30">|</span>
+                    <a th:href="@{/staff/guides}" class="hover:text-white transition font-bold text-white">Hướng dẫn viên</a>
+                </div>
+            </div>
+            <!-- Right side -->
+            <div class="flex items-center gap-5">
+                <span class="text-emerald-200 text-sm hidden sm:inline-flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-base">person</span>
+                    Chào, <strong class="text-white" th:text="${session.staff != null ? (session.staff.fullName != null ? session.staff.fullName : session.staff.username) : 'Nhân viên'}">Nhân viên</strong>
+                </span>
+                <a th:href="@{/staff/logout}"
+                   class="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-600 text-emerald-100 hover:text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all duration-200">
+                    <span class="material-symbols-outlined text-base">logout</span>
+                    Đăng xuất
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="max-w-[1000px] mx-auto px-4 sm:px-6 py-6 sm:py-8 flex-grow w-full fade-in">
+
+        <!-- Back Link -->
+        <a th:href="@{/staff/guides}"
+           class="inline-flex items-center gap-1 text-emerald-700 hover:text-emerald-900 text-sm font-bold mb-6 transition-colors">
+            <span class="material-symbols-outlined text-lg">arrow_back</span>
+            Quay lại danh sách
+        </a>
+
+        <!-- Form Card -->
+        <div class="bg-white rounded-2xl shadow-sm border border-emerald-100 overflow-hidden">
+            <div class="px-6 py-4 border-b border-emerald-100 bg-emerald-50/50">
+                <h2 class="text-lg font-bold text-emerald-900 flex items-center gap-2"
+                    th:text="${isEdit} ? 'Cập nhật thông tin Hướng dẫn viên' : 'Thêm Hướng dẫn viên mới'">
+                    Hướng dẫn viên
+                </h2>
+            </div>
+
+            <form th:action="@{/staff/guides/save}" method="post" enctype="multipart/form-data" class="p-6 sm:p-8 space-y-6">
+                <!-- Hidden inputs -->
+                <input type="hidden" th:value="${guide.id}" name="id"/>
+                <input type="hidden" th:value="${guide.rating}" name="rating"/>
+                <input type="hidden" th:value="${guide.reviewCount}" name="reviewCount"/>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Name -->
+                    <div class="space-y-1.5">
+                        <label for="name" class="block text-xs font-bold text-emerald-800 uppercase tracking-wider">
+                            Họ và Tên <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="name" name="name" th:value="${guide.name}" required
+                               placeholder="Ví dụ: Trần Văn Nam"
+                               class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition"/>
+                    </div>
+
+                    <!-- Specialty -->
+                    <div class="space-y-1.5">
+                        <label for="specialty" class="block text-xs font-bold text-emerald-800 uppercase tracking-wider">
+                            Chuyên môn <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="specialty" name="specialty" th:value="${guide.specialty}" required
+                               placeholder="Ví dụ: Chuyên gia sinh tồn, Trekking"
+                               class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition"/>
+                    </div>
+
+                    <!-- Languages -->
+                    <div class="space-y-1.5">
+                        <label for="languages" class="block text-xs font-bold text-emerald-800 uppercase tracking-wider">
+                            Ngôn ngữ (Phân cách bằng dấu phẩy) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="languages" name="languages" th:value="${guide.languages}" required
+                               placeholder="Ví dụ: VN, EN, JP"
+                               class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition"/>
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <div class="space-y-1.5">
+                        <label for="dateOfBirth" class="block text-xs font-bold text-emerald-800 uppercase tracking-wider">
+                            Ngày sinh <span class="text-red-500">*</span>
+                        </label>
+                        <input type="date" id="dateOfBirth" name="dateOfBirth" th:value="${guide.dateOfBirth}" required
+                               class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition"/>
+                    </div>
+                </div>
+
+                <!-- Avatar file upload & preview -->
+                <div class="space-y-3">
+                    <label class="block text-xs font-bold text-emerald-800 uppercase tracking-wider">
+                        Ảnh đại diện / Avatar
+                    </label>
+                    <div class="flex items-center gap-4">
+                        <!-- Preview existing avatar if any -->
+                        <div th:if="${guide.avatarUrl != null and !guide.avatarUrl.isEmpty()}" class="shrink-0">
+                            <img th:src="${guide.avatarUrl}" alt="Avatar preview"
+                                 class="w-16 h-16 object-cover rounded-full border border-emerald-100 shadow-sm"/>
+                        </div>
+                        <input type="file" name="avatarFile" accept="image/*"
+                               class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 transition-all cursor-pointer"/>
+                    </div>
+                    <p class="text-xs text-gray-400">Được tải lên trực tiếp lưu trữ đám mây Supabase.</p>
+                </div>
+
+                <!-- Bio -->
+                <div class="space-y-1.5">
+                    <label for="bio" class="block text-xs font-bold text-emerald-800 uppercase tracking-wider">
+                        Giới thiệu / Câu chuyện
+                    </label>
+                    <textarea id="bio" name="bio" rows="6" placeholder="Mô tả kinh nghiệm, triết lý dẫn đoàn..."
+                              class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent resize-none transition"
+                              th:text="${guide.bio}"></textarea>
+                </div>
+
+                <!-- Submit buttons -->
+                <div class="flex items-center justify-end gap-3 border-t border-emerald-50 pt-6">
+                    <a th:href="@{/staff/guides}"
+                       class="px-6 py-2.5 text-sm font-semibold text-gray-600 bg-white border border-gray-300 rounded-xl hover:bg-gray-100 transition shadow-sm">
+                        Hủy bỏ
+                    </a>
+                    <button type="submit"
+                            class="inline-flex items-center gap-1.5 px-6 py-2.5 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition shadow-md hover:scale-[1.01]">
+                        <span class="material-symbols-outlined text-lg">save</span>
+                        Lưu dữ liệu
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>

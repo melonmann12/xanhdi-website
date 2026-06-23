@@ -19,10 +19,17 @@
     <!-- ===== TOP NAVIGATION BAR ===== -->
     <header class="sticky top-0 z-50 bg-emerald-900 shadow-lg">
         <div class="max-w-[1440px] mx-auto flex items-center justify-between px-6 py-3">
-            <!-- Brand -->
-            <div class="flex items-center gap-3">
-                <img th:src="@{/images/logo.png}" alt="Xanh Đi Logo" class="h-9 w-auto object-contain brightness-0 invert">
-                <span class="text-emerald-300 text-xs font-medium">Staff Panel</span>
+            <!-- Brand & Navigation Links -->
+            <div class="flex items-center gap-6">
+                <a th:href="@{/staffdashboard}" class="flex items-center gap-3 hover:opacity-90">
+                    <img th:src="@{/images/logo.png}" alt="Xanh Đi Logo" class="h-9 w-auto object-contain brightness-0 invert">
+                    <span class="text-emerald-300 text-xs font-medium">Staff Panel</span>
+                </a>
+                <div class="hidden md:flex items-center gap-4 text-emerald-200 text-sm">
+                    <a th:href="@{/staffdashboard}" class="hover:text-white transition font-bold text-white">Dashboard</a>
+                    <span class="opacity-30">|</span>
+                    <a th:href="@{/staff/guides}" class="hover:text-white transition">Hướng dẫn viên</a>
+                </div>
             </div>
             <!-- Right side -->
             <div class="flex items-center gap-5">

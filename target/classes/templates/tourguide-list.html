@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Xanh Đi - Đội Ngũ Hướng Dẫn Viên Bản Địa</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#83a69c",
+                        "inverse-on-surface": "#f3f0f0",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#eae8e7",
+                        "error": "#ba1a1a",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#434846",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e4e2e1",
+                        "on-secondary-fixed-variant": "#23501e",
+                        "primary": "#01261f",
+                        "on-primary": "#ffffff",
+                        "surface": "#fbf9f8",
+                        "secondary-fixed": "#bcf0ae",
+                        "on-surface-variant": "#414846",
+                        "on-primary-fixed-variant": "#2b4d44",
+                        "secondary-fixed-dim": "#a1d494",
+                        "tertiary": "#1e2221",
+                        "surface-tint": "#43655c",
+                        "surface-container": "#f0eded",
+                        "outline": "#717976",
+                        "surface-bright": "#fbf9f8",
+                        "inverse-surface": "#303030",
+                        "inverse-primary": "#aacec3",
+                        "primary-fixed": "#c5eadf",
+                        "on-secondary-container": "#3f6d38",
+                        "on-error": "#ffffff",
+                        "background": "#fbf9f8",
+                        "outline-variant": "#c1c8c4",
+                        "on-surface": "#1b1c1c",
+                        "tertiary-container": "#333736",
+                        "secondary": "#3b6934",
+                        "tertiary-fixed": "#e0e3e1",
+                        "on-background": "#1b1c1c",
+                        "tertiary-fixed-dim": "#c4c7c5",
+                        "on-primary-fixed": "#00201a",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#002201",
+                        "surface-container-highest": "#e4e2e1",
+                        "surface-container-low": "#f6f3f2",
+                        "on-tertiary-fixed": "#181c1b",
+                        "secondary-container": "#b9eeab",
+                        "on-tertiary-container": "#9ca09e",
+                        "primary-fixed-dim": "#aacec3",
+                        "primary-container": "#1a3c34",
+                        "surface-dim": "#dcd9d9",
+                        "on-secondary": "#ffffff",
+                        "amber": {"500": "#f59e0b"}
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "container-max": "1280px",
+                        "section-gap": "120px",
+                        "margin-desktop": "64px",
+                        "unit": "8px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Be Vietnam Pro"],
+                        "headline-lg": ["Be Vietnam Pro"],
+                        "label-md": ["Be Vietnam Pro"],
+                        "headline-md": ["Be Vietnam Pro"],
+                        "body-md": ["Be Vietnam Pro"],
+                        "headline-lg-mobile": ["Be Vietnam Pro"],
+                        "display-lg": ["Be Vietnam Pro"],
+                        "body-lg": ["Be Vietnam Pro"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-lg": ["36px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "display-lg": ["56px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .card-hover { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(26, 60, 52, 0.08); }
+        select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+
+<!-- TopNavBar -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="flex-grow pt-20">
+    <!-- Hero Section -->
+    <section class="bg-surface-container-lowest text-center py-section-gap px-margin-mobile md:px-margin-desktop relative overflow-hidden">
+        <div class="max-w-3xl mx-auto relative z-10">
+            <h1 class="font-display-lg text-display-lg text-primary mb-6">Đội Ngũ Hướng Dẫn Viên Bản Địa</h1>
+            <p class="font-body-lg text-body-lg text-on-surface-variant">Kết nối với những chuyên gia địa phương giàu kinh nghiệm. Họ không chỉ dẫn đường mà còn là những người kể chuyện, mang đến cho bạn trải nghiệm chân thực và an toàn nhất.</p>
+        </div>
+        <!-- Decorative soft organic shapes -->
+        <div class="absolute top-0 left-0 w-96 h-96 bg-primary-fixed/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-secondary-fixed/20 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
+    </section>
+
+    <!-- Search & Filter Sticky Bar -->
+    <section class="sticky top-20 z-40 bg-surface-container-lowest/90 backdrop-blur-md border-b border-surface-container py-4 px-margin-mobile md:px-margin-desktop shadow-sm">
+        <div class="max-w-container-max mx-auto flex flex-col md:flex-row gap-4 items-center justify-between">
+            <!-- Search -->
+            <div class="relative w-full md:w-1/3">
+                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+                <input class="w-full pl-12 pr-4 py-3 bg-surface-container-low border border-transparent focus:border-primary-container rounded-lg font-body-md text-body-md text-on-surface transition-colors focus:ring-0 outline-none" placeholder="Tìm kiếm hướng dẫn viên..." type="text">
+            </div>
+            <!-- Filters -->
+            <div class="flex flex-wrap gap-4 w-full md:w-auto">
+                <select class="px-4 py-3 bg-surface-container-low border border-transparent focus:border-primary-container rounded-lg font-body-md text-body-md text-on-surface cursor-pointer pr-10 outline-none hover:bg-surface-container">
+                    <option value="">Chuyên môn</option>
+                    <option value="kinang">Kỹ năng sinh tồn</option>
+                    <option value="trekking">Trekking</option>
+                    <option value="vanhoa">Lịch sử văn hóa</option>
+                </select>
+                <select class="px-4 py-3 bg-surface-container-low border border-transparent focus:border-primary-container rounded-lg font-body-md text-body-md text-on-surface cursor-pointer pr-10 outline-none hover:bg-surface-container">
+                    <option value="">Ngôn ngữ</option>
+                    <option value="vn">Tiếng Việt</option>
+                    <option value="en">Tiếng Anh</option>
+                    <option value="jp">Tiếng Nhật</option>
+                </select>
+                <select class="px-4 py-3 bg-surface-container-low border border-transparent focus:border-primary-container rounded-lg font-body-md text-body-md text-on-surface cursor-pointer pr-10 outline-none hover:bg-surface-container">
+                    <option value="">Lịch trống</option>
+                    <option value="tuan_nay">Tuần này</option>
+                    <option value="thang_nay">Tháng này</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guide Grid -->
+    <section class="py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Card -->
+            <div th:each="guide : ${guides}" class="bg-white rounded-2xl p-8 border border-emerald-100/30 card-hover flex flex-col items-center text-center shadow-[0_4px_24px_rgba(26,60,52,0.02)] space-y-5">
+                <!-- Avatar with soft shadow and double rings -->
+                <div class="relative shrink-0">
+                    <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-emerald-50 ring-4 ring-emerald-950/5 shadow-md">
+                        <img class="w-full h-full object-cover" 
+                             th:src="${guide.avatarUrl != null and !guide.avatarUrl.isEmpty() ? guide.avatarUrl : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80'}"
+                             th:alt="${guide.name}">
+                    </div>
+                </div>
+
+                <!-- Info Block -->
+                <div class="space-y-2">
+                    <h3 class="text-xl font-bold text-slate-800 tracking-tight leading-snug" th:text="${guide.name}">Tên Hướng Dẫn Viên</h3>
+                    
+                    <!-- Specialty Badge (Soft Tint) -->
+                    <span class="inline-block bg-emerald-50/60 text-emerald-800 px-3.5 py-1 rounded-full text-xs font-semibold border border-emerald-100/40" 
+                          th:text="${guide.specialty}">Chuyên môn</span>
+                </div>
+
+                <!-- Rating Block -->
+                <div class="flex items-center justify-center gap-1 text-slate-700 bg-slate-50 px-3 py-1 rounded-lg text-xs font-semibold">
+                    <span class="material-symbols-outlined text-amber-500 fill text-base" style="font-variation-settings: 'FILL' 1;">star</span>
+                    <span th:text="${guide.rating != null ? guide.rating : '5.0'}">4.9</span>
+                    <span class="text-slate-400 font-normal" th:text="'(' + (${guide.reviewCount != null ? guide.reviewCount : 0}) + ')'">(120)</span>
+                </div>
+
+                <!-- Languages Bullet Row -->
+                <div class="text-xs text-slate-500 font-medium">
+                    <span class="text-slate-400">Ngôn ngữ: </span>
+                    <span th:each="lang, iterStat : ${#strings.arraySplit(guide.languages, ',')}">
+                        <span th:text="${#strings.trim(lang) == 'VN' ? 'Tiếng Việt' : (#strings.trim(lang) == 'EN' ? 'Tiếng Anh' : (#strings.trim(lang) == 'JP' ? 'Tiếng Nhật' : #strings.trim(lang)))}">Tiếng Việt</span><span th:if="${!iterStat.last}" class="text-slate-300 mx-1">•</span>
+                    </span>
+                </div>
+
+                <!-- Bio with Relaxed Leading -->
+                <p class="text-sm text-slate-500 leading-relaxed line-clamp-2 h-10" th:text="${guide.bio}">Mô tả tóm tắt về hướng dẫn viên.</p>
+                
+                <!-- Premium Interaction CTA -->
+                <a th:href="@{/guides/{id}(id=${guide.id})}" class="block w-full mt-auto group">
+                    <button class="w-full bg-emerald-950 hover:bg-emerald-800 text-white font-bold text-sm py-3 px-4 rounded-xl shadow-sm hover:shadow transition-all duration-300 flex items-center justify-center gap-1">
+                        <span>Xem hồ sơ</span>
+                        <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </a>
+            </div>
+        </div>
+
+        <!-- Empty state when no guides found -->
+        <div th:if="${#lists.isEmpty(guides)}" class="py-16 text-center text-gray-400">
+            <span class="material-symbols-outlined text-5xl mb-3 block">hail</span>
+            <p class="text-sm font-medium">Hiện tại chưa có hướng dẫn viên nào trong danh sách.</p>
+        </div>
+    </section>
+
+    <!-- Pagination -->
+    <section th:if="${not #lists.isEmpty(guides)}" class="py-8 flex justify-center items-center gap-2 mb-section-gap">
+        <button class="px-4 py-2 text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">chevron_left</span> Trước
+        </button>
+        <button class="w-10 h-10 rounded-full bg-primary-container text-on-primary font-label-md text-label-md flex items-center justify-center">1</button>
+        <button class="w-10 h-10 rounded-full text-on-surface-variant hover:bg-surface-container font-label-md text-label-md flex items-center justify-center transition-colors">2</button>
+        <button class="w-10 h-10 rounded-full text-on-surface-variant hover:bg-surface-container font-label-md text-label-md flex items-center justify-center transition-colors">3</button>
+        <button class="px-4 py-2 text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md flex items-center gap-1">
+            Sau <span class="material-symbols-outlined text-sm">chevron_right</span>
+        </button>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="w-full py-section-gap px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-gutter bg-tertiary dark:bg-tertiary-container transition-opacity duration-200">
+    <div class="font-headline-sm text-headline-sm font-bold text-on-tertiary dark:text-on-tertiary-container">
+        Xanh Đi
+    </div>
+    <div class="font-label-md text-label-md text-on-tertiary/70 dark:text-on-tertiary-container/70 text-center">
+        © 2024 Xanh Đi - Eco-Tourism Project. All rights reserved.
+    </div>
+    <div class="flex gap-6 font-label-md text-label-md">
+        <a class="text-on-tertiary/70 dark:text-on-tertiary-container/70 hover:text-on-tertiary dark:hover:text-on-tertiary-container underline transition-colors" href="#">Chính sách bảo mật</a>
+        <a class="text-on-tertiary/70 dark:text-on-tertiary-container/70 hover:text-on-tertiary dark:hover:text-on-tertiary-container underline transition-colors" href="#">Điều khoản sử dụng</a>
+        <a class="text-on-tertiary/70 dark:text-on-tertiary-container/70 hover:text-on-tertiary dark:hover:text-on-tertiary-container underline transition-colors" href="#">Câu hỏi thường gặp</a>
+        <a class="text-on-tertiary/70 dark:text-on-tertiary-container/70 hover:text-on-tertiary dark:hover:text-on-tertiary-container underline transition-colors" href="#">Hợp tác</a>
+    </div>
+</footer>
+
+</body>
+</html>
