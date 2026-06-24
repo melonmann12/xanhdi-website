@@ -13,6 +13,8 @@ import com.xanhdi.website.repository.TourTimelineRepository;
 import com.xanhdi.website.repository.TourGuideRepository;
 import com.xanhdi.website.service.EmailService;
 import com.xanhdi.website.service.StorageService;
+import com.xanhdi.website.model.SystemSetting;
+import com.xanhdi.website.repository.SystemSettingRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class StaffController {
@@ -34,6 +38,7 @@ public class StaffController {
     private final StorageService storageService;
     private final TourTimelineRepository tourTimelineRepository;
     private final TourGuideRepository tourGuideRepository;
+    private final SystemSettingRepository systemSettingRepository;
 
     @Autowired
     public StaffController(StaffUserRepository staffUserRepository,
@@ -42,7 +47,8 @@ public class StaffController {
                            EmailService emailService,
                            StorageService storageService,
                            TourTimelineRepository tourTimelineRepository,
-                           TourGuideRepository tourGuideRepository) {
+                           TourGuideRepository tourGuideRepository,
+                           SystemSettingRepository systemSettingRepository) {
         this.staffUserRepository = staffUserRepository;
         this.tourRepository = tourRepository;
         this.bookingRepository = bookingRepository;
@@ -50,6 +56,7 @@ public class StaffController {
         this.storageService = storageService;
         this.tourTimelineRepository = tourTimelineRepository;
         this.tourGuideRepository = tourGuideRepository;
+        this.systemSettingRepository = systemSettingRepository;
     }
 
     // =========================================================
@@ -555,5 +562,97 @@ public class StaffController {
         });
 
         return "redirect:/staff/guides";
+    }
+
+    // =========================================================
+    // SYSTEM SETTINGS / CMS MANAGEMENT
+    // =========================================================
+
+    @GetMapping({"/staff/settings", "/staff/settings/"})
+    public String viewSettings(HttpSession session, Model model) {
+        if (session.getAttribute("staff") == null) return "redirect:/staff/login";
+        
+        StaffUser staff = (StaffUser) session.getAttribute("staff");
+        Map<String, String> settings = systemSettingRepository.findAll().stream()
+                .collect(Collectors.toMap(
+                        SystemSetting::getSettingKey,
+                        s -> s.getSettingValue() != null ? s.getSettingValue() : ""
+                ));
+        
+        model.addAttribute("staff", staff);
+        model.addAttribute("settings", settings);
+        model.addAttribute("activeTab", "settings");
+        return "staff-settings";
+    }
+
+    @PostMapping({"/staff/settings/save", "/staff/settings/save/"})
+    public String saveSettings(@RequestParam Map<String, String> params,
+                               @RequestParam(value = "heroBgFile", required = false) MultipartFile heroBgFile,
+                               @RequestParam(value = "processImgFile", required = false) MultipartFile processImgFile,
+                               @RequestParam(value = "experienceImgFile", required = false) MultipartFile experienceImgFile,
+                               HttpSession session,
+                               RedirectAttributes ra) {
+        if (session.getAttribute("staff") == null) return "redirect:/staff/login";
+
+        // Save all text settings dynamically from form parameters
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            // Skip parameters that are not settings properties (e.g. CSRF tokens if any)
+            if (key.equals("_csrf")) continue;
+
+            SystemSetting setting = systemSettingRepository.findById(key)
+                    .orElse(new SystemSetting(key, "", ""));
+            setting.setSettingValue(value);
+            systemSettingRepository.save(setting);
+        }
+
+        // Upload hero bg file if provided
+        if (heroBgFile != null && !heroBgFile.isEmpty()) {
+            try {
+                String publicUrl = storageService.uploadFile(heroBgFile);
+                SystemSetting heroBg = systemSettingRepository.findById("homepage_hero_bg")
+                        .orElse(new SystemSetting("homepage_hero_bg", "", "Link ảnh nền Banner chính của trang chủ"));
+                heroBg.setSettingValue(publicUrl);
+                systemSettingRepository.save(heroBg);
+            } catch (Exception e) {
+                System.err.println("Failed to upload hero background image: " + e.getMessage());
+                ra.addFlashAttribute("dashMsg", "Đã lưu cấu hình nhưng tải ảnh nền chính thất bại: " + e.getMessage());
+            }
+        }
+
+        // Upload process image if provided
+        if (processImgFile != null && !processImgFile.isEmpty()) {
+            try {
+                String publicUrl = storageService.uploadFile(processImgFile);
+                SystemSetting processImg = systemSettingRepository.findById("process_image_url")
+                        .orElse(new SystemSetting("process_image_url", "", "Section Quy trình - URL ảnh minh họa"));
+                processImg.setSettingValue(publicUrl);
+                systemSettingRepository.save(processImg);
+            } catch (Exception e) {
+                System.err.println("Failed to upload process image: " + e.getMessage());
+                ra.addFlashAttribute("dashMsg", "Đã lưu cấu hình nhưng tải ảnh quy trình thất bại: " + e.getMessage());
+            }
+        }
+
+        // Upload experience image if provided
+        if (experienceImgFile != null && !experienceImgFile.isEmpty()) {
+            try {
+                String publicUrl = storageService.uploadFile(experienceImgFile);
+                SystemSetting experienceImg = systemSettingRepository.findById("experience_image_url")
+                        .orElse(new SystemSetting("experience_image_url", "", "Section Trải nghiệm - URL ảnh nền"));
+                experienceImg.setSettingValue(publicUrl);
+                systemSettingRepository.save(experienceImg);
+            } catch (Exception e) {
+                System.err.println("Failed to upload experience image: " + e.getMessage());
+                ra.addFlashAttribute("dashMsg", "Đã lưu cấu hình nhưng tải ảnh trải nghiệm thất bại: " + e.getMessage());
+            }
+        }
+
+        if (ra.getFlashAttributes().get("dashMsg") == null) {
+            ra.addFlashAttribute("dashMsg", "Cấu hình giao diện đã được lưu thành công.");
+        }
+
+        return "redirect:/staff/settings";
     }
 }

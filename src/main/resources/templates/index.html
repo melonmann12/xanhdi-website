@@ -140,6 +140,7 @@
     <header class="relative w-full h-[819px] min-h-[600px] flex items-center justify-start overflow-hidden pt-20">
         <div class="absolute inset-0 bg-cover bg-center bg-no-repeat w-full h-full"
             data-alt="A bright, sunlit, and vibrant alpine landscape. A bright green grass meadow on a hillside, a small rustic wooden cabin in the clearing, and a dense pine forest under a soft, misty daylight sky."
+            th:style="'background-image: url(\'' + ${settings.homepage_hero_bg} + '\');'"
             style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCSgxNXNAOpx_ABQC_53KWZRZrHqtBPesLZ6UwljY1QCXvzJWGH4WjBrjmiGMeW2IgYpW7TNG8L-mk-xBgoFUbajoIVZJtEQHGkx8cywjSwe6uJOWWHWA77f-cAy0NXXd-XOQcA0LIP7eyFXzIFmmKPc53gVLUj5UIjUAIoZKfPev1GPs0M6pzLuOrjk2armWOdMelYWfT3_zL0i9ByiRJvcKq1yBOxt5iLgCv73GokLObAgg0dMHaawqr1s_VV_VRwosE28mnLp3I');">
         </div>
 
@@ -148,11 +149,11 @@
 
         <div
             class="relative z-10 text-left px-margin-mobile md:px-margin-desktop max-w-4xl flex flex-col items-start gap-6 mt-16 mr-auto">
-            <h1
+            <h1 th:text="${settings.homepage_main_title}"
                 class="font-display-lg text-[40px] sm:text-display-lg md:text-[72px] leading-tight text-white drop-shadow-lg">
                 Khám Phá Trải Nghiệm Phú Yên
             </h1>
-            <p class="font-body-lg text-[16px] sm:text-body-lg text-white/90 max-w-2xl drop-shadow-md">
+            <p th:text="${settings.homepage_sub_title}" class="font-body-lg text-[16px] sm:text-body-lg text-white/90 max-w-2xl drop-shadow-md">
                 Trải nghiệm du lịch sinh thái đẳng cấp với những hành trình được thiết kế tỉ mỉ, mang lại sự bình yên và
                 trọn vẹn.
             </p>
@@ -169,22 +170,22 @@
             <div
                 class="mt-12 glass-panel rounded-3xl p-6 flex flex-row items-center justify-start gap-8 md:gap-16 w-full sm:w-auto overflow-x-auto">
                 <div class="text-white flex flex-col items-start min-w-[80px]">
-                    <span class="font-headline-lg text-[28px] sm:text-headline-lg font-bold">150+</span>
-                    <span
+                    <span th:text="${settings.hero_stat1_num}" class="font-headline-lg text-[28px] sm:text-headline-lg font-bold">150+</span>
+                    <span th:text="${settings.hero_stat1_lbl}"
                         class="font-label-sm text-[10px] sm:text-label-sm text-white/80 uppercase tracking-wider mt-1">Điểm
                         Đến</span>
                 </div>
                 <div class="w-px h-12 bg-white/20 shrink-0"></div>
                 <div class="text-white flex flex-col items-start min-w-[80px]">
-                    <span class="font-headline-lg text-[28px] sm:text-headline-lg font-bold">50k</span>
-                    <span
+                    <span th:text="${settings.hero_stat2_num}" class="font-headline-lg text-[28px] sm:text-headline-lg font-bold">50k</span>
+                    <span th:text="${settings.hero_stat2_lbl}"
                         class="font-label-sm text-[10px] sm:text-label-sm text-white/80 uppercase tracking-wider mt-1">Khách
                         Hàng</span>
                 </div>
                 <div class="w-px h-12 bg-white/20 shrink-0"></div>
                 <div class="text-white flex flex-col items-start min-w-[80px]">
-                    <span class="font-headline-lg text-[28px] sm:text-headline-lg font-bold">4.9</span>
-                    <span
+                    <span th:text="${settings.hero_stat3_num}" class="font-headline-lg text-[28px] sm:text-headline-lg font-bold">4.9</span>
+                    <span th:text="${settings.hero_stat3_lbl}"
                         class="font-label-sm text-[10px] sm:text-label-sm text-white/80 uppercase tracking-wider mt-1">Đánh
                         Giá</span>
                 </div>
@@ -198,16 +199,16 @@
         <section class="py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="diem-den">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
                 <div>
-                    <span
+                    <span th:text="${settings.tours_section_tag}"
                         class="font-label-sm text-label-sm text-secondary tracking-widest uppercase mb-2 block font-bold">TOUR</span>
-                    <h2
+                    <h2 th:text="${settings.tours_section_title}"
                         class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface max-w-2xl">
                         Đến đây và khám phá những địa điểm tuyệt đẹp.
                     </h2>
                 </div>
                 <button
                     class="bg-primary text-white px-6 py-3 rounded-full font-label-md text-label-md hover:bg-primary/90 hover:scale-105 transition-all flex items-center gap-2 whitespace-nowrap shadow-md">
-                    Đặt ngay
+                    <span th:text="${settings.tours_section_btn}">Đặt ngay</span>
                     <span class="material-symbols-outlined text-[18px]">arrow_outward</span>
                 </button>
             </div>
@@ -254,13 +255,13 @@
             id="doi-ngu">
             <!-- Header Block with dedicated spacing -->
             <div class="text-center mb-10 md:mb-12 px-4">
-                <span
+                <span th:text="${settings.guides_section_tag}"
                     class="font-label-sm text-label-sm text-secondary tracking-widest uppercase mb-2 block font-bold">ĐỒI NGŨ</span>
-                <h2
+                <h2 th:text="${settings.guides_section_title}"
                     class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold">
                     Đội ngũ Xanh Đi đồng hành cùng bạn
                 </h2>
-                <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto mt-4">
+                <p th:text="${settings.guides_section_subtitle}" class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto mt-4">
                     Những hướng dẫn viên bản địa, chuyên nghiệp và tận tâm, luôn sẵn sàng cùng bạn chinh phục mọi cung đường trải nghiệm.
                 </p>
             </div>
@@ -319,7 +320,7 @@
                 <!-- View All CTA Link -->
                 <div class="flex justify-center mt-10">
                     <a th:href="@{/guides}" class="inline-flex items-center gap-2 border border-primary text-primary hover:bg-primary hover:text-white px-8 py-3 rounded-full font-bold text-sm transition-all duration-300 shadow-sm hover:shadow">
-                        <span>Xem tất cả hướng dẫn viên</span>
+                        <span th:text="${settings.guides_section_btn}">Xem tất cả hướng dẫn viên</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                         </svg>
@@ -331,14 +332,14 @@
         <!-- Popular Tours Section -->
         <section class="py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
             <div class="text-center mb-12">
-                <span
+                <span th:text="${settings.popular_section_tag}"
                     class="font-label-sm text-label-sm text-secondary tracking-widest uppercase mb-2 block font-bold">KHÁM
                     PHÁ</span>
-                <h2
+                <h2 th:text="${settings.popular_section_title}"
                     class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold">
                     Khám phá các tour phổ biến nhất!
                 </h2>
-                <p class="font-body-md text-body-md text-on-surface-variant mt-4">
+                <p th:text="${settings.popular_section_subtitle}" class="font-body-md text-body-md text-on-surface-variant mt-4">
                     Lựa chọn hàng đầu từ những du khách yêu thiên nhiên.
                 </p>
             </div>
@@ -388,7 +389,7 @@
             </div>
 
             <div class="flex justify-center mt-10">
-                <a th:href="@{/tours}"
+                <a th:href="@{/tours}" th:text="${settings.popular_section_btn}"
                     class="bg-white border-2 border-primary text-primary px-8 py-3 rounded-full font-label-md text-label-md hover:bg-primary hover:text-white hover:scale-105 transition-all duration-300 shadow-sm font-bold text-center inline-block">
                     Xem tất cả tour
                 </a>
@@ -403,15 +404,16 @@
                     class="order-2 lg:order-1 relative rounded-[2rem] overflow-hidden h-[400px] md:h-[650px] soft-shadow border border-surface-variant/20">
                     <img class="w-full h-full object-cover"
                         data-alt="A cliff edge jutting out into a deep canyon with swirling morning fog."
+                        th:src="${settings.process_image_url}"
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1E9FzZL9Ru4H4lusERNfrkyDWRQBMZyt63gvnWRo0qsEV9qaGcD-N_xctwJgVzzDJiQD9BG6Z1-XnmiPZakTNJdFG-7J478eIkhIfzBfMDoYVcdv0SGdw8DMt6M400aAwuKN-m_G6BJwcpvP5XAIVjBjRQvVJyOG4tEmVhvVVdsukOtlEsbabQoaiCjnKRE6qfrYZAGBn48kTs5Okipz5aPrfa380mIuCzxI5AKc7tUvglm-KiuJYIkZpVHltJyuTP1IhdGhc0KU">
                 </div>
 
                 <!-- Process Steps -->
                 <div class="order-1 lg:order-2">
-                    <span
+                    <span th:text="${settings.process_section_tag}"
                         class="font-label-sm text-label-sm text-secondary tracking-widest uppercase mb-2 block font-bold">QUY
                         TRÌNH DỄ DÀNG</span>
-                    <h2
+                    <h2 th:text="${settings.process_section_title}"
                         class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-12 font-bold">
                         Quy trình đặt vé
                     </h2>
@@ -424,9 +426,9 @@
                                 <span class="material-symbols-outlined">search</span>
                             </div>
                             <div>
-                                <h3 class="font-headline-md text-[20px] text-on-surface mb-2 font-bold">Tìm điểm đến
+                                <h3 th:text="${settings.process_step1_title}" class="font-headline-md text-[20px] text-on-surface mb-2 font-bold">Tìm điểm đến
                                 </h3>
-                                <p class="font-body-md text-body-md text-on-surface-variant">Khám phá các lựa chọn đa
+                                <p th:text="${settings.process_step1_content}" class="font-body-md text-body-md text-on-surface-variant">Khám phá các lựa chọn đa
                                     dạng và chọn nơi bạn muốn đến trải nghiệm.</p>
                             </div>
                         </div>
@@ -439,8 +441,8 @@
                                 <span class="material-symbols-outlined">event_available</span>
                             </div>
                             <div>
-                                <h3 class="font-headline-md text-[20px] text-on-surface mb-2 font-bold">Đặt vé tour</h3>
-                                <p class="font-body-md text-body-md text-on-surface-variant">Lựa chọn ngày giờ phù hợp
+                                <h3 th:text="${settings.process_step2_title}" class="font-headline-md text-[20px] text-on-surface mb-2 font-bold">Đặt vé tour</h3>
+                                <p th:text="${settings.process_step2_content}" class="font-body-md text-body-md text-on-surface-variant">Lựa chọn ngày giờ phù hợp
                                     và đặt chỗ nhanh chóng qua hệ thống của chúng tôi.</p>
                             </div>
                         </div>
@@ -453,8 +455,8 @@
                                 <span class="material-symbols-outlined">payments</span>
                             </div>
                             <div>
-                                <h3 class="font-headline-md text-[20px] text-on-surface mb-2 font-bold">Thanh toán</h3>
-                                <p class="font-body-md text-body-md text-on-surface-variant">Thanh toán an toàn và bảo
+                                <h3 th:text="${settings.process_step3_title}" class="font-headline-md text-[20px] text-on-surface mb-2 font-bold">Thanh toán</h3>
+                                <p th:text="${settings.process_step3_content}" class="font-body-md text-body-md text-on-surface-variant">Thanh toán an toàn và bảo
                                     mật với nhiều phương thức linh hoạt.</p>
                             </div>
                         </div>
@@ -467,9 +469,9 @@
                                 <span class="material-symbols-outlined">explore</span>
                             </div>
                             <div>
-                                <h3 class="font-headline-md text-[20px] text-on-surface mb-2 font-bold">Khám phá điểm
+                                <h3 th:text="${settings.process_step4_title}" class="font-headline-md text-[20px] text-on-surface mb-2 font-bold">Khám phá điểm
                                     đến</h3>
-                                <p class="font-body-md text-body-md text-on-surface-variant">Xách ba lô lên và tận hưởng
+                                <p th:text="${settings.process_step4_content}" class="font-body-md text-body-md text-on-surface-variant">Xách ba lô lên và tận hưởng
                                     chuyến đi tuyệt vời của bạn cùng Xanh Đi.</p>
                             </div>
                         </div>
@@ -483,20 +485,21 @@
             id="uy-tin">
             <div class="absolute inset-0 bg-cover bg-center bg-no-repeat w-full h-full opacity-90"
                 data-alt="Wide panoramic view of a calm mirror alpine lake."
+                th:style="'background-image: url(\'' + ${settings.experience_image_url} + '\');'"
                 style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDxQdtUD8OZboe7JfpzFKnFvJfBuY2d3rM1PpqHSOft4JjQDlHaDts8uq2Jqdm3ezsw0n21RQhu4cTk2zmacsWAXVg-I7vNriEyVv_TO37ZuZ8YMbilQ1_rFRH4b4E74oVRqipNb7z-TYfe9FuaiQslf00kBThh8uHGIfThTV-95LOqpuS_GBg--lEfjAGYrcWXEIVhFx2hPEl2c3nUCHHNXYZA1KFeZklAHfxyeQsofNCDJV3Sq_UE9_m0DI7NH06VSwOqdgWllwo')">
             </div>
             <div class="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/50 to-transparent"></div>
             <div
                 class="relative z-10 text-center px-margin-mobile md:px-margin-desktop max-w-3xl mx-auto flex flex-col items-center gap-6 mt-auto mb-20">
-                <span
+                <span th:text="${settings.experience_section_tag}"
                     class="font-label-sm text-label-sm text-secondary-fixed tracking-widest uppercase block font-bold">EXPERIENCE</span>
-                <h2
+                <h2 th:text="${settings.experience_section_title}"
                     class="font-display-lg text-[32px] sm:text-[40px] md:text-display-lg leading-tight text-white drop-shadow-md font-bold">
                     Khám phá nơi bạn yêu thích và đặt vé ngay
                 </h2>
                 <button
                     class="mt-6 bg-white text-primary px-8 py-4 rounded-full font-label-md text-label-md hover:bg-surface-container-lowest hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg font-bold">
-                    Liên hệ để được tư vấn miễn phí
+                    <span th:text="${settings.experience_section_btn}">Liên hệ để được tư vấn miễn phí</span>
                     <span class="material-symbols-outlined text-[20px]">call</span>
                 </button>
             </div>
@@ -515,18 +518,18 @@
                     <img th:src="@{/images/logo.png}" alt="Xanh Đi Logo"
                         class="h-10 w-auto object-contain brightness-0 invert">
                 </div>
-                <p class="text-on-primary/80 mb-8 max-w-md">
+                <p th:text="${settings.footer_about}" class="text-on-primary/80 mb-8 max-w-md">
                     Đừng bỏ lỡ những chương trình khuyến mãi hấp dẫn. Theo dõi mạng xã hội của chúng tôi để cập nhật
                     thông tin mới nhất.
                 </p>
                 <div class="flex flex-col gap-4">
                     <div class="flex items-center gap-3 text-on-primary/80">
                         <span class="material-symbols-outlined text-[20px]">mail</span>
-                        <span>contact@xanhdi.vn</span>
+                        <span th:text="${settings.footer_email}">contact@xanhdi.vn</span>
                     </div>
                     <div class="flex items-center gap-3 text-on-primary/80">
                         <span class="material-symbols-outlined text-[20px]">call</span>
-                        <span>+84 1800 888 888</span>
+                        <span th:text="${settings.footer_phone}">+84 1800 888 888</span>
                     </div>
                 </div>
             </div>
@@ -584,7 +587,7 @@
 
         <div
             class="border-t border-white/10 px-margin-mobile md:px-margin-desktop py-6 text-center md:text-left text-on-primary/60 font-label-sm text-[12px] flex flex-col md:flex-row justify-between items-center max-w-container-max mx-auto">
-            <span>© 2024 Xanh Đi. Tất cả quyền được bảo lưu.</span>
+            <span th:text="${settings.footer_copyright}">© 2024 Xanh Đi. Tất cả quyền được bảo lưu.</span>
             <div class="flex gap-4 mt-4 md:mt-0">
                 <a class="hover:text-white transition-colors" href="#">Chính sách</a>
                 <a class="hover:text-white transition-colors" href="#">Bảo mật</a>
