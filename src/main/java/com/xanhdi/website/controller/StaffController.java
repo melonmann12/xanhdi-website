@@ -15,6 +15,9 @@ import com.xanhdi.website.service.EmailService;
 import com.xanhdi.website.service.StorageService;
 import com.xanhdi.website.model.SystemSetting;
 import com.xanhdi.website.repository.SystemSettingRepository;
+import com.xanhdi.website.service.BookingService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.data.domain.PageRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,29 +37,29 @@ public class StaffController {
     private final StaffUserRepository staffUserRepository;
     private final TourRepository tourRepository;
     private final BookingRepository bookingRepository;
-    private final EmailService emailService;
     private final StorageService storageService;
     private final TourTimelineRepository tourTimelineRepository;
     private final TourGuideRepository tourGuideRepository;
     private final SystemSettingRepository systemSettingRepository;
+    private final BookingService bookingService;
 
     @Autowired
     public StaffController(StaffUserRepository staffUserRepository,
                            TourRepository tourRepository,
                            BookingRepository bookingRepository,
-                           EmailService emailService,
                            StorageService storageService,
                            TourTimelineRepository tourTimelineRepository,
                            TourGuideRepository tourGuideRepository,
-                           SystemSettingRepository systemSettingRepository) {
+                           SystemSettingRepository systemSettingRepository,
+                           BookingService bookingService) {
         this.staffUserRepository = staffUserRepository;
         this.tourRepository = tourRepository;
         this.bookingRepository = bookingRepository;
-        this.emailService = emailService;
         this.storageService = storageService;
         this.tourTimelineRepository = tourTimelineRepository;
         this.tourGuideRepository = tourGuideRepository;
         this.systemSettingRepository = systemSettingRepository;
+        this.bookingService = bookingService;
     }
 
     // =========================================================
@@ -111,8 +114,8 @@ public class StaffController {
             return "redirect:/staff/login";
         }
         StaffUser staff = (StaffUser) session.getAttribute("staff");
-        List<Tour> tours = tourRepository.findAll();
-        List<Booking> bookings = bookingRepository.findAll();
+        List<Tour> tours = tourRepository.findAllByOrderByIdDesc(PageRequest.of(0, 20));
+        List<Booking> bookings = bookingRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(0, 20));
 
         model.addAttribute("staff", staff);
         model.addAttribute("tours", tours);
@@ -131,14 +134,7 @@ public class StaffController {
                                  RedirectAttributes ra) {
         if (session.getAttribute("staff") == null) return "redirect:/staff/login";
 
-        bookingRepository.findById(id).ifPresent(b -> {
-            b.setStatus(Booking.BookingStatus.CONFIRMED);
-            bookingRepository.save(b);
-            if (b.getTour() != null) {
-                b.getTour().getTitle();
-            }
-            emailService.sendBookingConfirmedEmail(b);
-        });
+        bookingService.confirmBooking(id);
         ra.addFlashAttribute("dashMsg", "Đơn đặt #" + id + " đã được xác nhận.");
         return "redirect:/staffdashboard";
     }
@@ -149,14 +145,7 @@ public class StaffController {
                                 RedirectAttributes ra) {
         if (session.getAttribute("staff") == null) return "redirect:/staff/login";
 
-        bookingRepository.findById(id).ifPresent(b -> {
-            b.setStatus(Booking.BookingStatus.CANCELLED);
-            bookingRepository.save(b);
-            if (b.getTour() != null) {
-                b.getTour().getTitle();
-            }
-            emailService.sendBookingCancelledEmail(b);
-        });
+        bookingService.cancelBooking(id);
         ra.addFlashAttribute("dashMsg", "Đơn đặt #" + id + " đã bị huỷ.");
         return "redirect:/staffdashboard";
     }
@@ -168,18 +157,9 @@ public class StaffController {
                                 RedirectAttributes ra) {
         if (session.getAttribute("staff") == null) return "redirect:/staff/login";
 
-        bookingRepository.findById(id).ifPresent(b -> {
-            b.setStatus(Booking.BookingStatus.CANCELLED);
-            String reason = (rejectionReason != null && !rejectionReason.trim().isEmpty())
-                    ? rejectionReason.trim() : null;
-            b.setRejectionReason(reason);
-            bookingRepository.save(b);
-            // Ensure lazy association is initialized before async email thread reads it
-            if (b.getTour() != null) {
-                b.getTour().getTitle();
-            }
-            emailService.sendBookingCancelledEmail(b);
-        });
+        String reason = (rejectionReason != null && !rejectionReason.trim().isEmpty())
+                ? rejectionReason.trim() : null;
+        bookingService.rejectBooking(id, reason);
         ra.addFlashAttribute("dashMsg", "Đơn đặt #" + id + " đã bị từ chối.");
         return "redirect:/staffdashboard";
     }
@@ -586,6 +566,7 @@ public class StaffController {
     }
 
     @PostMapping({"/staff/settings/save", "/staff/settings/save/"})
+    @CacheEvict(value = "systemSettings", allEntries = true)
     public String saveSettings(@RequestParam Map<String, String> params,
                                @RequestParam(value = "heroBgFile", required = false) MultipartFile heroBgFile,
                                @RequestParam(value = "processImgFile", required = false) MultipartFile processImgFile,
